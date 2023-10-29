@@ -1,0 +1,61 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "navX-Sensor[0]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[4]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[5]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[6]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[7]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[8]": "PIDController",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
+      "/SmartDashboard/Field": "Field2d"
+    },
+    "windows": {
+      "/SmartDashboard/Field": {
+        "Module0": {
+          "length": 0.4000000059604645,
+          "width": 0.4000000059604645
+        },
+        "Module1": {
+          "length": 0.4000000059604645,
+          "width": 0.4000000059604645
+        },
+        "Module2": {
+          "length": 0.4000000059604645,
+          "width": 0.4000000059604645
+        },
+        "Module3": {
+          "length": 0.4000000059604645,
+          "width": 0.4000000059604645
+        },
+        "Robot": {
+          "length": 0.6984999775886536,
+          "width": 0.6984999775886536
+        },
+        "bottom": 544,
+        "height": 8.013679504394531,
+        "image": "C:\\Users\\aricv\\Desktop\\SwerveDevelopment\\2023-field.png",
+        "left": 46,
+        "right": 1088,
+        "top": 36,
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  }
+}
