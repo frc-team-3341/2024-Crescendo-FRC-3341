@@ -23,8 +23,8 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
    // Create PID controllers with constants
    // Note lack of feedforward
    // Native unit: volt
-   private final PIDController drivePID = new PIDController(12.0, 0.0, 0.06);
-   private final PIDController turnPID = new PIDController(5.0, 0.0, 0.06);
+   private final PIDController drivePID = new PIDController(12.0, 0.0, 0.00);
+   private final PIDController turnPID = new PIDController(3.0, 0.0, 0.06);
 
    // Create variables to hold driving and turning voltage
    private double driveVolts = 0.0;

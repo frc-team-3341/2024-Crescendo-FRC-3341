@@ -21,10 +21,11 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
 
     public static final class SwerveConstants {
-        public static final double driveGearRatio = 8.16; // For SDS module
-        public static final double turnGearRatio = 12.8; // For SDS module
+        public static final double driveGearRatio = 8.14; // For SDS MK4i module
+        public static final double turnGearRatio = 150.0/7.0; // For SDS MK4i module
+        public static final double CANCoderGearRatio = 1.0; // Direct measurement
 
-        public static final double wheelDiameterMeters = Units.inchesToMeters(3.0); // Assuming SDS module
+        public static final double wheelDiameterMeters = Units.inchesToMeters(4.0); // Assuming SDS module
         
         // These can be safely adjusted without adjusting discrete
         public static final double maxChassisTranslationalSpeed = Units.feetToMeters(12.0); // Assuming L1 swerve
@@ -41,18 +42,36 @@ public final class Constants {
     }
 
     public static final class ModuleConstants {
-        // Placeholder constants
-        public static final double drivingPositionFactor = 1.0;
-        public static final double velocityPositionFactor = 1.0;
 
-        public static final double drivekP = 1.0;
-        public static final double drivekI = 1.0;
-        public static final double drivekD = 1.0;
-        public static final double drivekF = 1.0;
+        // In rotations
+        public static final double drivingEncoderPositionFactor = (Math.PI * Constants.SwerveConstants.wheelDiameterMeters) / Constants.SwerveConstants.driveGearRatio;
+        
+        // In RPM
+        public static final double velocityPositionFactor = ((Math.PI * Constants.SwerveConstants.wheelDiameterMeters) / Constants.SwerveConstants.driveGearRatio) / 60.0;
 
-        public static final double turnkP = 1.0;
-        public static final double turnkI = 1.0;
-        public static final double turnkD = 1.0;
+        // Guessed kP
+        public static final double drivekP = 0.01;
+        public static final double drivekI = 0.0;
+        public static final double drivekD = 0.0;
+
+        // See REV: https://motors.vex.com/other-motors/neo
+        // Max free speed in RPM originally, converted to RPS native unit
+        public static final double maxFreeSpeed = 5676.0 / 60.0;
+        // Unit for this: meters/s
+        // Calculating it out:
+        // 94.6 RPS * pi * 0.1016 m / 8.14 gearing = 3.7094567527 meters / s = 12.1701337 feet / s
+        // Therefore, this max wheel free speed works (compared to empirical MK4i free speed)
+        public static final double maxFreeWheelSpeedMeters = (maxFreeSpeed * Math.PI * Constants.SwerveConstants.wheelDiameterMeters) / Constants.SwerveConstants.driveGearRatio;
+        // Unit for FF: Motor power / meters/s
+        // Calculating it out: 1/3.709 = 0.26958125317 power per meters/second
+        // If we want to go to the max speed of 3.709, then multiply velocity error by this constant
+        // I.e. 3.709 * 0.2695 ~= 1.0
+        public static final double drivekF = 1.0/maxFreeWheelSpeedMeters;
+
+        // We don't know how to calculate this yet :)
+        public static final double turnkP = 0.0;
+        public static final double turnkI = 0.0;
+        public static final double turnkD = 0.0;
 
         public static final int driveCurrentLimit = 50;
         public static final int turnCurrentLimit = 20;

@@ -72,7 +72,7 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         turnSparkMax.restoreFactoryDefaults();
 
         // Set conversion factors
-        driveEncoder.setPositionConversionFactor(ModuleConstants.drivingPositionFactor);
+        driveEncoder.setPositionConversionFactor(ModuleConstants.drivingEncoderPositionFactor);
         driveEncoder.setVelocityConversionFactor(ModuleConstants.velocityPositionFactor);
 
         // Set SPARK MAX PIDF
@@ -113,8 +113,8 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     }
 
     public double getTurnPositionInRad() {
-        // Divide by 12.8, as encoder will return more ticks for the same position due to gearing
-        return ((turnEncoder.getAbsolutePosition()/4096.0) * 2 * Math.PI) / Constants.SwerveConstants.turnGearRatio;
+        // Divide by 1.0, as CANCoder has direct measurement of output
+        return ((turnEncoder.getAbsolutePosition()/4096.0) * 2 * Math.PI) / Constants.SwerveConstants.CANCoderGearRatio;
     }
 
     public void setDesiredState(SwerveModuleState state) {
