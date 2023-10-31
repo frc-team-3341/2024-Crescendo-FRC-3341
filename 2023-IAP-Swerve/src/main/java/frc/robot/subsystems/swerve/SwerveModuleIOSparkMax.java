@@ -38,11 +38,10 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     private CANCoder turnEncoder;
 
     // Object to hold swerve module state
-    private SwerveModuleState state = new SwerveModuleState();
+    private SwerveModuleState state = new SwerveModuleState(0.0, new Rotation2d(0.0));
 
     // Might not need offset if using CANCoders
     // private double angularOffset = 0.0;
-    private SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d(0.0));
 
     private int num = 0;
 
@@ -106,7 +105,7 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         // Continous input jumping from -PI to PI
         turnPID.enableContinuousInput(-Math.PI, Math.PI);
 
-        this.desiredState.angle = new Rotation2d(getTurnPositionInRad());
+        this.state.angle = new Rotation2d(getTurnPositionInRad());
 
         this.num = num;
 

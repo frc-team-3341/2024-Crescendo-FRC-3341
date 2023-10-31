@@ -49,6 +49,11 @@ public final class Constants {
         // In RPM
         public static final double velocityPositionFactor = ((Math.PI * Constants.SwerveConstants.wheelDiameterMeters) / Constants.SwerveConstants.driveGearRatio) / 60.0;
 
+
+        public static final double turningEncoderPositionFactor = (2 * Math.PI) / Constants.SwerveConstants.turnGearRatio; // radians
+        public static final double turningEncoderVelocityFactor = (2 * Math.PI) / Constants.SwerveConstants.turnGearRatio / 60.0; // radians per second
+
+
         // Guessed kP
         public static final double drivekP = 0.01;
         public static final double drivekI = 0.0;
