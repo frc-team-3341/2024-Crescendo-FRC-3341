@@ -44,7 +44,7 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
     */
    public SwerveModuleIOSim(int num) {
       this.num = num;
-      turnPID.enableContinuousInput(-Math.PI/2, Math.PI/2);
+      turnPID.enableContinuousInput(-Math.PI / 2, Math.PI / 2);
    }
 
    public void setDriveVoltage(double voltage) {
@@ -91,7 +91,7 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
       this.turnPID.setSetpoint(state.angle.getRadians());
       SmartDashboard.putNumber("Turning Angle #" + this.num,
             Units.radiansToDegrees(getAngularPositionRad()));
-      SmartDashboard.putNumber("Raw Turn Pos #"+num, getAngularPositionRad());
+      SmartDashboard.putNumber("Raw Turn Pos #" + num, getAngularPositionRad());
 
       double turnOutput = this.turnPID.calculate(getAngularPositionRad());
       this.turnSim.setInputVoltage(turnOutput);
@@ -113,7 +113,8 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
    }
 
    public double getAngularPositionRad() {
-      double rawAngle = Math.signum(this.turnSim.getAngularPositionRad()) * (Math.abs(this.turnSim.getAngularPositionRad()) % 2*Math.PI);
+      double rawAngle = Math.signum(this.turnSim.getAngularPositionRad())
+            * (Math.abs(this.turnSim.getAngularPositionRad()) % 2 * Math.PI);
       return rawAngle;
    }
 

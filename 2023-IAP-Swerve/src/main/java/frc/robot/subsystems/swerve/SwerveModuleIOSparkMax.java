@@ -24,7 +24,10 @@ import frc.robot.Constants;
 import frc.robot.Constants.ModuleConstants;
 
 /**
- * Implements the SwerveModuleIO interface with two CANSparkMaxes. Uses a CANCoder for turning and PID control using the 20 ms controller provided by WPILib.
+ * Implements the SwerveModuleIO interface with two CANSparkMaxes. Uses a
+ * CANCoder for turning and PID control using the 20 ms controller provided by
+ * WPILib.
+ * 
  * @author Aric Volman
  */
 public class SwerveModuleIOSparkMax implements SwerveModuleIO {
@@ -46,10 +49,10 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     private int num = 0;
 
     /**
-     * @param num Module number
-     * @param driveID CAN ID for drive motor
-     * @param turnID CAN ID for turn motor
-     * @param turnCANCoderID CAN ID for CANCoder
+     * @param num               Module number
+     * @param driveID           CAN ID for drive motor
+     * @param turnID            CAN ID for turn motor
+     * @param turnCANCoderID    CAN ID for CANCoder
      * @param turnEncoderOffset Offset in degrees for module (from -180 to 180)
      * @author Aric Volman
      */
@@ -113,13 +116,14 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
     public double getTurnPositionInRad() {
         // Divide by 1.0, as CANCoder has direct measurement of output
-        return ((turnEncoder.getAbsolutePosition()/4096.0) * 2 * Math.PI) / Constants.SwerveConstants.CANCoderGearRatio;
+        return ((turnEncoder.getAbsolutePosition() / 4096.0) * 2 * Math.PI)
+                / Constants.SwerveConstants.CANCoderGearRatio;
     }
 
     public void setDesiredState(SwerveModuleState state) {
         // Optimize state so that movement is minimized
         state = SwerveModuleState.optimize(state, new Rotation2d(getTurnPositionInRad()));
-        
+
         // Set reference of drive motor's PIDF internally in SPARK MAX
         // This automagically updates at a 1 KHz rate
         drivePID.setReference(state.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
@@ -134,20 +138,20 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
         // Calculate PID in motor power (from -1.0 to 1.0)
         double turnOutput = MathUtil.clamp(this.turnPID.calculate(getTurnPositionInRad()), -1.0, 1.0);
-        
+
         // Set voltage of SPARK MAX
-        turnSparkMax.setVoltage(turnOutput/12.0);
+        turnSparkMax.setVoltage(turnOutput / 12.0);
 
         // Set internal state as passed-in state
         this.state = state;
-        
+
     }
 
     public SwerveModuleState getSetpointModuleState() {
         // Returns module state
         return this.state;
     }
-  
+
     public SwerveModuleState getActualModuleState() {
         double velocity = this.driveEncoder.getVelocity();
         double rotation = this.getTurnPositionInRad();
@@ -188,6 +192,5 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         // Resets only drive encoder
         driveEncoder.setPosition(0.0);
     }
-
 
 }
