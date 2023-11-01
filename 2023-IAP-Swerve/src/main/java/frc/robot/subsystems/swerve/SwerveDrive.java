@@ -101,7 +101,7 @@ public class SwerveDrive extends SubsystemBase {
       SmartDashboard.putData("Field", this.field);
 
       SmartDashboard.putNumberArray("States", getDoubleStates());
-      SmartDashboard.putNumber("Robot Rotation", getPose().getRotation().getRadians() - Math.PI / 2);
+      SmartDashboard.putNumber("Robot Rotation", getPose().getRotation().getRadians());
    }
 
    public void simulationPeriodic() {
@@ -304,7 +304,7 @@ public class SwerveDrive extends SubsystemBase {
       var desiredDeltaPose = new Pose2d(
             speeds.vxMetersPerSecond * dt,
             speeds.vyMetersPerSecond * dt,
-            new Rotation2d(speeds.omegaRadiansPerSecond * dt * -5.2));
+            new Rotation2d(speeds.omegaRadiansPerSecond * dt * -4.5));
 
       var twist = new Pose2d().log(desiredDeltaPose);
 

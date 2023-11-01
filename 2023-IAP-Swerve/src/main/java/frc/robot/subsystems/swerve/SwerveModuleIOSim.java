@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.util.lib.CTREModuleState;
 
 public class SwerveModuleIOSim implements SwerveModuleIO {
 
@@ -24,7 +25,11 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
    // Note lack of feedforward
    // Native unit: volt
    private final PIDController drivePID = new PIDController(12.0, 0.0, 0.00);
-   private final PIDController turnPID = new PIDController(3.0, 0.0, 0.06);
+
+   // FIX: DO NOT USE DERIVATIVE
+   // When approaching the end points, the derivative experiences discontinuity
+   // Aka the WPILib PID's derivative is not implemented well
+   private final PIDController turnPID = new PIDController(3.0, 0.0, 0.00);
 
    // Create variables to hold driving and turning voltage
    private double driveVolts = 0.0;
@@ -44,7 +49,7 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
     */
    public SwerveModuleIOSim(int num) {
       this.num = num;
-      turnPID.enableContinuousInput(-Math.PI / 2, Math.PI / 2);
+      turnPID.enableContinuousInput(0, 2*Math.PI);
    }
 
    public void setDriveVoltage(double voltage) {
@@ -60,7 +65,8 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
    public void setDesiredState(SwerveModuleState state) {
 
       // Optimize state so that movement is minimized
-      state = SwerveModuleState.optimize(state, new Rotation2d(getAngularPositionRad()));
+      // FIX FOR SIM: Use CTREModuleState to optimize for 0 to 360
+      state = CTREModuleState.optimize(state, new Rotation2d(getAngularPositionRad()));
 
       // Set internal state as passed-in state
       this.state = state;
@@ -113,8 +119,9 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
    }
 
    public double getAngularPositionRad() {
+      // FIX: Modulo the angle of the sim by 2PI to wrap it around to 0!
       double rawAngle = Math.signum(this.turnSim.getAngularPositionRad())
-            * (Math.abs(this.turnSim.getAngularPositionRad()) % 2 * Math.PI);
+            * (Math.abs(this.turnSim.getAngularPositionRad()) % (2 * Math.PI));
       return rawAngle;
    }
 
