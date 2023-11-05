@@ -64,6 +64,8 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         driveSparkMax = new CANSparkMax(driveID, MotorType.kBrushless);
         turnSparkMax = new CANSparkMax(turnID, MotorType.kBrushless);
 
+        turnPID = new PIDController(0, 0, 0);
+
         // Initialize encoder and PID controller
         driveEncoder = driveSparkMax.getEncoder();
         drivePID = driveSparkMax.getPIDController();
@@ -92,7 +94,9 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
         driveSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
         turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
-        turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
+        
+        // Only useful for encoder 
+        // turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
 
         driveEncoder.setPosition(0);
 
@@ -140,7 +144,7 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         double turnOutput = MathUtil.clamp(this.turnPID.calculate(getTurnPositionInRad()), -1.0, 1.0);
 
         // Set voltage of SPARK MAX
-        turnSparkMax.setVoltage(turnOutput / 12.0);
+        turnSparkMax.setVoltage(turnOutput * 12.0);
 
         // Set internal state as passed-in state
         this.state = state;
@@ -191,6 +195,10 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     public void resetEncoders() {
         // Resets only drive encoder
         driveEncoder.setPosition(0.0);
+    }
+
+    public int getNum() {
+        return num;
     }
 
 }

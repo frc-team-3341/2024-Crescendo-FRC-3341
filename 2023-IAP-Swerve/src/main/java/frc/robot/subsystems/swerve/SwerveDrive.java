@@ -113,7 +113,7 @@ public class SwerveDrive extends SubsystemBase {
       double omega = this.kinematics.toChassisSpeeds(this.getStates()).omegaRadiansPerSecond;
 
       // Integrate dAngle into angular displacement
-      this.integratedSimAngle += 0.02 * omega * (180 / Math.PI);
+      this.integratedSimAngle += 0.02 * omega * (180 / Math.PI); // convert dradians to degrees
 
       // Set this as gyro measurement
       angle.set(this.integratedSimAngle);
@@ -143,14 +143,14 @@ public class SwerveDrive extends SubsystemBase {
 
       speeds = discretize(speeds);
 
-      SmartDashboard.putNumber("MagnitudeVel",
+      SmartDashboard.putNumber("Setpoint Magnitude Vel",
             Math.sqrt(Math.pow(speeds.vxMetersPerSecond, 2) + Math.pow(speeds.vyMetersPerSecond, 2)));
 
       SwerveModuleState[] swerveModuleStates = this.kinematics.toSwerveModuleStates(speeds);
 
       // MUST USE SECOND TYPE OF METHOD
       SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, speeds,
-            Constants.SwerveConstants.maxLinearVelocityMeters, Constants.SwerveConstants.maxChassisTranslationalSpeed,
+            Constants.SwerveConstants.maxWheelLinearVelocityMeters, Constants.SwerveConstants.maxChassisTranslationalSpeed,
             Constants.SwerveConstants.maxChassisAngularVelocity);
 
       for (int i = 0; i < 4; ++i) {
@@ -205,7 +205,7 @@ public class SwerveDrive extends SubsystemBase {
     * Drive the robot for PathPlannerLib
     */
    public void driveRelative(ChassisSpeeds speeds) {
-      // speeds = discretize(speeds);
+      speeds = discretize(speeds);
 
       SmartDashboard.putNumber("MagnitudeVel",
             Math.sqrt(Math.pow(speeds.vxMetersPerSecond, 2) + Math.pow(speeds.vyMetersPerSecond, 2)));
@@ -304,7 +304,7 @@ public class SwerveDrive extends SubsystemBase {
       var desiredDeltaPose = new Pose2d(
             speeds.vxMetersPerSecond * dt,
             speeds.vyMetersPerSecond * dt,
-            new Rotation2d(speeds.omegaRadiansPerSecond * dt * -4.5));
+            new Rotation2d(speeds.omegaRadiansPerSecond * dt * -9.0));
 
       var twist = new Pose2d().log(desiredDeltaPose);
 

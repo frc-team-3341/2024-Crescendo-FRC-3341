@@ -83,4 +83,18 @@ public interface SwerveModuleIO {
     */
    default void updateSim() {
    }
+
+   /**
+    * Gets number of module
+    */
+   default int getNum() {
+      return 0;
+   }
+
+   /**
+    * Gets turn position in radians
+    */
+   default double getTurnPositionInRad() {
+      return 0.0;
+   }
 }

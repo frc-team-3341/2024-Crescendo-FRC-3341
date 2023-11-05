@@ -11,6 +11,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/SwerveDrive": "Subsystem",
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
@@ -70,7 +71,22 @@
     }
   },
   "NetworkTables": {
+    "Retained Values": {
+      "open": false
+    },
     "transitory": {
+      "LiveWindow": {
+        ".status": {
+          "open": true
+        },
+        "open": true
+      },
+      "Shuffleboard": {
+        ".recording": {
+          "open": true
+        },
+        "open": true
+      },
       "SmartDashboard": {
         "open": true
       }

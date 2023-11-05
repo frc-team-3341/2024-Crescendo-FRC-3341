@@ -27,15 +27,16 @@ public final class Constants {
 
         public static final double wheelDiameterMeters = Units.inchesToMeters(4.0); // Assuming SDS module
         
+       
         // These can be safely adjusted without adjusting discrete
-        public static final double maxChassisTranslationalSpeed = Units.feetToMeters(12.0); // Assuming L1 swerve
-        public static final double maxLinearVelocityMeters = Units.feetToMeters(12.0); // Assuming L1 swerve
+        public static final double maxChassisTranslationalSpeed = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
+        public static final double maxWheelLinearVelocityMeters = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
 
         public static final double trackWidthX = Units.inchesToMeters(27.5); // 27.5 inch
         public static final double trackWidthY = Units.inchesToMeters(27.5); // 27.5 inch
         public static final double hypotenuse = Math.sqrt(Math.pow(trackWidthX / 2.0, 2) + Math.pow(trackWidthY / 2.0, 2));
 
-        public static final double maxChassisAngularVelocity = Math.PI * 2.0 * 1.25; // A decent number but not fast enough
+        public static final double maxChassisAngularVelocity = Math.PI * 2.0 * 0.5; // A decent number but not fast enough
 
         // Joystick deadband for no accidental movement
         public static final double deadBand = 0.1;

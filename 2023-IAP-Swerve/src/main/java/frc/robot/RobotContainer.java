@@ -3,6 +3,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.SwerveTeleop;
+import frc.robot.commands.TestSwerveModulePower;
+import frc.robot.subsystems.SingularModule;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
@@ -10,7 +12,9 @@ import frc.robot.subsystems.swerve.SwerveModuleIOSim;
 public class RobotContainer {
 
   // To do trajectory driving or not
-  private final boolean autoOrNot = true; // Set true to test auto!
+  private final boolean autoOrNot = false; // Set true to test auto!
+
+  private final boolean testSingleModule = false;
 
   // Xbox + an additional one for PC use
   private final Joystick actualXbox = new Joystick(0);
@@ -34,32 +38,57 @@ public class RobotContainer {
   // Empty SwerveDrive object
   public SwerveDrive swerve;
 
+  
+  public TestSwerveModulePower power;
+
   public RobotContainer() {
     // Initialize SwerveDrive object with modules
-    this.swerve = new SwerveDrive(this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
-
-    if (isSim) {
-      // Supply teleop command with joystick methods
-      this.swerve.setDefaultCommand(new SwerveTeleop(this.swerve, () -> {
-        return -this.actualXbox.getRawAxis(translationAxis);
-      }, () -> {
-        return -this.actualXbox.getRawAxis(strafeAxis);
-      }, () -> {
-        return -this.additionalJoy.getRawAxis(0);
-      }, () -> {
-        return true;
-      }));
+    if (!testSingleModule) {
+      this.swerve = new SwerveDrive(this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
+    
+      if (isSim) {
+        // Supply teleop command with joystick methods
+        this.swerve.setDefaultCommand(new SwerveTeleop(this.swerve, () -> {
+          return -this.actualXbox.getRawAxis(translationAxis);
+        }, () -> {
+          return -this.actualXbox.getRawAxis(strafeAxis);
+        }, () -> {
+          return -this.additionalJoy.getRawAxis(0);
+        }, () -> {
+          return true;
+        }));
+      } else {
+        // Supply teleop command with joystick methods
+        this.swerve.setDefaultCommand(new SwerveTeleop(this.swerve, () -> {
+          return -this.actualXbox.getRawAxis(translationAxis);
+        }, () -> {
+          return -this.actualXbox.getRawAxis(strafeAxis);
+        }, () -> {
+          return -this.actualXbox.getRawAxis(rotationAxis);
+        }, () -> {
+          return true;
+        }));
+      }
     } else {
-      // Supply teleop command with joystick methods
-      this.swerve.setDefaultCommand(new SwerveTeleop(this.swerve, () -> {
-        return -this.actualXbox.getRawAxis(translationAxis);
-      }, () -> {
-        return -this.actualXbox.getRawAxis(strafeAxis);
-      }, () -> {
-        return -this.actualXbox.getRawAxis(rotationAxis);
-      }, () -> {
-        return true;
-      }));
+        SingularModule module = new SingularModule(new SwerveModuleIOSim(0));
+        if (isSim) {
+          power = new TestSwerveModulePower(module,
+          () -> {
+            return this.actualXbox.getRawAxis(translationAxis);
+          }, 
+          () -> {
+            return this.additionalJoy.getRawAxis(0);
+          });
+        } else {
+          power = new TestSwerveModulePower(module,
+            () -> {
+              return -this.actualXbox.getRawAxis(translationAxis);
+            }, 
+            () -> {
+              return -this.actualXbox.getRawAxis(rotationAxis);
+            });
+        }
+        module.setDefaultCommand(power);
     }
     this.configureBindings();
   }
@@ -68,8 +97,12 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    if (autoOrNot) {
-      return swerve.followPathCommand("New Path");
+    if (!testSingleModule) {
+      if (autoOrNot) {
+        return swerve.followPathCommand("New Path");
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
