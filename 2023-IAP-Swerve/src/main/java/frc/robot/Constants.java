@@ -29,8 +29,9 @@ public final class Constants {
         
        
         // These can be safely adjusted without adjusting discrete
-        public static final double maxChassisTranslationalSpeed = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
-        public static final double maxWheelLinearVelocityMeters = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
+        // Some fudge factor is needed for safety while translating + rotating
+        public static final double maxChassisTranslationalSpeed = ModuleConstants.maxFreeWheelSpeedMeters - 0.3; // Assuming L1 swerve
+        public static final double maxWheelLinearVelocityMeters = ModuleConstants.maxFreeWheelSpeedMeters - 0.2; // Assuming L1 swerve
 
         public static final double trackWidthX = Units.inchesToMeters(27.5); // 27.5 inch
         public static final double trackWidthY = Units.inchesToMeters(27.5); // 27.5 inch

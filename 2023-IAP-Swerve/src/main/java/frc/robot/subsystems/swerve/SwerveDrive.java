@@ -10,7 +10,6 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -318,16 +317,6 @@ public class SwerveDrive extends SubsystemBase {
       for (int i = 0; i < 4; i++) {
          moduleIO[i].setDriveVoltage(0);
          moduleIO[i].setTurnVoltage(0);
-      }
-   }
-
-   public double returnDiagonalFactor(double x, double y, double angle) {
-
-      angle = MathUtil.clamp(angle, 0, Math.PI/2);
-      if (angle <= Math.PI/4) {
-         return -Math.sin(angle - Math.PI/2);
-      } else {
-         return Math.sin(angle);
       }
    }
 
