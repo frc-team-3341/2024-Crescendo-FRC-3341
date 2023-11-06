@@ -10,6 +10,7 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -21,7 +22,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -213,7 +213,7 @@ public class SwerveDrive extends SubsystemBase {
       SwerveModuleState[] swerveModuleStates = this.kinematics.toSwerveModuleStates(speeds);
 
       // MUST USE SECOND TYPE OF METHOD
-      SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, speeds, Units.feetToMeters(12),
+      SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, speeds, Constants.SwerveConstants.maxWheelLinearVelocityMeters,
             Constants.SwerveConstants.maxChassisTranslationalSpeed,
             Constants.SwerveConstants.maxChassisAngularVelocity);
 
@@ -242,11 +242,14 @@ public class SwerveDrive extends SubsystemBase {
       var translations = getModuleTranslations();
       for (int i = 0; i < 4; ++i) {
          Rotation2d moduleRot = modulePositions[i].angle;
-         Rotation2d relRot = moduleRot.plus(getPose().getRotation());
+         Rotation2d relRot = getPose().getRotation();
          // Multiply translation with hypotenuse and add this to the pose of the robot
+         
          field.getObject("Module" + i).setPose(
-               getPose().getX() + translations[i].getX() * Constants.SwerveConstants.hypotenuse,
-               getPose().getY() + translations[i].getY() * Constants.SwerveConstants.hypotenuse, relRot);
+           
+            getPose().getX() + Math.abs(translations[i].getX())*relRot.plus(new Rotation2d(Math.PI/4+i*Math.PI/2)).getCos()*Constants.SwerveConstants.hypotenuse, 
+            getPose().getY() + Math.abs(translations[i].getY())*relRot.plus(new Rotation2d(Math.PI/4+i*Math.PI/2)).getSin()*Constants.SwerveConstants.hypotenuse, moduleRot);
+            
       }
    }
 
@@ -315,6 +318,16 @@ public class SwerveDrive extends SubsystemBase {
       for (int i = 0; i < 4; i++) {
          moduleIO[i].setDriveVoltage(0);
          moduleIO[i].setTurnVoltage(0);
+      }
+   }
+
+   public double returnDiagonalFactor(double x, double y, double angle) {
+
+      angle = MathUtil.clamp(angle, 0, Math.PI/2);
+      if (angle <= Math.PI/4) {
+         return -Math.sin(angle - Math.PI/2);
+      } else {
+         return Math.sin(angle);
       }
    }
 

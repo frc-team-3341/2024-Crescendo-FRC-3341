@@ -61,7 +61,7 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
     */
    public SwerveModuleIOSim(int num) {
       this.num = num;
-      turnPID.enableContinuousInput(0, 2*Math.PI);
+      turnPID.enableContinuousInput(0, Math.PI*2);
    }
 
    public void setDriveVoltage(double voltage) {
@@ -83,7 +83,7 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
 
       // Optimize state so that movement is minimized
       // FIX FOR SIM: Use CTREModuleState to optimize for 0 to 360
-      state = CTREModuleState.optimize(state, new Rotation2d(getTurnPositionInRad()));
+      state = CTREModuleState.optimize(state, getTurnPositionInRad());
 
       // Set internal state as passed-in state
       this.state = state;
@@ -140,7 +140,7 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
    public double getTurnPositionInRad() {
       // FIX: Modulo the angle of the sim by 2PI to wrap it around to 0!
       double rawAngle = Math.signum(this.turnSim.getAngularPositionRad())
-            * (Math.abs(this.turnSim.getAngularPositionRad()) % (2 * Math.PI));
+            * (Math.abs(this.turnSim.getAngularPositionRad()) % (Math.PI*2));
       return rawAngle;
    }
 
