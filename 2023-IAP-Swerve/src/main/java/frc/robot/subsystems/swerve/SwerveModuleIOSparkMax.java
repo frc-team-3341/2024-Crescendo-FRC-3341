@@ -128,6 +128,9 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         // Optimize state so that movement is minimized
         state = SwerveModuleState.optimize(state, new Rotation2d(getTurnPositionInRad()));
 
+        // Cap setpoints at max speeds for safety
+        state.speedMetersPerSecond = MathUtil.clamp(state.speedMetersPerSecond, -Constants.ModuleConstants.maxFreeWheelSpeedMeters, Constants.ModuleConstants.maxFreeWheelSpeedMeters);
+
         // Set reference of drive motor's PIDF internally in SPARK MAX
         // This automagically updates at a 1 KHz rate
         drivePID.setReference(state.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);

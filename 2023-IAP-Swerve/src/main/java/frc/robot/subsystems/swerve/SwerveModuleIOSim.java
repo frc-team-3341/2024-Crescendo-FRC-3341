@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Constants.ModuleConstants;
-import frc.util.lib.CTREModuleState;
 
 public class SwerveModuleIOSim implements SwerveModuleIO {
 
@@ -61,6 +60,7 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
     */
    public SwerveModuleIOSim(int num) {
       this.num = num;
+      // This should be correct!
       turnPID.enableContinuousInput(0, Math.PI*2);
    }
 
@@ -82,8 +82,11 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
    public void setDesiredState(SwerveModuleState state) {
 
       // Optimize state so that movement is minimized
-      // FIX FOR SIM: Use CTREModuleState to optimize for 0 to 360
-      state = CTREModuleState.optimize(state, getTurnPositionInRad());
+      // Turns out you can optimize with SwerveModuleState and a Rotation2d
+      state = SwerveModuleState.optimize(state, new Rotation2d(getTurnPositionInRad()));
+
+      // Cap setpoints at max speeds for safety
+      state.speedMetersPerSecond = MathUtil.clamp(state.speedMetersPerSecond, -Constants.ModuleConstants.maxFreeWheelSpeedMeters, Constants.ModuleConstants.maxFreeWheelSpeedMeters);
 
       // Set internal state as passed-in state
       this.state = state;

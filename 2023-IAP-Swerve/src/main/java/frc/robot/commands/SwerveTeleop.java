@@ -1,12 +1,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
-// TODO: Assymetric limiter!
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.swerve.SwerveDrive;
+import frc.util.lib.AsymmetricLimiter;
+
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
@@ -21,9 +21,11 @@ public class SwerveTeleop extends CommandBase {
    private BooleanSupplier robotCentricSup;
 
    // Slew rate limit controls
-   private SlewRateLimiter translationLimiter = new SlewRateLimiter(10.0D);
-   private SlewRateLimiter strafeLimiter = new SlewRateLimiter(10.0D);
-   private SlewRateLimiter rotationLimiter = new SlewRateLimiter(10.0D);
+   // Positive limit ensures smooth acceleration (3 * dt * dControl)
+   // Negative limit ensures an ability to stop (100 * dt * dControl)
+   private AsymmetricLimiter translationLimiter = new AsymmetricLimiter(3.0D, 100.0D);
+   private AsymmetricLimiter strafeLimiter = new AsymmetricLimiter(3.0D, 100.0D);
+   private AsymmetricLimiter rotationLimiter = new AsymmetricLimiter(3.0D, 100.0D);
 
    /**
     * Creates a SwerveTeleop command, for controlling a Swerve bot.
@@ -58,18 +60,22 @@ public class SwerveTeleop extends CommandBase {
 
 
       // When driving, drive so that the magnitude of motion is scaled to a certain number
-      double magnitude = Constants.SwerveConstants.maxChassisTranslationalSpeed;
-      double correctedStrafe = 0.0;
-      double correctedTranslate = 0.0;
+     
+      // Hypotenuse is to include rate limiting! (Multplies max speed by a factor of hypotenuse)
+      double magnitude = Constants.SwerveConstants.maxChassisTranslationalSpeed * Math.hypot(xVal, yVal);
+
+      double correctedX = 0.0;
+      double correctedY = 0.0;
 
       // Bugs out at 0.0
       if (yVal != 0 | xVal != 0) {
-         correctedStrafe =  magnitude * Math.sin(angleOfVelocity);
-         correctedTranslate = magnitude* Math.cos(angleOfVelocity);
+         // Multiply magnitude by sin and cos for y and x
+         correctedX =  magnitude * Math.sin(angleOfVelocity);
+         correctedY = magnitude* Math.cos(angleOfVelocity);
       }
 
       // Drive swerve with values
-      this.swerve.drive(new Translation2d(correctedTranslate, correctedStrafe),
+      this.swerve.drive(new Translation2d(correctedY, correctedX),
       rotationVal * Constants.SwerveConstants.maxChassisAngularVelocity, 
       this.robotCentricSup.getAsBoolean(), false);
    }

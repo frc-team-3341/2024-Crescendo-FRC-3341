@@ -235,6 +235,20 @@ public class SwerveDrive extends SubsystemBase {
    }
 
    /**
+    * Gets the actual SwerveModuleState[] for our use in code
+    */
+   public SwerveModuleState[] getActualStates() {
+      SwerveModuleState[] states = new SwerveModuleState[4];
+
+      for (int i = 0; i < 4; ++i) {
+         states[i] = this.moduleIO[i].getActualModuleState();
+      }
+
+      return states;
+   }
+
+
+   /**
     * Accurately draws module poses on SmartDashboard
     */
    public void drawModulePoses() {
@@ -256,7 +270,7 @@ public class SwerveDrive extends SubsystemBase {
     * Gets module states as double[] for AdvantageScope compatibility
     */
    public double[] getDoubleStates() {
-      SwerveModuleState[] states = getStates();
+      SwerveModuleState[] states = getActualStates();
       ArrayList<Double> ret = new ArrayList<Double>();
 
       for (int i = 0; i < 4; ++i) {
@@ -306,7 +320,7 @@ public class SwerveDrive extends SubsystemBase {
       var desiredDeltaPose = new Pose2d(
             speeds.vxMetersPerSecond * dt,
             speeds.vyMetersPerSecond * dt,
-            new Rotation2d(speeds.omegaRadiansPerSecond * dt * -9.0));
+            new Rotation2d(speeds.omegaRadiansPerSecond * dt * -5.0));
 
       var twist = new Pose2d().log(desiredDeltaPose);
 
