@@ -1,15 +1,10 @@
 package frc.robot.subsystems.swerve;
 
-import java.util.ArrayList;
-import java.util.stream.Stream;
-
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
-import edu.wpi.first.hal.SimDouble;
-import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -27,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
+import frc.util.lib.SwerveUtil;
 
 public class SwerveDrive extends SubsystemBase {
    // Create Navx
@@ -52,10 +47,6 @@ public class SwerveDrive extends SubsystemBase {
    // Add field to show robot
    private Field2d field;
 
-   // Integrate angular velocity of chassis in simulation
-   // In order to find the rotation of the chassis
-   private double integratedSimAngle;
-
    /**
     * Creates a new SwerveDrive object. Intended to work both with real modules and
     * simulation.
@@ -71,57 +62,37 @@ public class SwerveDrive extends SubsystemBase {
       // Assign modules to their object
       this.moduleIO = new SwerveModuleIO[] { FL, FR, BL, BR };
 
-      // Iterate through module positions and assign 0 values
-      for (int i = 0; i < 4; ++i) {
-         this.modulePositions[i] = moduleIO[i].getPosition();
-      }
+      // Iterate through module positions and assign initial values
+      modulePositions = SwerveUtil.setModulePositions(moduleIO);
 
       // Initialize all other objects
-      this.kinematics = new SwerveDriveKinematics(this.getModuleTranslations());
-      this.poseEstimator = new SwerveDrivePoseEstimator(this.kinematics, new Rotation2d(), this.modulePositions,
-            new Pose2d());
+      this.kinematics = new SwerveDriveKinematics(SwerveUtil.getModuleTranslations());
+      this.poseEstimator = new SwerveDrivePoseEstimator(this.kinematics, new Rotation2d(), this.modulePositions, new Pose2d());
       this.swerveOdometry = new SwerveDriveOdometry(this.kinematics, this.getRotation(), this.modulePositions);
       this.field = new Field2d();
    }
 
    public void periodic() {
       // Update module positions
-      this.modulePositions = new SwerveModulePosition[] { this.moduleIO[0].getPosition(),
-            this.moduleIO[1].getPosition(), this.moduleIO[2].getPosition(), this.moduleIO[3].getPosition() };
+      modulePositions = SwerveUtil.setModulePositions(moduleIO);
 
       // Update odometry, field, and poseEstimator
       this.swerveOdometry.update(this.getRotation(), this.modulePositions);
       this.poseEstimator.update(this.getRotation(), this.modulePositions);
       this.field.setRobotPose(this.getPose());
 
-      drawModulePoses();
+      // Draw poses of robot's modules in SmartDashboard
+      SwerveUtil.drawModulePoses(modulePositions, field, getPose());
 
       // Put field on SmartDashboard
       SmartDashboard.putData("Field", this.field);
-
-      SmartDashboard.putNumberArray("States", getDoubleStates());
+      SmartDashboard.putNumberArray("States", SwerveUtil.getDoubleStates(getActualStates()));
       SmartDashboard.putNumber("Robot Rotation", getPose().getRotation().getRadians());
    }
 
    public void simulationPeriodic() {
-      // Simulate Navx
-      int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
-      SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
-
-      // Find omega/angular velocity of chassis' rotation
-      double omega = this.kinematics.toChassisSpeeds(this.getActualStates()).omegaRadiansPerSecond;
-
-      // Integrate dAngle into angular displacement
-      this.integratedSimAngle += 0.02 * omega * (180 / Math.PI); // convert dradians to degrees
-
-      // Set this as gyro measurement
-      angle.set(this.integratedSimAngle);
-
-      // Update moduleIO's sim objects with a dt of 0.02
-      for (int i = 0; i < 4; ++i) {
-         this.moduleIO[i].updateSim();
-      }
-
+      // Add simulation! Yes, with the Util class, it's that easy!
+      SwerveUtil.addSwerveSimulation(moduleIO, getActualStates(), kinematics);
    }
 
    /**
@@ -140,7 +111,7 @@ public class SwerveDrive extends SubsystemBase {
                   this.getRotation())
             : new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
 
-      speeds = discretize(speeds);
+      speeds = SwerveUtil.discretize(speeds, -5.0);
 
       SmartDashboard.putNumber("Setpoint Magnitude Vel",
             Math.sqrt(Math.pow(speeds.vxMetersPerSecond, 2) + Math.pow(speeds.vyMetersPerSecond, 2)));
@@ -152,16 +123,70 @@ public class SwerveDrive extends SubsystemBase {
             Constants.SwerveConstants.maxWheelLinearVelocityMeters, Constants.SwerveConstants.maxChassisTranslationalSpeed,
             Constants.SwerveConstants.maxChassisAngularVelocity);
 
-      for (int i = 0; i < 4; ++i) {
+      for (int i = 0; i < swerveModuleStates.length; i++) {
          this.moduleIO[i].setDesiredState(swerveModuleStates[i]);
       }
 
    }
 
    /**
-    * Get heading of Navx. Negative because Navx is CW positive.
+    * Drive the robot for PathPlannerLib
     */
-   public double getHeading() {
+   public void driveRelative(ChassisSpeeds speeds) {
+      speeds = SwerveUtil.discretize(speeds, -5.0);
+
+      SmartDashboard.putNumber("MagnitudeVel",
+            Math.sqrt(Math.pow(speeds.vxMetersPerSecond, 2) + Math.pow(speeds.vyMetersPerSecond, 2)));
+
+      SwerveModuleState[] swerveModuleStates = this.kinematics.toSwerveModuleStates(speeds);
+
+      // MUST USE SECOND TYPE OF METHOD
+      SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, speeds, Constants.SwerveConstants.maxWheelLinearVelocityMeters,
+            Constants.SwerveConstants.maxChassisTranslationalSpeed,
+            Constants.SwerveConstants.maxChassisAngularVelocity);
+
+      for (int i = 0; i < swerveModuleStates.length; i++) {
+         this.moduleIO[i].setDesiredState(swerveModuleStates[i]);
+      }
+   }
+
+   /**
+    * Gets the SwerveModuleState[] for our use in code.
+    */
+   public SwerveModuleState[] getSetpointStates() {
+      SwerveModuleState[] states = new SwerveModuleState[moduleIO.length];
+
+      for (int i = 0; i < states.length; i++) {
+         states[i] = this.moduleIO[i].getSetpointModuleState();
+      }
+
+      return states;
+   }
+
+   /**
+    * Gets the actual SwerveModuleState[] for our use in code
+    */
+   public SwerveModuleState[] getActualStates() {
+      SwerveModuleState[] states = new SwerveModuleState[moduleIO.length];
+
+      for (int i = 0; i < states.length; i++) {
+         states[i] = this.moduleIO[i].getActualModuleState();
+      }
+
+      return states;
+   }
+
+   public void stopMotors() {
+      for (int i = 0; i < 4; i++) {
+         moduleIO[i].setDriveVoltage(0);
+         moduleIO[i].setTurnVoltage(0);
+      }
+   }
+
+   /**
+   * Get heading of Navx. Negative because Navx is CW positive.
+   */
+    public double getHeading() {
       return -navx.getRotation2d().getDegrees();
    }
 
@@ -198,140 +223,6 @@ public class SwerveDrive extends SubsystemBase {
     */
    public ChassisSpeeds getRobotRelativeSpeeds() {
       return ChassisSpeeds.fromFieldRelativeSpeeds(kinematics.toChassisSpeeds(getActualStates()), getRotation());
-   }
-
-   /**
-    * Drive the robot for PathPlannerLib
-    */
-   public void driveRelative(ChassisSpeeds speeds) {
-      speeds = discretize(speeds);
-
-      SmartDashboard.putNumber("MagnitudeVel",
-            Math.sqrt(Math.pow(speeds.vxMetersPerSecond, 2) + Math.pow(speeds.vyMetersPerSecond, 2)));
-
-      SwerveModuleState[] swerveModuleStates = this.kinematics.toSwerveModuleStates(speeds);
-
-      // MUST USE SECOND TYPE OF METHOD
-      SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, speeds, Constants.SwerveConstants.maxWheelLinearVelocityMeters,
-            Constants.SwerveConstants.maxChassisTranslationalSpeed,
-            Constants.SwerveConstants.maxChassisAngularVelocity);
-
-      for (int i = 0; i < 4; ++i) {
-         this.moduleIO[i].setDesiredState(swerveModuleStates[i]);
-      }
-   }
-
-   /**
-    * Gets the SwerveModuleState[] for our use in code.
-    */
-   public SwerveModuleState[] getSetpointStates() {
-      SwerveModuleState[] states = new SwerveModuleState[moduleIO.length];
-
-      for (int i = 0; i < states.length; i++) {
-         states[i] = this.moduleIO[i].getSetpointModuleState();
-      }
-
-      return states;
-   }
-
-   /**
-    * Gets the actual SwerveModuleState[] for our use in code
-    */
-   public SwerveModuleState[] getActualStates() {
-      SwerveModuleState[] states = new SwerveModuleState[moduleIO.length];
-
-      for (int i = 0; i < states.length; i++) {
-         states[i] = this.moduleIO[i].getActualModuleState();
-      }
-
-      return states;
-   }
-
-
-   /**
-    * Accurately draws module poses on SmartDashboard
-    */
-   public void drawModulePoses() {
-      var translations = getModuleTranslations();
-      for (int i = 0; i < 4; ++i) {
-         Rotation2d moduleRot = modulePositions[i].angle;
-         Rotation2d relRot = getPose().getRotation();
-         // Multiply translation with hypotenuse and add this to the pose of the robot
-         
-         field.getObject("Module" + i).setPose(
-           
-            getPose().getX() + Math.abs(translations[i].getX())*relRot.plus(new Rotation2d(Math.PI/4+i*Math.PI/2)).getCos()*Constants.SwerveConstants.hypotenuse, 
-            getPose().getY() + Math.abs(translations[i].getY())*relRot.plus(new Rotation2d(Math.PI/4+i*Math.PI/2)).getSin()*Constants.SwerveConstants.hypotenuse, moduleRot);
-            
-      }
-   }
-
-   /**
-    * Gets module states as double[] for AdvantageScope compatibility
-    */
-   public double[] getDoubleStates() {
-      SwerveModuleState[] states = getActualStates();
-      ArrayList<Double> ret = new ArrayList<Double>();
-
-      for (int i = 0; i < 4; ++i) {
-         double num = 0;
-         num = states[i].angle.getRadians();
-         ret.add(num);
-         num = states[i].speedMetersPerSecond;
-         ret.add(num);
-      }
-
-      Double[] actual = new Double[8];
-      ret.toArray(actual);
-
-      return Stream.of(actual).mapToDouble(Double::doubleValue).toArray();
-
-   }
-
-   /**
-    * Get physical positions of wheels on Swerve chassis (half of trackwidth)
-    */
-   public Translation2d[] getModuleTranslations() {
-      return new Translation2d[] {
-            new Translation2d(Constants.SwerveConstants.trackWidthX / 2.0, Constants.SwerveConstants.trackWidthY / 2.0),
-            new Translation2d(Constants.SwerveConstants.trackWidthX / 2.0,
-                  -Constants.SwerveConstants.trackWidthY / 2.0),
-            new Translation2d(-Constants.SwerveConstants.trackWidthX / 2.0,
-                  Constants.SwerveConstants.trackWidthY / 2.0),
-            new Translation2d(-Constants.SwerveConstants.trackWidthX / 2.0,
-                  -Constants.SwerveConstants.trackWidthY / 2.0) };
-   }
-
-   /**
-    * Credit: WPIlib 2024 + Patribots (Author: Alexander Hamilton)
-    * Discretizes a continuous-time chassis speed.
-    *
-    * @param vx    Forward velocity.
-    * @param vy    Sideways velocity.
-    * @param omega Angular velocity.
-    */
-   public ChassisSpeeds discretize(ChassisSpeeds speeds) {
-      if (!RobotContainer.getSimOrNot()) {
-         return speeds;
-      }
-
-      double dt = 0.02;
-
-      var desiredDeltaPose = new Pose2d(
-            speeds.vxMetersPerSecond * dt,
-            speeds.vyMetersPerSecond * dt,
-            new Rotation2d(speeds.omegaRadiansPerSecond * dt * -5.0));
-
-      var twist = new Pose2d().log(desiredDeltaPose);
-
-      return new ChassisSpeeds((twist.dx / dt), (twist.dy / dt), (speeds.omegaRadiansPerSecond));
-   }
-
-   public void stopMotors() {
-      for (int i = 0; i < 4; i++) {
-         moduleIO[i].setDriveVoltage(0);
-         moduleIO[i].setTurnVoltage(0);
-      }
    }
 
    public Command followPathCommand(String pathName) {
