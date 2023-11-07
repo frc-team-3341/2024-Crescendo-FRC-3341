@@ -23,9 +23,9 @@ public class SwerveTeleop extends CommandBase {
    // Slew rate limit controls
    // Positive limit ensures smooth acceleration (3 * dt * dControl)
    // Negative limit ensures an ability to stop (100 * dt * dControl)
-   private AsymmetricLimiter translationLimiter = new AsymmetricLimiter(3.0D, 100.0D);
-   private AsymmetricLimiter strafeLimiter = new AsymmetricLimiter(3.0D, 100.0D);
-   private AsymmetricLimiter rotationLimiter = new AsymmetricLimiter(3.0D, 100.0D);
+   private AsymmetricLimiter translationLimiter = new AsymmetricLimiter(3.0D, 1000.0D);
+   private AsymmetricLimiter strafeLimiter = new AsymmetricLimiter(3.0D, 1000.0D);
+   private AsymmetricLimiter rotationLimiter = new AsymmetricLimiter(3.0D, 1000.0D);
 
    /**
     * Creates a SwerveTeleop command, for controlling a Swerve bot.
@@ -61,17 +61,21 @@ public class SwerveTeleop extends CommandBase {
 
       // When driving, drive so that the magnitude of motion is scaled to a certain number
      
-      // Hypotenuse is to include rate limiting! (Multplies max speed by a factor of hypotenuse)
-      double magnitude = Constants.SwerveConstants.maxChassisTranslationalSpeed * Math.hypot(xVal, yVal);
+      // Hypotenuse SHOULD NOT be included in slew rate limit (NOMAD had hypotenuse which is dangerous, results in 1.41 factor)
+      // Instead, take max slew rate limit (this is the best solution for 2D)
+      double magnitude = Constants.SwerveConstants.maxChassisTranslationalSpeed;
 
       double correctedX = 0.0;
       double correctedY = 0.0;
 
+      double maxSlewRateLimit = Math.max(Math.abs(yVal), Math.abs(xVal));
+
       // Bugs out at 0.0
       if (yVal != 0 | xVal != 0) {
          // Multiply magnitude by sin and cos for y and x
-         correctedX =  magnitude * Math.sin(angleOfVelocity);
-         correctedY = magnitude* Math.cos(angleOfVelocity);
+         // FIX TO MAGNITUDE BASED APPROX: Multiply magnitude's component by max slew rate limit
+         correctedX =  magnitude * Math.sin(angleOfVelocity) * maxSlewRateLimit;
+         correctedY = magnitude* Math.cos(angleOfVelocity) * maxSlewRateLimit;
       }
 
       // Drive swerve with values

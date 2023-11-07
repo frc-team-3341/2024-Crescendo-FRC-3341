@@ -85,6 +85,8 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
       // Turns out you can optimize with SwerveModuleState and a Rotation2d
       state = SwerveModuleState.optimize(state, new Rotation2d(getTurnPositionInRad()));
 
+      
+      SmartDashboard.putNumber("Setpoint Drive Vel #" + this.num, state.speedMetersPerSecond);
       // Cap setpoints at max speeds for safety
       state.speedMetersPerSecond = MathUtil.clamp(state.speedMetersPerSecond, -Constants.ModuleConstants.maxFreeWheelSpeedMeters, Constants.ModuleConstants.maxFreeWheelSpeedMeters);
 
@@ -109,7 +111,6 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
          setDriveVoltage(output);
          SmartDashboard.putNumber("Closed Loop Drive #" + this.num, driveVolts);
          SmartDashboard.putNumber("Drive Vel #" + this.num, velocity);
-         SmartDashboard.putNumber("Setpoint Drive Vel #" + this.num, state.speedMetersPerSecond);
       } else {
          // Output in volts to motor
          driveVolts = 0.0;

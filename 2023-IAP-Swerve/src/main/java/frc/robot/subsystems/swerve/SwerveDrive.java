@@ -109,7 +109,7 @@ public class SwerveDrive extends SubsystemBase {
       SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
 
       // Find omega/angular velocity of chassis' rotation
-      double omega = this.kinematics.toChassisSpeeds(this.getStates()).omegaRadiansPerSecond;
+      double omega = this.kinematics.toChassisSpeeds(this.getActualStates()).omegaRadiansPerSecond;
 
       // Integrate dAngle into angular displacement
       this.integratedSimAngle += 0.02 * omega * (180 / Math.PI); // convert dradians to degrees
@@ -197,7 +197,7 @@ public class SwerveDrive extends SubsystemBase {
     * Get chassis speeds for PathPlannerLib
     */
    public ChassisSpeeds getRobotRelativeSpeeds() {
-      return ChassisSpeeds.fromFieldRelativeSpeeds(kinematics.toChassisSpeeds(getStates()), getRotation());
+      return ChassisSpeeds.fromFieldRelativeSpeeds(kinematics.toChassisSpeeds(getActualStates()), getRotation());
    }
 
    /**
@@ -224,10 +224,10 @@ public class SwerveDrive extends SubsystemBase {
    /**
     * Gets the SwerveModuleState[] for our use in code.
     */
-   public SwerveModuleState[] getStates() {
-      SwerveModuleState[] states = new SwerveModuleState[4];
+   public SwerveModuleState[] getSetpointStates() {
+      SwerveModuleState[] states = new SwerveModuleState[moduleIO.length];
 
-      for (int i = 0; i < 4; ++i) {
+      for (int i = 0; i < states.length; i++) {
          states[i] = this.moduleIO[i].getSetpointModuleState();
       }
 
@@ -238,9 +238,9 @@ public class SwerveDrive extends SubsystemBase {
     * Gets the actual SwerveModuleState[] for our use in code
     */
    public SwerveModuleState[] getActualStates() {
-      SwerveModuleState[] states = new SwerveModuleState[4];
+      SwerveModuleState[] states = new SwerveModuleState[moduleIO.length];
 
-      for (int i = 0; i < 4; ++i) {
+      for (int i = 0; i < states.length; i++) {
          states[i] = this.moduleIO[i].getActualModuleState();
       }
 
@@ -345,6 +345,8 @@ public class SwerveDrive extends SubsystemBase {
 
       // Set field's trajectory to the trajectory of the path
       field.getObject("traj").setTrajectory(traj);
+
+      
 
       // Defines a new PPSwerveControllerCommand
       // WILL BECOME DEPRECATED!!
