@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -24,8 +25,7 @@ public class SwerveTeleop extends CommandBase {
    // Positive limit ensures smooth acceleration (3 * dt * dControl)
    // Negative limit ensures an ability to stop (100 * dt * dControl)
    private AsymmetricLimiter translationLimiter = new AsymmetricLimiter(3.0D, 1000.0D);
-   private AsymmetricLimiter strafeLimiter = new AsymmetricLimiter(3.0D, 1000.0D);
-   private AsymmetricLimiter rotationLimiter = new AsymmetricLimiter(3.0D, 1000.0D);
+   private AsymmetricLimiter rotationLimiter = new AsymmetricLimiter(10.0D, 1000.0D);
 
    /**
     * Creates a SwerveTeleop command, for controlling a Swerve bot.
@@ -47,39 +47,44 @@ public class SwerveTeleop extends CommandBase {
    @Override
    public void execute() {
 
-      // Get values after deadband and rate limiting
-      double xVal = this.translationLimiter.calculate(MathUtil.applyDeadband(this.x.getAsDouble(), Constants.SwerveConstants.deadBand));
-      double yVal = this.strafeLimiter.calculate(MathUtil.applyDeadband(this.y.getAsDouble(), Constants.SwerveConstants.deadBand));
-
-      // Support for simulation WASD or real Xbox
-      xVal *= -1.0;
+      // Get values of controls and apply deadband
+      double xVal = -this.x.getAsDouble(); // Flip for XBox support
+      xVal = MathUtil.applyDeadband(xVal, Constants.SwerveConstants.deadBand);
       
-      double rotationVal = this.rotationLimiter.calculate(MathUtil.applyDeadband(this.rotationSup.getAsDouble(), Constants.SwerveConstants.deadBand));
 
-      double angleOfVelocity = Math.atan2(yVal, xVal);
+      double yVal = this.y.getAsDouble();
+      yVal = MathUtil.applyDeadband(yVal, Constants.SwerveConstants.deadBand);
 
+      double rotationVal = this.rotationSup.getAsDouble();
 
-      // When driving, drive so that the magnitude of motion is scaled to a certain number
-     
+      // Take the max value to rate limit - max value determines control!
+      double limit = Math.max(Math.abs(xVal), Math.abs(yVal));
+      limit = translationLimiter.calculate(limit);
+      
+      // Get Rotation2d/angle of x and y
+      Rotation2d angleOfVelocity = new Rotation2d(xVal, yVal);
+      
+      rotationVal = MathUtil.applyDeadband(rotationVal, Constants.SwerveConstants.deadBand);
+
+      rotationVal = this.rotationLimiter.calculate(rotationVal);
+
       // Hypotenuse SHOULD NOT be included in slew rate limit (NOMAD had hypotenuse which is dangerous, results in 1.41 factor)
       // Instead, take max slew rate limit (this is the best solution for 2D)
-      double magnitude = Constants.SwerveConstants.maxChassisTranslationalSpeed;
+      double maxMagnitude = Constants.SwerveConstants.maxChassisTranslationalSpeed;
 
       double correctedX = 0.0;
       double correctedY = 0.0;
-
-      double maxSlewRateLimit = Math.max(Math.abs(yVal), Math.abs(xVal));
 
       // Bugs out at 0.0
       if (yVal != 0 | xVal != 0) {
          // Multiply magnitude by sin and cos for y and x
          // FIX TO MAGNITUDE BASED APPROX: Multiply magnitude's component by max slew rate limit
-         correctedX =  magnitude * Math.sin(angleOfVelocity) * maxSlewRateLimit;
-         correctedY = magnitude* Math.cos(angleOfVelocity) * maxSlewRateLimit;
+         correctedX =  limit * maxMagnitude * angleOfVelocity.getCos();
+         correctedY = limit * maxMagnitude * angleOfVelocity.getSin();
       }
 
       // Drive swerve with values
-      this.swerve.drive(new Translation2d(correctedY, correctedX),
+      this.swerve.drive(new Translation2d(correctedX, correctedY),
       rotationVal * Constants.SwerveConstants.maxChassisAngularVelocity, 
       this.robotCentricSup.getAsBoolean(), false);
    }
