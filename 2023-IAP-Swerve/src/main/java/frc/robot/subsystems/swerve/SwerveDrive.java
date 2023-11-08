@@ -1,11 +1,6 @@
 package frc.robot.subsystems.swerve;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,11 +10,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.util.lib.SwerveUtil;
@@ -225,32 +218,9 @@ public class SwerveDrive extends SubsystemBase {
       return ChassisSpeeds.fromFieldRelativeSpeeds(kinematics.toChassisSpeeds(getActualStates()), getRotation());
    }
 
-   public Command followPathCommand(String pathName) {
-      // Load path from 2023 PathPlannerLib
-      // WARNING: ONLY INSTALL PATHPLANNERLIB FROM 2023 LIBRARIES, NOT 2024
-      // THIS CODE WILL BECOME DEPRECATED SOON :)
-      PathPlannerTrajectory path = PathPlanner.loadPath(pathName, 4.0, 3.0);
-
-      // Trick: convert to WPILib trajectory via states
-      var traj = new Trajectory(path.getStates());
-
-      // Set field's trajectory to the trajectory of the path
-      field.getObject("traj").setTrajectory(traj);
-
-      
-
-      // Defines a new PPSwerveControllerCommand
-      // WILL BECOME DEPRECATED!!
-      // TODO: NEED TO TUNE
-      return new PPSwerveControllerCommand(path,
-            this::getPose,
-            new PIDController(1.1, 0, 0),
-            new PIDController(1.1, 0, 0),
-            new PIDController(1.1, 0, 0),
-            this::driveRelative, this).andThen(() -> {
-               stopMotors();
-            });
-
+   /** Gets field */
+   public Field2d getField() {
+      return field;
    }
 
 }
