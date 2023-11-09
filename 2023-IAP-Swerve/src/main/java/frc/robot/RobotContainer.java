@@ -51,9 +51,9 @@ public class RobotContainer {
       if (isSim) {
         // Supply teleop command with joystick methods
         this.swerve.setDefaultCommand(new SwerveTeleop(this.swerve, () -> {
-          return -this.actualXbox.getRawAxis(translationAxis);
+          return -this.actualXbox.getX();
         }, () -> {
-          return -this.actualXbox.getRawAxis(strafeAxis);
+          return -this.actualXbox.getY();
         }, () -> {
           return -this.additionalJoy.getRawAxis(0);
         }, () -> {
