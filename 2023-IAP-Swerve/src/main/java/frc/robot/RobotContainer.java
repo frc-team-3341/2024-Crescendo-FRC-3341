@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.SwerveAuto;
 import frc.robot.commands.SwerveTeleop;
 import frc.robot.commands.TestSwerveModulePower;
 import frc.robot.subsystems.SingularModule;
@@ -15,6 +16,8 @@ public class RobotContainer {
   private final boolean autoOrNot = true; // Set true to test auto!
 
   private final boolean testSingleModule = false;
+
+  private SwerveAuto auto;
 
   // Xbox + an additional one for PC use
   private final Joystick actualXbox = new Joystick(0);
@@ -37,7 +40,6 @@ public class RobotContainer {
 
   // Empty SwerveDrive object
   public SwerveDrive swerve;
-
   
   public TestSwerveModulePower power;
 
@@ -90,6 +92,8 @@ public class RobotContainer {
         }
         module.setDefaultCommand(power);
     }
+    
+    auto = new SwerveAuto("New Path", this.swerve);
     this.configureBindings();
   }
 
@@ -99,7 +103,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     if (!testSingleModule) {
       if (autoOrNot) {
-        return swerve.followPathCommand("New Path");
+        return auto;
       } else {
         return null;
       }
