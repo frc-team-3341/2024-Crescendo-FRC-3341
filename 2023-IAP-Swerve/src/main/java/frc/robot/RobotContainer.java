@@ -5,10 +5,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.SwerveAuto;
 import frc.robot.commands.SwerveTeleop;
 import frc.robot.commands.TestSwerveModulePower;
-import frc.robot.subsystems.SingularModule;
+import frc.robot.subsystems.swerve.SingularModule;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
+import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
 
 public class RobotContainer {
 
@@ -72,8 +73,9 @@ public class RobotContainer {
         }));
       }
     } else {
-        SingularModule module = new SingularModule(new SwerveModuleIOSim(0));
+        SingularModule module;
         if (isSim) {
+          module = new SingularModule(new SwerveModuleIOSim(0));
           power = new TestSwerveModulePower(module,
           () -> {
             return this.actualXbox.getRawAxis(translationAxis);
@@ -82,12 +84,13 @@ public class RobotContainer {
             return this.additionalJoy.getRawAxis(0);
           });
         } else {
+          module = new SingularModule(new SwerveModuleIOSparkMax(0, 1, 2, 3, 0));
           power = new TestSwerveModulePower(module,
             () -> {
               return -this.actualXbox.getRawAxis(translationAxis);
             }, 
             () -> {
-              return -this.actualXbox.getRawAxis(rotationAxis);
+              return -this.actualXbox.getRawAxis(5);
             });
         }
         module.setDefaultCommand(power);

@@ -7,7 +7,7 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.SingularModule;
+import frc.robot.subsystems.swerve.SingularModule;
 
 public class TestSwerveModulePower extends CommandBase {
 
