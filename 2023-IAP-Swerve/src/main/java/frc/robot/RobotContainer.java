@@ -14,7 +14,7 @@ import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
 public class RobotContainer {
 
   // To do trajectory driving or not
-  private final boolean autoOrNot = true; // Set true to test auto!
+  private final boolean autoOrNot = false; // Set true to test auto!
 
   private final boolean testSingleModule = false;
 

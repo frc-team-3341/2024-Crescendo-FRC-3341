@@ -105,7 +105,7 @@ public class SwerveDrive extends SubsystemBase {
                   this.getRotation())
             : new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
 
-      speeds = SwerveUtil.discretize(speeds, -5.0);
+      speeds = SwerveUtil.discretize(speeds, -4.0);
 
       SmartDashboard.putNumber("Setpoint Magnitude Vel",
             Math.sqrt(Math.pow(speeds.vxMetersPerSecond, 2) + Math.pow(speeds.vyMetersPerSecond, 2)));
@@ -128,7 +128,7 @@ public class SwerveDrive extends SubsystemBase {
     * Drive the robot for PathPlannerLib
     */
    public void driveRelative(ChassisSpeeds speeds) {
-      speeds = SwerveUtil.discretize(speeds, -5.0);
+      speeds = SwerveUtil.discretize(speeds, -4.0);
 
       SmartDashboard.putNumber("MagnitudeVel",
             Math.sqrt(Math.pow(speeds.vxMetersPerSecond, 2) + Math.pow(speeds.vyMetersPerSecond, 2)));

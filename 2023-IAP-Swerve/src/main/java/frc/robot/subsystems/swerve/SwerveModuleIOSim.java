@@ -37,7 +37,7 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
    // FIX: DO NOT USE DERIVATIVE
    // When approaching the end points, the derivative experiences discontinuity
    // Aka the WPILib PID's derivative is not implemented well
-   private final PIDController turnPID = new PIDController(3.0, 0.0, 0.00);
+   private final PIDController turnPID = new PIDController(5.0, 0.0, 0.00);
 
    // Create variables to hold driving and turning voltage
    private double driveVolts = 0.0;
