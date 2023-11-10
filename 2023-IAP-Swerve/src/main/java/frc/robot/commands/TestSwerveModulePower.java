@@ -18,7 +18,8 @@ public class TestSwerveModulePower extends CommandBase {
   private DoubleSupplier turnPowerSup;
 
   /** Creates a new TestSwerveModule. */
-  public TestSwerveModulePower(SingularModule moduleSubsystem, DoubleSupplier drivePowerSup, DoubleSupplier turnPowerSup) {
+  public TestSwerveModulePower(SingularModule moduleSubsystem, DoubleSupplier drivePowerSup,
+      DoubleSupplier turnPowerSup) {
 
     this.drivePowerSup = drivePowerSup;
     this.turnPowerSup = turnPowerSup;
@@ -40,8 +41,8 @@ public class TestSwerveModulePower extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    moduleSubsystem.module.setDriveVoltage(drivePowerSup.getAsDouble()*12.0);
-    moduleSubsystem.module.setTurnVoltage(turnPowerSup.getAsDouble()*12.0);
+    moduleSubsystem.module.setDriveVoltage(drivePowerSup.getAsDouble() * 12.0);
+    moduleSubsystem.module.setTurnVoltage(turnPowerSup.getAsDouble() * 12.0);
   }
 
   // Called once the command ends or is interrupted.

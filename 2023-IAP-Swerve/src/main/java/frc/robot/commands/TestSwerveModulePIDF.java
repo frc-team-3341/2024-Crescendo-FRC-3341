@@ -46,7 +46,8 @@ public class TestSwerveModulePIDF extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double velocity = maxVelocity*MathUtil.applyDeadband(this.velocitySup.getAsDouble(), Constants.SwerveConstants.deadBand);
+    double velocity = maxVelocity
+        * MathUtil.applyDeadband(this.velocitySup.getAsDouble(), Constants.SwerveConstants.deadBand);
 
     if (Timer.getFPGATimestamp() - lastTime >= 0.2) {
       // Either adds or subtracts depending on sign

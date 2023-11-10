@@ -94,8 +94,8 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
         driveSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
         turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
-        
-        // Only useful for encoder 
+
+        // Only useful for encoder
         // turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
 
         driveEncoder.setPosition(0);
@@ -121,15 +121,18 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     public double getTurnPositionInRad() {
         // Divide by 1.0, as CANCoder has direct measurement of output
         return ((turnEncoder.getAbsolutePosition() / 4096.0) * 2 * Math.PI)
-                / Constants.SwerveConstants.CANCoderGearRatio;
+                / ModuleConstants.CANCoderGearRatio;
     }
 
     public void setDesiredState(SwerveModuleState state) {
         // Optimize state so that movement is minimized
         state = SwerveModuleState.optimize(state, new Rotation2d(getTurnPositionInRad()));
+        
+        SmartDashboard.putNumber("Setpoint Drive Vel #" + this.num, state.speedMetersPerSecond);
 
         // Cap setpoints at max speeds for safety
-        state.speedMetersPerSecond = MathUtil.clamp(state.speedMetersPerSecond, -Constants.ModuleConstants.maxFreeWheelSpeedMeters, Constants.ModuleConstants.maxFreeWheelSpeedMeters);
+        state.speedMetersPerSecond = MathUtil.clamp(state.speedMetersPerSecond,
+                -Constants.ModuleConstants.maxFreeWheelSpeedMeters, Constants.ModuleConstants.maxFreeWheelSpeedMeters);
 
         // Set reference of drive motor's PIDF internally in SPARK MAX
         // This automagically updates at a 1 KHz rate

@@ -60,7 +60,8 @@ public class SwerveDrive extends SubsystemBase {
 
       // Initialize all other objects
       this.kinematics = new SwerveDriveKinematics(SwerveUtil.getModuleTranslations());
-      this.poseEstimator = new SwerveDrivePoseEstimator(this.kinematics, new Rotation2d(), this.modulePositions, new Pose2d());
+      this.poseEstimator = new SwerveDrivePoseEstimator(this.kinematics, new Rotation2d(), this.modulePositions,
+            new Pose2d());
       this.swerveOdometry = new SwerveDriveOdometry(this.kinematics, this.getRotation(), this.modulePositions);
       this.field = new Field2d();
    }
@@ -113,7 +114,8 @@ public class SwerveDrive extends SubsystemBase {
 
       // MUST USE SECOND TYPE OF METHOD
       SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, speeds,
-            Constants.SwerveConstants.maxWheelLinearVelocityMeters, Constants.SwerveConstants.maxChassisTranslationalSpeed,
+            Constants.SwerveConstants.maxWheelLinearVelocityMeters,
+            Constants.SwerveConstants.maxChassisTranslationalSpeed,
             Constants.SwerveConstants.maxChassisAngularVelocity);
 
       for (int i = 0; i < swerveModuleStates.length; i++) {
@@ -134,7 +136,8 @@ public class SwerveDrive extends SubsystemBase {
       SwerveModuleState[] swerveModuleStates = this.kinematics.toSwerveModuleStates(speeds);
 
       // MUST USE SECOND TYPE OF METHOD
-      SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, speeds, Constants.SwerveConstants.maxWheelLinearVelocityMeters,
+      SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, speeds,
+            Constants.SwerveConstants.maxWheelLinearVelocityMeters,
             Constants.SwerveConstants.maxChassisTranslationalSpeed,
             Constants.SwerveConstants.maxChassisAngularVelocity);
 
@@ -177,9 +180,9 @@ public class SwerveDrive extends SubsystemBase {
    }
 
    /**
-   * Get heading of Navx. Negative because Navx is CW positive.
-   */
-    public double getHeading() {
+    * Get heading of Navx. Negative because Navx is CW positive.
+    */
+   public double getHeading() {
       return -navx.getRotation2d().getDegrees();
    }
 

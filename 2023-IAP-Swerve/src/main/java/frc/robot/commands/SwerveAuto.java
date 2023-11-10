@@ -25,29 +25,27 @@ public class SwerveAuto extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     // Load path from 2023 PathPlannerLib
-      // WARNING: ONLY INSTALL PATHPLANNERLIB FROM 2023 LIBRARIES, NOT 2024
-      // THIS CODE WILL BECOME DEPRECATED SOON :)
-      PathPlannerTrajectory path = PathPlanner.loadPath(pathName, 4.0, 3.0);
+    // WARNING: ONLY INSTALL PATHPLANNERLIB FROM 2023 LIBRARIES, NOT 2024
+    // THIS CODE WILL BECOME DEPRECATED SOON :)
+    PathPlannerTrajectory path = PathPlanner.loadPath(pathName, 4.0, 3.0);
 
-      // Trick: convert to WPILib trajectory via states
-      var traj = new Trajectory(path.getStates());
+    // Trick: convert to WPILib trajectory via states
+    var traj = new Trajectory(path.getStates());
 
-      // Set field's trajectory to the trajectory of the path
-      this.swerve.getField().getObject("traj").setTrajectory(traj);
+    // Set field's trajectory to the trajectory of the path
+    this.swerve.getField().getObject("traj").setTrajectory(traj);
 
-      
-
-      // Defines a new PPSwerveControllerCommand
-      // WILL BECOME DEPRECATED!!
-      // TODO: NEED TO TUNE
-      var swerveAuto = new PPSwerveControllerCommand(path,
-            this.swerve::getPose,
-            new PIDController(1.1, 0, 0),
-            new PIDController(1.1, 0, 0),
-            new PIDController(1.1, 0, 0),
-            this.swerve::driveRelative, this.swerve).andThen(() -> {
-              this.swerve.stopMotors();
-            });
-      addCommands(swerveAuto);
+    // Defines a new PPSwerveControllerCommand
+    // WILL BECOME DEPRECATED!!
+    // TODO: NEED TO TUNE
+    var swerveAuto = new PPSwerveControllerCommand(path,
+        this.swerve::getPose,
+        new PIDController(1.1, 0, 0),
+        new PIDController(1.1, 0, 0),
+        new PIDController(1.1, 0, 0),
+        this.swerve::driveRelative, this.swerve).andThen(() -> {
+          this.swerve.stopMotors();
+        });
+    addCommands(swerveAuto);
   }
 }

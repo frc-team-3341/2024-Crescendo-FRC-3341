@@ -20,14 +20,13 @@ import frc.robot.Constants.ModuleConstants;
 public class SwerveModuleIOSim implements SwerveModuleIO {
 
    // FlywheelSim is more tuneable for feedforward purposes
-   private final LinearSystem<N1, N1, N1> flywheelPlant =
-   LinearSystemId.identifyVelocitySystem(0.1261, 0.001);
-
+   private final LinearSystem<N1, N1, N1> flywheelPlant = LinearSystemId.identifyVelocitySystem(0.1261, 0.001);
 
    // Create drive and turn sim motors
-   private final FlywheelSim driveSim = new FlywheelSim(flywheelPlant, DCMotor.getNEO(0), Constants.SwerveConstants.driveGearRatio);
-    
-   private final DCMotorSim turnSim = new DCMotorSim(DCMotor.getNEO(1), Constants.SwerveConstants.turnGearRatio,
+   private final FlywheelSim driveSim = new FlywheelSim(flywheelPlant, DCMotor.getNEO(0),
+         ModuleConstants.driveGearRatio);
+
+   private final DCMotorSim turnSim = new DCMotorSim(DCMotor.getNEO(1), ModuleConstants.turnGearRatio,
          0.000001);
 
    // Create PID controllers with constants
@@ -61,12 +60,12 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
    public SwerveModuleIOSim(int num) {
       this.num = num;
       // This should be correct!
-      turnPID.enableContinuousInput(0, Math.PI*2);
+      turnPID.enableContinuousInput(0, Math.PI * 2);
    }
 
    public void setDriveVoltage(double voltage) {
       this.driveVolts = MathUtil.clamp(voltage, -12.0, 12.0);
-      
+
       this.driveSim.setInputVoltage(this.driveVolts);
 
       SmartDashboard.putNumber("Drive Volts #" + this.num, this.driveVolts);
@@ -85,27 +84,27 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
       // Turns out you can optimize with SwerveModuleState and a Rotation2d
       state = SwerveModuleState.optimize(state, new Rotation2d(getTurnPositionInRad()));
 
-      
       SmartDashboard.putNumber("Setpoint Drive Vel #" + this.num, state.speedMetersPerSecond);
+
       // Cap setpoints at max speeds for safety
-      state.speedMetersPerSecond = MathUtil.clamp(state.speedMetersPerSecond, -Constants.ModuleConstants.maxFreeWheelSpeedMeters, Constants.ModuleConstants.maxFreeWheelSpeedMeters);
+      state.speedMetersPerSecond = MathUtil.clamp(state.speedMetersPerSecond,
+            -Constants.ModuleConstants.maxFreeWheelSpeedMeters, Constants.ModuleConstants.maxFreeWheelSpeedMeters);
 
       // Set internal state as passed-in state
       this.state = state;
 
       double velocity;
       if (!(DriverStation.isDisabled() | DriverStation.isEStopped())) {
-         
 
          // Set setpoint of the drive PID controller
          this.drivePID.setSetpoint(state.speedMetersPerSecond);
 
          // Find measurement in m/s and calculate PID action
          velocity = this.driveSim.getAngularVelocityRadPerSec() * Math.PI
-               * Constants.SwerveConstants.wheelDiameterMeters / Constants.SwerveConstants.driveGearRatio;
-   
+               * ModuleConstants.wheelDiameterMeters / ModuleConstants.driveGearRatio;
 
-         double output = this.drivePID.calculate(velocity) + (12.0/Constants.ModuleConstants.maxFreeWheelSpeedMeters)*state.speedMetersPerSecond;
+         double output = this.drivePID.calculate(velocity)
+               + (12.0 / Constants.ModuleConstants.maxFreeWheelSpeedMeters) * state.speedMetersPerSecond;
 
          // Output in volts to motor
          setDriveVoltage(output);
@@ -144,13 +143,13 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
    public double getTurnPositionInRad() {
       // FIX: Modulo the angle of the sim by 2PI to wrap it around to 0!
       double rawAngle = Math.signum(this.turnSim.getAngularPositionRad())
-            * (Math.abs(this.turnSim.getAngularPositionRad()) % (Math.PI*2));
+            * (Math.abs(this.turnSim.getAngularPositionRad()) % (Math.PI * 2));
       return rawAngle;
    }
 
    public SwerveModuleState getActualModuleState() {
       double velocity = this.driveSim.getAngularVelocityRadPerSec() * Math.PI
-            * Constants.SwerveConstants.wheelDiameterMeters / Constants.SwerveConstants.driveGearRatio;
+            * ModuleConstants.wheelDiameterMeters / ModuleConstants.driveGearRatio;
       double rotation = getTurnPositionInRad();
       return new SwerveModuleState(velocity, Rotation2d.fromRadians(rotation));
    }
@@ -161,7 +160,7 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
       this.turnSim.update(0.02);
 
       integratedPosition += 0.02 * this.driveSim.getAngularVelocityRadPerSec() * Math.PI
-      * Constants.SwerveConstants.wheelDiameterMeters / Constants.SwerveConstants.driveGearRatio;
+            * ModuleConstants.wheelDiameterMeters / ModuleConstants.driveGearRatio;
       SmartDashboard.putNumber("Mod constant", ModuleConstants.maxFreeWheelSpeedMeters);
    }
 

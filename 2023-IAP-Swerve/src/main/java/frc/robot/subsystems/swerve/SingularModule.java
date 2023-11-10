@@ -26,10 +26,9 @@ public class SingularModule extends SubsystemBase {
     }
 
     SmartDashboard.putNumber("Real Turn Pos #" + module.getNum(),
-    Units.radiansToDegrees(module.getTurnPositionInRad()));
+        Units.radiansToDegrees(module.getTurnPositionInRad()));
     SmartDashboard.putNumber("Raw Turn Pos #" + module.getNum(), module.getTurnPositionInRad());
     SmartDashboard.putNumber("Real Velocity #" + module.getNum(), module.getActualModuleState().speedMetersPerSecond);
-    
 
   }
 }

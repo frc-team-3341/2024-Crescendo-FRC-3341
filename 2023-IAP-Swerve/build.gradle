@@ -88,6 +88,10 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
+// UTF-8 support for JavaDoc
+apply plugin: 'java'
+compileJava {options.encoding = "UTF-8"}  
+
 // Configure jar and deploy tasks
 deployArtifact.jarTask = jar
 wpi.java.configureExecutableTasks(jar)
