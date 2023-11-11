@@ -40,6 +40,9 @@ public class SwerveUtil {
     
     /**
     * Accurately draws module poses on SmartDashboard
+    * @param modulePositions Array of swerve module angles + displacements
+    * @param field Field2d object to display modules on
+    * @param pose Pose of robot to use for position calculations
     */
     public static void drawModulePoses(SwerveModulePosition[] modulePositions, Field2d field, Pose2d pose) {
         var translations = getModuleTranslations();
@@ -62,6 +65,7 @@ public class SwerveUtil {
 
     /**
      * Sets module positions of array moduleIO
+     * @param moduleIO Array of module interface class to use (uses .getPosition())
      */
     public static SwerveModulePosition[] setModulePositions(SwerveModuleIO[] moduleIO) {
         SwerveModulePosition[] returnedPositions = new SwerveModulePosition[moduleIO.length];
@@ -75,7 +79,9 @@ public class SwerveUtil {
     }
 
     /**
+    * <p><b>Deprecated</b> for AdvantageScope 2024</p>
     * Gets module states as double[] for AdvantageScope compatibility
+    * @param states Array of swerve module states (size doesn't matter, preferably 4)
     */
     public static double[] getDoubleStates(SwerveModuleState[] states) {
     
@@ -94,12 +100,10 @@ public class SwerveUtil {
     }
 
     /**
-    * Credit: WPIlib 2024 + Patribots (Author: Alexander Hamilton)
-    * Discretizes a continuous-time chassis speed.
-    *
-    * @param vx    Forward velocity.
-    * @param vy    Sideways velocity.
-    * @param omega Angular velocity.
+    * Credit: WPIlib 2024 + Patribots (Author: Alexander Hamilton). Discretizes a continuous-time chassis speed.
+    * 
+    * @param speeds Inputed speeds from joysticks
+    * @param discretizeConstant Constant that adjusts dx/dt and dy/dt, mulitplied by omega
     */
     public static ChassisSpeeds discretize(ChassisSpeeds speeds, double discretizeConstant) {
         if (!RobotContainer.getSimOrNot()) {
@@ -120,6 +124,10 @@ public class SwerveUtil {
 
     /**
      * Adds simulation to the Swerve subsystem. Works together with integration of angle and SwerveModuleIO. Requires the use of the SwerveModuleIO interface.
+     * 
+     * @param moduleIO Array of module interface class to use
+     * @param actualStates Array of swerve module states
+     * @param kinematics Object representing kinematics class
      */
     public static void addSwerveSimulation(SwerveModuleIO[] moduleIO, SwerveModuleState[] actualStates, SwerveDriveKinematics kinematics) {
         // Simulate Navx
@@ -127,6 +135,7 @@ public class SwerveUtil {
         SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
 
         // Find omega/angular velocity of chassis' rotation
+        // Robot oriented speeds, not field oriented
         double omega = kinematics.toChassisSpeeds(actualStates).omegaRadiansPerSecond;
 
         // Integrate dAngle into angular displacement
@@ -143,6 +152,7 @@ public class SwerveUtil {
 
     /**
     * Get physical positions of wheels on Swerve chassis (half of trackwidth)
+    * @return translations Translation2d[] array with several translations
     */
     public static Translation2d[] getModuleTranslations() {
         return translations;
