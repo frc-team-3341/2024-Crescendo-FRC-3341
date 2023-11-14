@@ -87,9 +87,9 @@ public class SwerveUtil {
     
         ArrayList<Double> ret = new ArrayList<Double>();
 
-        for (int i = 0; i < states.length; i++) {
-            ret.add(states[i].angle.getRadians());
-            ret.add(states[i].speedMetersPerSecond);
+        for (SwerveModuleState state : states) {
+            ret.add(state.angle.getRadians());
+            ret.add(state.speedMetersPerSecond);
         }
 
         Double[] actual = new Double[8];
@@ -145,8 +145,8 @@ public class SwerveUtil {
         angle.set(SwerveUtil.integratedSimAngle);
 
         // Update moduleIO's sim objects with a dt of 0.02
-        for (int i = 0; i < moduleIO.length; i++) {
-            moduleIO[i].updateSim();
+        for (SwerveModuleIO module : moduleIO) {
+            module.updateSim();
         }
     }
 

@@ -170,10 +170,12 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
     public void setDriveVoltage(double volts) {
         driveSparkMax.setVoltage(volts);
+        SmartDashboard.putNumber("Drive Volts #" + this.num, volts);
     }
 
     public void setTurnVoltage(double volts) {
         turnSparkMax.setVoltage(volts);
+        SmartDashboard.putNumber("Turn Volts #" + this.num, volts);
     }
 
     public void setDriveBrakeMode(boolean enable) {

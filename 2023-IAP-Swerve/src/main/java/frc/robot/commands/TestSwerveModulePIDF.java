@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -51,7 +52,7 @@ public class TestSwerveModulePIDF extends CommandBase {
 
     if (Timer.getFPGATimestamp() - lastTime >= 0.2) {
       // Either adds or subtracts depending on sign
-      angle += 1.0 * Math.signum(this.angleSup.getAsDouble());
+      angle += Units.degreesToRadians(1.0) * Math.signum(this.angleSup.getAsDouble());
       lastTime = Timer.getFPGATimestamp();
     }
 
