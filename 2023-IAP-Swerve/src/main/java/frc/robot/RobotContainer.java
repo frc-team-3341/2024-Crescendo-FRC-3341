@@ -14,9 +14,11 @@ import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
 public class RobotContainer {
 
   // To do trajectory driving or not
-  private final boolean autoOrNot = false; // Set true to test auto!
+  private final boolean autoOrNot = true; // Set true to test auto!
 
   private final boolean testSingleModule = false;
+
+  public static final boolean isXbox = false;
 
   private SwerveAuto auto;
 
@@ -48,19 +50,7 @@ public class RobotContainer {
     // Initialize SwerveDrive object with modules
     if (!testSingleModule) {
       this.swerve = new SwerveDrive(this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
-    
-      if (isSim) {
-        // Supply teleop command with joystick methods
-        this.swerve.setDefaultCommand(new SwerveTeleop(this.swerve, () -> {
-          return -this.actualXbox.getX();
-        }, () -> {
-          return -this.actualXbox.getY();
-        }, () -> {
-          return -this.additionalJoy.getRawAxis(0);
-        }, () -> {
-          return true;
-        }));
-      } else {
+      if (isXbox) {
         // Supply teleop command with joystick methods
         this.swerve.setDefaultCommand(new SwerveTeleop(this.swerve, () -> {
           return -this.actualXbox.getRawAxis(translationAxis);
@@ -71,10 +61,20 @@ public class RobotContainer {
         }, () -> {
           return true;
         }));
+      } else if (!isXbox) {        // Supply teleop command with joystick methods
+        this.swerve.setDefaultCommand(new SwerveTeleop(this.swerve, () -> {
+          return -this.actualXbox.getX();
+        }, () -> {
+          return -this.actualXbox.getY();
+        }, () -> {
+          return -this.additionalJoy.getRawAxis(0);
+        }, () -> {
+          return true;
+        }));
       }
     } else {
         SingularModule module;
-        if (isSim) {
+       /*  if (isSim) {
           module = new SingularModule(new SwerveModuleIOSim(0));
           power = new TestSwerveModulePower(module,
           () -> {
@@ -83,7 +83,8 @@ public class RobotContainer {
           () -> {
             return this.additionalJoy.getRawAxis(0);
           });
-        } else {
+        } */
+        if (isXbox) {
           module = new SingularModule(new SwerveModuleIOSparkMax(0, 1, 2, 3, 0));
           power = new TestSwerveModulePower(module,
             () -> {
@@ -91,6 +92,15 @@ public class RobotContainer {
             }, 
             () -> {
               return -this.actualXbox.getRawAxis(5);
+            });
+        } else {
+          module = new SingularModule(new SwerveModuleIOSparkMax(0, 1, 2, 3, 0));
+          power = new TestSwerveModulePower(module,
+            () -> {
+              return -this.actualXbox.getRawAxis(translationAxis);
+            }, 
+            () -> {
+              return -this.additionalJoy.getRawAxis(0);
             });
         }
         module.setDefaultCommand(power);

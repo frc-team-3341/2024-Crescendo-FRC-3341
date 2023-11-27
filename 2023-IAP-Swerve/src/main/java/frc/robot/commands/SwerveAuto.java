@@ -39,7 +39,7 @@ public class SwerveAuto extends SequentialCommandGroup {
     // WILL BECOME DEPRECATED!!
     // TODO: NEED TO TUNE
     var swerveAuto = new PPSwerveControllerCommand(path,
-        this.swerve::getPose,
+        this.swerve::getPoseFromEstimator,
         new PIDController(1.1, 0, 0),
         new PIDController(1.1, 0, 0),
         new PIDController(1.1, 0, 0),

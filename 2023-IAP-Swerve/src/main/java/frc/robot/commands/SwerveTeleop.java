@@ -4,6 +4,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.util.lib.AsymmetricLimiter;
 import frc.util.lib.ArcadeJoystickUtil;
@@ -26,7 +27,7 @@ public class SwerveTeleop extends CommandBase {
    // Slew rate limit controls
    // Positive limit ensures smooth acceleration (10 * dt * dControl)
    // Negative limit ensures an ability to stop (100 * dt * dControl)
-   private AsymmetricLimiter translationLimiter = new AsymmetricLimiter(10.0D, 1000.0D);
+   private AsymmetricLimiter translationLimiter = new AsymmetricLimiter(1000.0D, 1000.0D);
    private AsymmetricLimiter rotationLimiter = new AsymmetricLimiter(10.0D, 1000.0D);
 
    /**
@@ -62,9 +63,15 @@ public class SwerveTeleop extends CommandBase {
       // Apply rate limiting to rotation
       rotationVal = this.rotationLimiter.calculate(rotationVal);
 
-      // Function to map joystick output to scaled polar coordinates
-      double[] output = joyUtil.convertXYToScaledPolar(xVal, yVal,
-            Constants.SwerveConstants.maxChassisTranslationalSpeed);
+      double[] output = new double[2];
+      if (RobotContainer.isXbox) {
+         output = joyUtil.regularGamePadControls(xVal, yVal, 
+         Constants.SwerveConstants.maxChassisTranslationalSpeed);
+      } else {
+         // Function to map joystick output to scaled polar coordinates
+         output = joyUtil.convertXYToScaledPolar(xVal, yVal,
+         Constants.SwerveConstants.maxChassisTranslationalSpeed);
+      }
 
       double newHypot = translationLimiter.calculate(output[0]);
 

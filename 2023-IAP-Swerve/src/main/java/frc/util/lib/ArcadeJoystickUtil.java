@@ -28,6 +28,17 @@ public class ArcadeJoystickUtil {
     // Unit hypotenuse to scale by
     double unitHypot = 0.0;
 
+    public double[] regularGamePadControls(double xVal, double yVal, double maxMagnitude) {
+        controlsAngle = Math.atan2(yVal, xVal);
+        controlsHypot = Math.hypot(xVal, yVal);
+
+        double output[] = new double[2];
+
+        output[0] = Math.abs(maxMagnitude) * controlsHypot;
+        output[1] = controlsAngle;
+        return output;
+    }
+
     /**
      * A function that converts from an input of a joystick (x from -1.0 to 1.0 and y from -1.0 to 1.0), to a scaled polar/radial representation of the joystick. This literally represents the expectation of an arcade stick (polar coordinates). For example, if you physically held the joystick at half the distance radially, this should result in half the magnitude.
      * @param xVal Value of x such that x ∈ [-1, 1]

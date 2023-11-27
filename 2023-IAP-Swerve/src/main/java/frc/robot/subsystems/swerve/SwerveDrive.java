@@ -7,7 +7,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI.Port;
@@ -24,18 +23,15 @@ public class SwerveDrive extends SubsystemBase {
    // Create object representing swerve modules
    private SwerveModuleIO[] moduleIO;
 
-   // Create object that represents swerve module positions (i.e. radians and
-   // meters)
+   // Create object that represents swerve module positions (i.e. radians and meters)
    private SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
 
    // Create kinematics object
    private SwerveDriveKinematics kinematics;
 
    // Create poseEstimator object
+   // This can fuse Visual, and Encoder odometry with different standard deviations/priorities
    private SwerveDrivePoseEstimator poseEstimator;
-
-   // Create swerveOdometry object
-   private SwerveDriveOdometry swerveOdometry;
 
    // Add field to show robot
    private Field2d field;
@@ -60,9 +56,10 @@ public class SwerveDrive extends SubsystemBase {
 
       // Initialize all other objects
       this.kinematics = new SwerveDriveKinematics(SwerveUtil.getModuleTranslations());
+      // Can set any robot pose here (x, y, theta)
+      // Auto is field-oriented
       this.poseEstimator = new SwerveDrivePoseEstimator(this.kinematics, new Rotation2d(), this.modulePositions,
-            new Pose2d());
-      this.swerveOdometry = new SwerveDriveOdometry(this.kinematics, this.getRotation(), this.modulePositions);
+            new Pose2d(0.0, 0.0, new Rotation2d()));
       this.field = new Field2d();
    }
 
@@ -71,21 +68,21 @@ public class SwerveDrive extends SubsystemBase {
       modulePositions = SwerveUtil.setModulePositions(moduleIO);
 
       // Update odometry, field, and poseEstimator
-      this.swerveOdometry.update(this.getRotation(), this.modulePositions);
       this.poseEstimator.update(this.getRotation(), this.modulePositions);
-      this.field.setRobotPose(this.getPose());
+      this.field.setRobotPose(this.getPoseFromEstimator());
 
       // Draw poses of robot's modules in SmartDashboard
-      SwerveUtil.drawModulePoses(modulePositions, field, getPose());
+      SwerveUtil.drawModulePoses(modulePositions, field, getPoseFromEstimator());
 
       // Put field on SmartDashboard
       SmartDashboard.putData("Field", this.field);
       SmartDashboard.putNumberArray("States", SwerveUtil.getDoubleStates(getActualStates()));
-      SmartDashboard.putNumber("Robot Rotation", getPose().getRotation().getRadians());
+      SmartDashboard.putNumber("Robot Rotation", getPoseFromEstimator().getRotation().getRadians());
    }
 
    public void simulationPeriodic() {
       // Add simulation! Yes, with the Util class, it's that easy!
+      // WARNING: This doesn't use the Navx, just the states of the modules
       SwerveUtil.addSwerveSimulation(moduleIO, getActualStates(), kinematics);
    }
 
@@ -173,9 +170,9 @@ public class SwerveDrive extends SubsystemBase {
    }
 
    public void stopMotors() {
-      for (int i = 0; i < 4; i++) {
-         moduleIO[i].setDriveVoltage(0);
-         moduleIO[i].setTurnVoltage(0);
+      for (SwerveModuleIO module : moduleIO) {
+         module.setDriveVoltage(0);
+         module.setTurnVoltage(0);
       }
    }
 
@@ -203,7 +200,7 @@ public class SwerveDrive extends SubsystemBase {
    /**
     * Get Pose2d of poseEstimator.
     */
-   public Pose2d getPose() {
+   public Pose2d getPoseFromEstimator() {
       return poseEstimator.getEstimatedPosition();
    }
 
@@ -211,7 +208,7 @@ public class SwerveDrive extends SubsystemBase {
     * Reset pose of robot to pose
     */
    public void resetPose(Pose2d pose) {
-      poseEstimator.resetPosition(new Rotation2d(), modulePositions, pose);
+      poseEstimator.resetPosition(getRotation(), modulePositions, pose);
    }
 
    /**
@@ -225,5 +222,6 @@ public class SwerveDrive extends SubsystemBase {
    public Field2d getField() {
       return field;
    }
+   
 
 }

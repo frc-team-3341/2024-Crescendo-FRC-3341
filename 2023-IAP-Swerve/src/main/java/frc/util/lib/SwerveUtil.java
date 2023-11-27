@@ -92,7 +92,7 @@ public class SwerveUtil {
             ret.add(state.speedMetersPerSecond);
         }
 
-        Double[] actual = new Double[8];
+        Double[] actual = new Double[states.length*2];
         ret.toArray(actual);
 
         return Stream.of(actual).mapToDouble(Double::doubleValue).toArray();
