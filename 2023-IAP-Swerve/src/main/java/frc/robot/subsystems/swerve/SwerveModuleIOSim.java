@@ -135,7 +135,7 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
       return position;
    }
 
-   public SwerveModuleState getSetpointModuleState() {
+   public SwerveModuleState getDesiredState() {
       // Returns module state
       return this.state;
    }

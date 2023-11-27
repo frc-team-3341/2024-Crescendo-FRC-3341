@@ -30,7 +30,7 @@ public class SwerveDrive extends SubsystemBase {
    private SwerveDriveKinematics kinematics;
 
    // Create poseEstimator object
-   // This can fuse Visual, and Encoder odometry with different standard deviations/priorities
+   // This can fuse Visual and Encoder odometry with different standard deviations/priorities
    private SwerveDrivePoseEstimator poseEstimator;
 
    // Add field to show robot
@@ -57,6 +57,7 @@ public class SwerveDrive extends SubsystemBase {
       // Initialize all other objects
       this.kinematics = new SwerveDriveKinematics(SwerveUtil.getModuleTranslations());
       // Can set any robot pose here (x, y, theta)
+      // FUTURE: Seed pose with CV
       // Auto is field-oriented
       this.poseEstimator = new SwerveDrivePoseEstimator(this.kinematics, new Rotation2d(), this.modulePositions,
             new Pose2d(0.0, 0.0, new Rotation2d()));
@@ -150,7 +151,7 @@ public class SwerveDrive extends SubsystemBase {
       SwerveModuleState[] states = new SwerveModuleState[moduleIO.length];
 
       for (int i = 0; i < states.length; i++) {
-         states[i] = this.moduleIO[i].getSetpointModuleState();
+         states[i] = this.moduleIO[i].getDesiredState();
       }
 
       return states;

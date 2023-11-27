@@ -22,7 +22,7 @@ public interface SwerveModuleIO {
    /**
     * Gets swerve module's set state
     */
-   default SwerveModuleState getSetpointModuleState() {
+   default SwerveModuleState getDesiredState() {
       return null;
    }
 

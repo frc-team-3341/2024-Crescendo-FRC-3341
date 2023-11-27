@@ -157,7 +157,7 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
     }
 
-    public SwerveModuleState getSetpointModuleState() {
+    public SwerveModuleState getDesiredState() {
         // Returns module state
         return this.state;
     }
