@@ -40,7 +40,7 @@ public class RobotContainer {
   private final int testModuleIndex = 0;
   private final boolean testPIDF = false;
 
-  public static final boolean isXbox = false;
+  public static final boolean isXbox = true;
 
   private SwerveAuto auto;
 
@@ -64,6 +64,7 @@ public class RobotContainer {
   // Empty SwerveDrive object
   public SwerveDrive swerve;
   
+  // Empty testing commands (not used if not needed)
   public TestSwerveModulePower powerCommand;
   public TestSwerveModulePIDF pidfCommand;
 
