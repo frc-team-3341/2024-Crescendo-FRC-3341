@@ -4,10 +4,7 @@
 
 package frc.robot.subsystems.swerve;
 
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
 
 public class SingularModule extends SubsystemBase {
 
@@ -21,14 +18,12 @@ public class SingularModule extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (RobotContainer.getSimOrNot()) {
-      module.updateSim();
-    }
+    // Updates module telemetry
+    module.updateTelemetry();
+  }
 
-    SmartDashboard.putNumber("Real Turn Pos #" + module.getNum(),
-        Units.radiansToDegrees(module.getTurnPositionInRad()));
-    SmartDashboard.putNumber("Raw Turn Pos #" + module.getNum(), module.getTurnPositionInRad());
-    SmartDashboard.putNumber("Real Velocity #" + module.getNum(), module.getActualModuleState().speedMetersPerSecond);
-
+  @Override
+  public void simulationPeriodic() {
+    module.updateSim();
   }
 }

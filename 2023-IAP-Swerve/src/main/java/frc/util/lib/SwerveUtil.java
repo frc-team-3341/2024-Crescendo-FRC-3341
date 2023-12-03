@@ -151,6 +151,16 @@ public class SwerveUtil {
     }
 
     /**
+     * Updates all telemetry for the module every 20 ms in periodic. Very important!
+     */
+    public static void updateTelemetry(SwerveModuleIO[] moduleIO) {
+        // Update moduleIO's sim objects with a dt of 0.02
+        for (SwerveModuleIO module : moduleIO) {
+            module.updateTelemetry();
+        }
+    }
+
+    /**
     * Get physical positions of wheels on Swerve chassis (half of trackwidth)
     * @return translations Translation2d[] array with several translations
     */

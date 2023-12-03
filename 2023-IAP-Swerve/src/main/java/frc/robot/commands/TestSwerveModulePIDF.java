@@ -40,16 +40,9 @@ public class TestSwerveModulePIDF extends CommandBase {
   @Override
   public void execute() {
 
-    // Reset driving to 0.0 - left button (#10)
-    if (joy.getRawButton(10)) {
-      velocity = 0.0;
-    }
-
-    // Reset turning to 0.0 - right button (#11)
-    if (joy.getRawButton(11)) {
-      angle = 0.0;
-    }
-
+    velocity = 0.0;
+    angle = 0.0;
+    
     // Driving to 1.0 - Left bumper (upper)
     if (joy.getRawButton(4)) {
       velocity = 1.0;
@@ -60,32 +53,32 @@ public class TestSwerveModulePIDF extends CommandBase {
       velocity = 2.0;
     }
 
-    // Driving to 3.0 - 
+    // Driving to 3.0 - Right bumper (upper)
     if (joy.getRawButton(5)) {
       velocity = 3.0;
     }
 
-    // Driving to 4.0
+    // Driving to 4.0 - Right trigger bumper (lower)
     if (joy.getRawButton(7)) {
       velocity = 4.0;
     }
 
-    // Driving to pi/4
+    // Driving to pi/4 - Button X
     if (joy.getRawButton(0)) {
       angle = Math.PI/4;
     }
 
-    // Driving to pi/2
+    // Driving to pi/2 - Button A
     if (joy.getRawButton(1)) {
       angle = 2*Math.PI/4;
     }
 
-    // Driving to 3*pi/4
+    // Driving to 3*pi/4 - Button B
     if (joy.getRawButton(2)) {
       angle = 3*Math.PI/4;
     }
 
-    // Driving to 4*pi/4
+    // Driving to 4*pi/4 - Button Y
     if (joy.getRawButton(3)) {
       angle = 4*Math.PI/4;
     }

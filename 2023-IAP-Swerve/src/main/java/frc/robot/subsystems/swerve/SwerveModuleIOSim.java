@@ -65,17 +65,12 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
 
    public void setDriveVoltage(double voltage) {
       this.driveVolts = MathUtil.clamp(voltage, -12.0, 12.0);
-
       this.driveSim.setInputVoltage(this.driveVolts);
-
-      SmartDashboard.putNumber("Drive Volts #" + this.num, this.driveVolts);
    }
 
    public void setTurnVoltage(double voltage) {
       this.turnVolts = MathUtil.clamp(voltage, -12.0, 12.0);
       this.turnSim.setInputVoltage(this.turnVolts);
-
-      SmartDashboard.putNumber("Turn Volts #" + this.num, this.turnVolts);
    }
 
    public void setDesiredState(SwerveModuleState state) {
@@ -83,8 +78,6 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
       // Optimize state so that movement is minimized
       // Turns out you can optimize with SwerveModuleState and a Rotation2d
       state = SwerveModuleState.optimize(state, new Rotation2d(getTurnPositionInRad()));
-
-      SmartDashboard.putNumber("Setpoint Drive Vel #" + this.num, state.speedMetersPerSecond);
 
       // Cap setpoints at max speeds for safety
       state.speedMetersPerSecond = MathUtil.clamp(state.speedMetersPerSecond,
@@ -108,20 +101,14 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
 
          // Output in volts to motor
          setDriveVoltage(output);
-         SmartDashboard.putNumber("Closed Loop Drive #" + this.num, driveVolts);
-         SmartDashboard.putNumber("Drive Vel #" + this.num, velocity);
       } else {
          // Output in volts to motor
          driveVolts = 0.0;
          setDriveVoltage(0.0);
-         SmartDashboard.putNumber("Closed Loop Drive #" + this.num, 0.0);
       }
 
       // Turn with PID in volts
       this.turnPID.setSetpoint(state.angle.getRadians());
-      SmartDashboard.putNumber("Turning Angle #" + this.num,
-            Units.radiansToDegrees(getTurnPositionInRad()));
-      SmartDashboard.putNumber("Raw Turn Pos #" + num, getTurnPositionInRad());
 
       double turnOutput = this.turnPID.calculate(getTurnPositionInRad());
       setTurnVoltage(turnOutput);
@@ -129,9 +116,7 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
 
    public SwerveModulePosition getPosition() {
       // Get position of swerve module in meters and radians
-      SwerveModulePosition position = new SwerveModulePosition(integratedPosition,
-            new Rotation2d(getTurnPositionInRad()));
-      SmartDashboard.putNumber("Wheel Displacement #" + this.num, position.distanceMeters);
+      SwerveModulePosition position = new SwerveModulePosition(integratedPosition, new Rotation2d(getTurnPositionInRad()));
       return position;
    }
 
@@ -161,7 +146,33 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
 
       integratedPosition += 0.02 * this.driveSim.getAngularVelocityRadPerSec() * Math.PI
             * ModuleConstants.wheelDiameterMeters / ModuleConstants.driveGearRatio;
-      SmartDashboard.putNumber("Mod constant", ModuleConstants.maxFreeWheelSpeedMeters);
+   }
+
+   public void updateTelemetry() {
+      SmartDashboard.putNumber("Max Free Speed", ModuleConstants.maxFreeWheelSpeedMeters);
+      SmartDashboard.putNumber("Wheel Displacement #" + this.num, getPosition().distanceMeters);
+
+      // Show turning position and setpoints
+      SmartDashboard.putNumber("Turn Pos Degrees #" + this.num,
+            Units.radiansToDegrees(getTurnPositionInRad()));
+      SmartDashboard.putNumber("Raw Turn Pos #" + num, getTurnPositionInRad());
+      SmartDashboard.putNumber("Setpoint Turn Pos #" + this.num, state.angle.getRadians());
+
+      // Find measurement in m/s and calculate PID action
+      double velocity = this.driveSim.getAngularVelocityRadPerSec() * Math.PI
+         * ModuleConstants.wheelDiameterMeters / ModuleConstants.driveGearRatio;
+
+      // Show driving velocity and setpoints
+      SmartDashboard.putNumber("Drive Vel #" + this.num, velocity);
+      SmartDashboard.putNumber("Setpoint Drive Vel #" + this.num, state.speedMetersPerSecond);
+
+      // Output of driving
+      SmartDashboard.putNumber("Turn Volts #" + this.num, this.turnVolts);
+      SmartDashboard.putNumber("Drive Volts #" + this.num, this.driveVolts);
+
+      // Get RPMs
+      SmartDashboard.putNumber("Drive RPM #" + this.num, driveSim.getAngularVelocityRPM());
+      SmartDashboard.putNumber("Turn RPM #" + this.num, turnSim.getAngularVelocityRPM());
    }
 
    public int getNum() {

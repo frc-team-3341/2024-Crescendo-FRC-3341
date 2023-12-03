@@ -40,11 +40,10 @@ public class SwerveDrive extends SubsystemBase {
     * Creates a new SwerveDrive object. Intended to work both with real modules and
     * simulation.
     * 
-    * @param FL Swerve module
-    * @param FR Swerve module
-    * @param BL Swerve module
-    * @param BR Swerve module
-    *
+    * @param FL Swerve module - CAN 1 - Drive; CAN 2 - Turn; CAN 9 - FL CANCoder
+    * @param FR Swerve module - CAN 3 - Drive; CAN 4 - Turn; CAN 10 - FR CANCoder
+    * @param BL Swerve module - CAN 5 - Drive; CAN 6 - Turn; CAN 11 - BL CANCoder
+    * @param BR Swerve module - CAN 7 - Drive; CAN 8 - Turn; CAN 12 - BR CANCoder
     * @author Aric Volman
     */
    public SwerveDrive(SwerveModuleIO FL, SwerveModuleIO FR, SwerveModuleIO BL, SwerveModuleIO BR) {
@@ -71,6 +70,9 @@ public class SwerveDrive extends SubsystemBase {
       // Update odometry, field, and poseEstimator
       this.poseEstimator.update(this.getRotation(), this.modulePositions);
       this.field.setRobotPose(this.getPoseFromEstimator());
+
+      // Update telemetry of each swerve module
+      SwerveUtil.updateTelemetry(moduleIO);
 
       // Draw poses of robot's modules in SmartDashboard
       SwerveUtil.drawModulePoses(modulePositions, field, getPoseFromEstimator());
@@ -105,7 +107,7 @@ public class SwerveDrive extends SubsystemBase {
 
       speeds = SwerveUtil.discretize(speeds, -4.0);
 
-      SmartDashboard.putNumber("Setpoint Magnitude Vel",
+      SmartDashboard.putNumber("Magnitude of Driving Vel Setpoint",
             Math.sqrt(Math.pow(speeds.vxMetersPerSecond, 2) + Math.pow(speeds.vyMetersPerSecond, 2)));
 
       SwerveModuleState[] swerveModuleStates = this.kinematics.toSwerveModuleStates(speeds);
@@ -128,7 +130,7 @@ public class SwerveDrive extends SubsystemBase {
    public void driveRelative(ChassisSpeeds speeds) {
       speeds = SwerveUtil.discretize(speeds, -4.0);
 
-      SmartDashboard.putNumber("MagnitudeVel",
+      SmartDashboard.putNumber("Magnitude of Driving Vel Setpoint",
             Math.sqrt(Math.pow(speeds.vxMetersPerSecond, 2) + Math.pow(speeds.vyMetersPerSecond, 2)));
 
       SwerveModuleState[] swerveModuleStates = this.kinematics.toSwerveModuleStates(speeds);
@@ -224,5 +226,4 @@ public class SwerveDrive extends SubsystemBase {
       return field;
    }
    
-
 }

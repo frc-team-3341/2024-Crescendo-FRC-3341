@@ -13,13 +13,14 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.swerve.SwerveDrive;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class SwerveAuto extends SequentialCommandGroup {
   SwerveDrive swerve;
 
-  /** Creates a new SwerveAuto. */
+  /**<b>Deprecated</b> in 2024
+   * <p>Creates a new SwerveAuto.</p>
+   * @param pathName Name of path in RIO's data folder
+   * @param swerve SwerveDrive subsystem
+  */
   public SwerveAuto(String pathName, SwerveDrive swerve) {
     this.swerve = swerve;
     // Add your commands in the addCommands() call, e.g.

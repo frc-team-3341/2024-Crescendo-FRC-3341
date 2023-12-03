@@ -10,6 +10,13 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
  * @author Aric Volman
  */
 public interface SwerveModuleIO {
+   
+   /**
+    * Gets number of module
+    */
+    default int getNum() {
+      return 0;
+   }
 
    /**
     * Set swerve module's state in m/s and radians.
@@ -73,28 +80,25 @@ public interface SwerveModuleIO {
    }
 
    /**
+    * Gets turn position in radians
+    */
+    default double getTurnPositionInRad() {
+      return 0.0;
+   }
+
+   /**
     * Resets encoders of swerve drive motor.
     */
    default void resetEncoders() {
+   }
+
+   /** Updates all module telemetry. NOTE: please create variables for everything you want to update and display them in this method. */
+   default void updateTelemetry() {
    }
 
    /**
     * Updates simulation motors by a constant dt (0.02)
     */
    default void updateSim() {
-   }
-
-   /**
-    * Gets number of module
-    */
-   default int getNum() {
-      return 0;
-   }
-
-   /**
-    * Gets turn position in radians
-    */
-   default double getTurnPositionInRad() {
-      return 0.0;
    }
 }

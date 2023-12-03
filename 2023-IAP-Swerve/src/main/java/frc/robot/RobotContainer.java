@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.SwerveAuto;
 import frc.robot.commands.SwerveTeleop;
+import frc.robot.commands.TestSwerveModulePIDF;
 import frc.robot.commands.TestSwerveModulePower;
 import frc.robot.subsystems.swerve.SingularModule;
 import frc.robot.subsystems.swerve.SwerveDrive;
@@ -13,10 +14,31 @@ import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
 
 public class RobotContainer {
 
-  // To do trajectory driving or not
-  private final boolean autoOrNot = true; // Set true to test auto!
+  /*
+   * TO THE FUTURE READERS/REVIEWERS OF THIS FILE:
+   * Feel free to use any parts of this project or its entirety in a Competition FRC robot of any kind or team. 
+   * This codebase is 95% Competition-ready (minus some minor cosmetic things). It is designed so that the modules are modular (meaning easy to switch).
+   * This technique enables us to simulate the swerve drivebase and develop at home to our heart's content.
+   * In the future, we can also write a SwerveModuleIOTalonFX.java as well and easily "plug" it in.
+   *  
+   * Minor warning: advanced Java syntax that this project uses:
+   * - Java Lambdas
+   * - Java Suppliers and Consumers
+   * - Java Interface Classes
+   * - Java For-Each Loops
+   */
 
+  // WARNING: TRAJECTORY DRIVING NOT TESTED IN REAL LIFE (IRL)
+  // DO NOT USE UNTIL DRIVING IN SAFE SPACE
+  // THIS IS A SECOND WARNING!!! THIS IS VERY DANGEROUS.
+  // To do trajectory driving or not
+  private final boolean autoOrNot = false;
+
+  // Confirmed ready for testing 12/9
+  // Switches to single module testing mode
   private final boolean testSingleModule = false;
+  private final int testModuleIndex = 0;
+  private final boolean testPIDF = false;
 
   public static final boolean isXbox = false;
 
@@ -33,25 +55,39 @@ public class RobotContainer {
 
   // private final int rotationAxis = 0;
   private static boolean isSim = Robot.isSimulation();
+  
+  SingularModule module;
 
   // Creates array of swerve modules for use in SwerveDrive object
-  SwerveModuleIO[] swerveMods = new SwerveModuleIOSim[] {
-      new SwerveModuleIOSim(0),
-      new SwerveModuleIOSim(1),
-      new SwerveModuleIOSim(2),
-      new SwerveModuleIOSim(3) };
+  SwerveModuleIO[] swerveMods = new SwerveModuleIO[4];
 
   // Empty SwerveDrive object
   public SwerveDrive swerve;
   
-  public TestSwerveModulePower power;
+  public TestSwerveModulePower powerCommand;
+  public TestSwerveModulePIDF pidfCommand;
 
   public RobotContainer() {
+  
     // Initialize SwerveDrive object with modules
     if (!testSingleModule) {
+      if (isSim) {
+        // Construct swerve modules with simulated motors
+        for (int i = 0; i < swerveMods.length; i++) {
+          swerveMods[i] = new SwerveModuleIOSim(i);
+        }
+
+      } else {
+        // Construct swerve modules with real motors
+        for (int i = 0; i < swerveMods.length; i++) {
+          swerveMods[i] = new SwerveModuleIOSparkMax(i, Constants.SwerveConstants.moduleCANIDs[i][0], Constants.SwerveConstants.moduleCANIDs[i][1], Constants.SwerveConstants.moduleCANIDs[i][2], Constants.SwerveConstants.moduleAngleOffsets[i]);
+        }
+
+      }
+
       this.swerve = new SwerveDrive(this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
       if (isXbox) {
-        // Supply teleop command with joystick methods
+        // Supply teleop command with joystick methods - USES LAMBDAS
         this.swerve.setDefaultCommand(new SwerveTeleop(this.swerve, () -> {
           return -this.actualXbox.getRawAxis(translationAxis);
         }, () -> {
@@ -61,7 +97,9 @@ public class RobotContainer {
         }, () -> {
           return true;
         }));
-      } else if (!isXbox) {        // Supply teleop command with joystick methods
+
+      } else if (!isXbox) {
+        // Supply teleop command with joystick methods - USES LAMBDAS
         this.swerve.setDefaultCommand(new SwerveTeleop(this.swerve, () -> {
           return -this.actualXbox.getX();
         }, () -> {
@@ -71,42 +109,49 @@ public class RobotContainer {
         }, () -> {
           return true;
         }));
+
       }
+
+    // Else if testing singular module
     } else {
-        SingularModule module;
-       /*  if (isSim) {
-          module = new SingularModule(new SwerveModuleIOSim(0));
-          power = new TestSwerveModulePower(module,
-          () -> {
-            return this.actualXbox.getRawAxis(translationAxis);
-          }, 
-          () -> {
-            return this.additionalJoy.getRawAxis(0);
-          });
-        } */
-        if (isXbox) {
-          module = new SingularModule(new SwerveModuleIOSparkMax(0, 1, 2, 3, 0));
-          power = new TestSwerveModulePower(module,
-            () -> {
-              return -this.actualXbox.getRawAxis(translationAxis);
-            }, 
-            () -> {
-              return -this.actualXbox.getRawAxis(5);
-            });
+        if (!isSim) {
+          module = new SingularModule(new SwerveModuleIOSparkMax(testModuleIndex, Constants.SwerveConstants.moduleCANIDs[testModuleIndex][0], Constants.SwerveConstants.moduleCANIDs[testModuleIndex][1], Constants.SwerveConstants.moduleCANIDs[testModuleIndex][2], 0));
         } else {
-          module = new SingularModule(new SwerveModuleIOSparkMax(0, 1, 2, 3, 0));
-          power = new TestSwerveModulePower(module,
-            () -> {
-              return -this.actualXbox.getRawAxis(translationAxis);
-            }, 
-            () -> {
-              return -this.additionalJoy.getRawAxis(0);
-            });
+          module = new SingularModule(new SwerveModuleIOSim(0));
         }
-        module.setDefaultCommand(power);
+
+        if (testPIDF) {
+          pidfCommand = new TestSwerveModulePIDF(module, actualXbox);
+          module.setDefaultCommand(pidfCommand);
+
+        } else {
+            if (isXbox) {
+              powerCommand = new TestSwerveModulePower(module,
+                () -> {
+                  return -this.actualXbox.getRawAxis(translationAxis);
+                }, 
+                () -> {
+                  return -this.actualXbox.getRawAxis(5);
+                }, actualXbox);
+            } else {
+              powerCommand = new TestSwerveModulePower(module,
+                () -> {
+                  return -this.actualXbox.getRawAxis(translationAxis);
+                }, 
+                () -> {
+                  return -this.additionalJoy.getRawAxis(0);
+                }, actualXbox);
+              module.setDefaultCommand(powerCommand);
+            }
+          module.setDefaultCommand(powerCommand);
+
+        }
+      
     }
     
-    auto = new SwerveAuto("New Path", this.swerve);
+    if (autoOrNot) {
+      auto = new SwerveAuto("New Path", this.swerve);
+    }
     this.configureBindings();
   }
 

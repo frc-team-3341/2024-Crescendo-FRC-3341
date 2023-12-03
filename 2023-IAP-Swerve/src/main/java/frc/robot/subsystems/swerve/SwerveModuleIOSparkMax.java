@@ -40,6 +40,10 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     private RelativeEncoder driveEncoder;
     private CANCoder turnEncoder;
 
+    // Variables to store voltages of motors - REV stuff doesn't like getters
+    private double driveVolts = 0.0;
+    private double turnVolts = 0.0;
+
     // Object to hold swerve module state
     private SwerveModuleState state = new SwerveModuleState(0.0, new Rotation2d(0.0));
 
@@ -120,15 +124,12 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
     public double getTurnPositionInRad() {
         // Divide by 1.0, as CANCoder has direct measurement of output
-        return ((turnEncoder.getAbsolutePosition() / 4096.0) * 2 * Math.PI)
-                / ModuleConstants.CANCoderGearRatio;
+        return Units.degreesToRadians(turnEncoder.getAbsolutePosition()) / ModuleConstants.CANCoderGearRatio;
     }
 
     public void setDesiredState(SwerveModuleState state) {
         // Optimize state so that movement is minimized
         state = SwerveModuleState.optimize(state, new Rotation2d(getTurnPositionInRad()));
-        
-        SmartDashboard.putNumber("Setpoint Drive Vel #" + this.num, state.speedMetersPerSecond);
 
         // Cap setpoints at max speeds for safety
         state.speedMetersPerSecond = MathUtil.clamp(state.speedMetersPerSecond,
@@ -138,13 +139,8 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         // This automagically updates at a 1 KHz rate
         drivePID.setReference(state.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
 
-        // Set SmartDashboard telemetry - this runs once every 20 ms
-        SmartDashboard.putNumber("Closed Loop Drive Power #" + this.num, driveSparkMax.get());
-        SmartDashboard.putNumber("Drive Velocity #" + this.num, state.speedMetersPerSecond);
-
         // Set setpoint of WPILib PID controller for turning
         this.turnPID.setSetpoint(state.angle.getRadians());
-        SmartDashboard.putNumber("Turning Angle #" + this.num, Units.radiansToDegrees(getTurnPositionInRad()));
 
         // Calculate PID in motor power (from -1.0 to 1.0)
         double turnOutput = MathUtil.clamp(this.turnPID.calculate(getTurnPositionInRad()), -1.0, 1.0);
@@ -170,12 +166,12 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
     public void setDriveVoltage(double volts) {
         driveSparkMax.setVoltage(volts);
-        SmartDashboard.putNumber("Drive Volts #" + this.num, volts);
+        this.driveVolts = volts;
     }
 
     public void setTurnVoltage(double volts) {
         turnSparkMax.setVoltage(volts);
-        SmartDashboard.putNumber("Turn Volts #" + this.num, volts);
+        this.turnVolts = volts;
     }
 
     public void setDriveBrakeMode(boolean enable) {
@@ -204,6 +200,29 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         // Resets only drive encoder
         driveEncoder.setPosition(0.0);
     }
+
+    public void updateTelemetry() {
+        SmartDashboard.putNumber("Max Free Speed", ModuleConstants.maxFreeWheelSpeedMeters);
+        SmartDashboard.putNumber("Wheel Displacement #" + this.num, getPosition().distanceMeters);
+  
+        // Show turning position and setpoints
+        SmartDashboard.putNumber("Turn Pos Degrees #" + this.num,
+              Units.radiansToDegrees(getTurnPositionInRad()));
+        SmartDashboard.putNumber("Raw Turn Pos #" + num, getTurnPositionInRad());
+        SmartDashboard.putNumber("Setpoint Turn Pos #" + this.num, state.angle.getRadians());
+  
+        // Show driving velocity and setpoints
+        SmartDashboard.putNumber("Drive Vel #" + this.num, driveEncoder.getVelocity());
+        SmartDashboard.putNumber("Setpoint Drive Vel #" + this.num, state.speedMetersPerSecond);
+  
+        // Output of driving
+        SmartDashboard.putNumber("Turn Volts #" + this.num, this.turnVolts);
+        SmartDashboard.putNumber("Drive Volts #" + this.num, this.driveVolts);
+  
+        // Get RPMs
+        SmartDashboard.putNumber("Turn RPM #" + this.num, (turnEncoder.getVelocity()/360.0)*60.0);
+        SmartDashboard.putNumber("Drive RPM #" + this.num, driveEncoder.getVelocity()/Constants.ModuleConstants.drivingEncoderPositionFactor);
+     }
 
     public int getNum() {
         return num;

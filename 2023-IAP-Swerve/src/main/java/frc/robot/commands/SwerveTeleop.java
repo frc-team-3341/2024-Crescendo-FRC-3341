@@ -34,8 +34,8 @@ public class SwerveTeleop extends CommandBase {
     * Creates a SwerveTeleop command, for controlling a Swerve bot.
     * 
     * @param swerve          - the Swerve subsystem
-    * @param x               - the translational/x component of velocity
-    * @param y               - the strafe/y component of velocity
+    * @param x               - the translational/x component of velocity (across field)
+    * @param y               - the strafe/y component of velocity (up and down on field)
     * @param rotationSup     - the rotational velocity of the chassis
     * @param robotCentricSup - whether to drive as robot centric or not
     */
