@@ -36,7 +36,7 @@ public class RobotContainer {
 
   // Confirmed ready for testing 12/9
   // Switches to single module testing mode
-  private final boolean testSingleModule = false;
+  private final boolean testSingleModule = true;
   private final int testModuleIndex = 0;
   private final boolean testPIDF = false;
 

@@ -6,6 +6,7 @@ package frc.robot.subsystems.swerve;
 
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -63,6 +64,7 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     public SwerveModuleIOSparkMax(int num, int driveID, int turnID, int turnCANCoderID, double turnEncoderOffset) {
 
         turnEncoder = new CANCoder(turnCANCoderID);
+        turnEncoder.configFactoryDefault();
 
         // Construct CANSparkMaxes
         driveSparkMax = new CANSparkMax(driveID, MotorType.kBrushless);
@@ -106,15 +108,17 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
         // Set position of encoder to absolute mode
         turnEncoder.setPositionToAbsolute();
-        turnEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
+        turnEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
+        turnEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
         turnEncoder.configMagnetOffset(turnEncoderOffset);
 
         turnPID.setP(Constants.ModuleConstants.drivekP);
         turnPID.setI(Constants.ModuleConstants.drivekI);
         turnPID.setD(Constants.ModuleConstants.drivekD);
 
-        // Continous input jumping from -PI to PI
-        turnPID.enableContinuousInput(-Math.PI, Math.PI);
+        // Continous input jumping from 0 to 2*PI
+        // Not advisable for Derivative constant
+        turnPID.enableContinuousInput(0, 2*Math.PI);
 
         this.state.angle = new Rotation2d(getTurnPositionInRad());
 

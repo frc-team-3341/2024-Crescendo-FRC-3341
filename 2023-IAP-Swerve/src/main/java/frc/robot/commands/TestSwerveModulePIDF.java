@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.swerve.SingularModule;
 
 public class TestSwerveModulePIDF extends CommandBase {
@@ -58,9 +59,9 @@ public class TestSwerveModulePIDF extends CommandBase {
       velocity = 3.0;
     }
 
-    // Driving to 4.0 - Right trigger bumper (lower)
+    // Driving to 3.7 - Right trigger bumper (lower)
     if (joy.getRawButton(7)) {
-      velocity = 4.0;
+      velocity = Constants.ModuleConstants.maxFreeWheelSpeedMeters;
     }
 
     // Driving to pi/4 - Button X
