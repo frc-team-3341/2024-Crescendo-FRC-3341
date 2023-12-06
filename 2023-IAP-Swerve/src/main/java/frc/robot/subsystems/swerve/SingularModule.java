@@ -6,6 +6,10 @@ package frc.robot.subsystems.swerve;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/**
+ * Temporary test class for module testing.
+ * @author Aric Volman
+ */
 public class SingularModule extends SubsystemBase {
 
   public SwerveModuleIO module;

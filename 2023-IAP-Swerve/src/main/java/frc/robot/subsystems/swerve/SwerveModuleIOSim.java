@@ -17,6 +17,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Constants.ModuleConstants;
 
+/**
+ * Implements the SwerveModuleIO interface with a FlywheelSim and DCMotorSim. The FlywheelSim provides fine-tuneability for the drive motor. We can give the drive motor a max speed with the LinearSystem class.
+ * 
+ * @author Aric Volman
+ */
 public class SwerveModuleIOSim implements SwerveModuleIO {
 
    // FlywheelSim is more tuneable for feedforward purposes

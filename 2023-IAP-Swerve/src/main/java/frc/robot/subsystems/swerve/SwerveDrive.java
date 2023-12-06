@@ -16,6 +16,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.util.lib.SwerveUtil;
 
+/**
+ * <p>Creates a SwerveDrive class.</p>
+ * 
+ * <p>In its current form, it can be simulated using the simulation integration method from the static SwerveUtil class. This simulation is less precise than real life, but much better than AutoDesk Synthesis :).</p>
+ * 
+ * @author Aric Volman
+ */
 public class SwerveDrive extends SubsystemBase {
    // Create Navx
    private static AHRS navx = new AHRS(Port.kMXP);

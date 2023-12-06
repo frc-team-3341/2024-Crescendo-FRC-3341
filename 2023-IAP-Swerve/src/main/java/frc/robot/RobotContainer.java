@@ -34,13 +34,16 @@ public class RobotContainer {
   // To do trajectory driving or not
   private final boolean autoOrNot = false;
 
+  private final boolean setAlliance = false;
+  private final boolean blueAllianceOrNot = true;
+
   // Confirmed ready for testing 12/9
   // Switches to single module testing mode
   private final boolean testSingleModule = true;
   private final int testModuleIndex = 0;
   private final boolean testPIDF = false;
 
-  public static final boolean isXbox = true;
+  public static final boolean isXbox = false;
 
   private SwerveAuto auto;
 
@@ -97,7 +100,7 @@ public class RobotContainer {
           return -this.actualXbox.getRawAxis(rotationAxis);
         }, () -> {
           return true;
-        }));
+        }, setAlliance, blueAllianceOrNot));
 
       } else if (!isXbox) {
         // Supply teleop command with joystick methods - USES LAMBDAS
@@ -109,7 +112,7 @@ public class RobotContainer {
           return -this.additionalJoy.getRawAxis(0);
         }, () -> {
           return true;
-        }));
+        }, setAlliance, blueAllianceOrNot));
 
       }
 
@@ -142,7 +145,6 @@ public class RobotContainer {
                 () -> {
                   return -this.additionalJoy.getRawAxis(0);
                 }, actualXbox);
-              module.setDefaultCommand(powerCommand);
             }
           module.setDefaultCommand(powerCommand);
 

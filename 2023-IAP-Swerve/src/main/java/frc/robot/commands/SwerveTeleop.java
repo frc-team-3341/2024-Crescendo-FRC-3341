@@ -22,6 +22,9 @@ public class SwerveTeleop extends CommandBase {
    private DoubleSupplier rotationSup;
    private BooleanSupplier robotCentricSup;
 
+   private double xMult = 1.0;
+   private double yMult = 1.0;
+
    private ArcadeJoystickUtil joyUtil;
 
    // Slew rate limit controls
@@ -40,10 +43,25 @@ public class SwerveTeleop extends CommandBase {
     * @param robotCentricSup - whether to drive as robot centric or not
     */
    public SwerveTeleop(SwerveDrive swerve, DoubleSupplier x, DoubleSupplier y, DoubleSupplier rotationSup,
-         BooleanSupplier robotCentricSup) {
+         BooleanSupplier robotCentricSup, boolean setAlliance, boolean blueAllianceOrNot) {
       this.swerve = swerve;
-      this.x = x;
-      this.y = y;
+      // If doesn't want to set alliance
+      if (!setAlliance) {
+         this.x = x;
+         this.y = y;
+      } else {
+         // If blue alliance
+         if (blueAllianceOrNot) {
+            this.x = y;
+            this.y = x;
+            xMult = -1.0;
+         // If red alliance
+         } else if (!blueAllianceOrNot) {
+            this.x = y;
+            this.y = x;
+            yMult = -1.0;
+         }
+      }
       this.rotationSup = rotationSup;
       this.robotCentricSup = robotCentricSup;
       this.joyUtil = new ArcadeJoystickUtil();
@@ -78,8 +96,8 @@ public class SwerveTeleop extends CommandBase {
       // Deadband should be applied after calculation of polar coordinates
       newHypot = MathUtil.applyDeadband(newHypot, Constants.SwerveConstants.deadBand);
 
-      double correctedX = newHypot * Math.cos(output[1]);
-      double correctedY = newHypot * Math.sin(output[1]);
+      double correctedX = xMult * newHypot * Math.cos(output[1]);
+      double correctedY = yMult * newHypot * Math.sin(output[1]);
 
       // Drive swerve with values
       this.swerve.drive(new Translation2d(correctedX, correctedY),
