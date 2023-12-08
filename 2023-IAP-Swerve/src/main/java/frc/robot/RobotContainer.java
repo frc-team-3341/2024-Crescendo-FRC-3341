@@ -1,8 +1,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.CrabDrive;
 import frc.robot.commands.SwerveAuto;
 import frc.robot.commands.SwerveTeleop;
 import frc.robot.commands.TestSwerveModulePIDF;
@@ -36,51 +38,59 @@ public class RobotContainer {
   // DO NOT USE UNTIL DRIVING IN SAFE SPACE
   // THIS IS A SECOND WARNING!!! THIS IS VERY DANGEROUS.
   // To do trajectory driving or not
+  // TREAT THIS LIKE A RED BUTTON
   private final boolean autoOrNot = false;
 
+  // Whether to set alliance for driving or not
   private final boolean setAlliance = false;
+  // Set to blue alliance
   private final boolean blueAllianceOrNot = true;
 
   // Confirmed ready for testing 12/9
   // Switches to single module testing mode
-  private final boolean testSingleModule = true;
+  private final boolean testSingleModule = false;
   private final int testModuleIndex = 0;
-  private final boolean testPIDF = false;
 
+  // Checks if using xBox or keyboard
   public static final boolean isXbox = false;
 
   // If we need to data log or not
-  public final boolean dataLog = true;
-
-  private SwerveAuto auto;
+  public final boolean isDataLog = true;
+  // Checks if robot is real or not
+  private static boolean isSim = Robot.isSimulation();
 
   // Xbox + an additional one for PC use
   private final Joystick actualXbox = new Joystick(0);
   private final Joystick additionalJoy = new Joystick(1);
+  // Chooser for testing teleop commands
+  private final SendableChooser<Command> teleopCommandChooser = new SendableChooser<>();
 
   // Define axises for using joystick
   private final int translationAxis = 0;
   private final int strafeAxis = 1;
   private final int rotationAxis = 4; // For xBox
-
-  // private final int rotationAxis = 0;
-  private static boolean isSim = Robot.isSimulation();
   
+  // Creates a singular module for testing - null in context of code
   SingularModule module;
-
-  // Creates array of swerve modules for use in SwerveDrive object
+  // Creates array of swerve modules for use in SwerveDrive object - null in context of code
   SwerveModuleIO[] swerveMods = new SwerveModuleIO[4];
-
   // Empty SwerveDrive object
   public SwerveDrive swerve;
-  
   // Empty testing commands (not used if not needed)
   public TestSwerveModulePower powerCommand;
   public TestSwerveModulePIDF pidfCommand;
+  // Empty Auto object
+  private SwerveAuto auto;
+  // Empty SwerveTeleop object
+  private SwerveTeleop teleop;
+  // Empty CrabDrive object
+  private CrabDrive crabDrive;
 
   public RobotContainer() {
+    
+    //teleopCommandChooser.setDefaultOption("No test command set", null);
 
-    if (dataLog) {
+    if (isDataLog) {
       // Data logging works on both real + simulated robot with all DriverStation outputs!
       DataLogManager.start();
       DriverStation.startDataLog(DataLogManager.getLog(), false);
@@ -104,9 +114,10 @@ public class RobotContainer {
       }
 
       this.swerve = new SwerveDrive(this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
+
       if (isXbox) {
         // Supply teleop command with joystick methods - USES LAMBDAS
-        this.swerve.setDefaultCommand(new SwerveTeleop(this.swerve, () -> {
+        teleop = new SwerveTeleop(this.swerve, () -> {
           return -this.actualXbox.getRawAxis(translationAxis);
         }, () -> {
           return -this.actualXbox.getRawAxis(strafeAxis);
@@ -114,11 +125,11 @@ public class RobotContainer {
           return -this.actualXbox.getRawAxis(rotationAxis);
         }, () -> {
           return true;
-        }, setAlliance, blueAllianceOrNot));
+        }, setAlliance, blueAllianceOrNot);
 
       } else if (!isXbox) {
         // Supply teleop command with joystick methods - USES LAMBDAS
-        this.swerve.setDefaultCommand(new SwerveTeleop(this.swerve, () -> {
+        teleop = new SwerveTeleop(this.swerve, () -> {
           return -this.actualXbox.getX();
         }, () -> {
           return -this.actualXbox.getY();
@@ -126,9 +137,19 @@ public class RobotContainer {
           return -this.additionalJoy.getRawAxis(0);
         }, () -> {
           return true;
-        }, setAlliance, blueAllianceOrNot));
+        }, setAlliance, blueAllianceOrNot);
 
       }
+
+      crabDrive = new CrabDrive(this.swerve, () -> {
+        return -this.actualXbox.getX();
+      }, () -> {
+        return -this.actualXbox.getY();
+      });
+
+      teleopCommandChooser.addOption("Regular Teleop", teleop);
+      teleopCommandChooser.addOption("Crab Teleop", crabDrive);
+      teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
 
     // Else if testing singular module
     } else {
@@ -138,37 +159,38 @@ public class RobotContainer {
           module = new SingularModule(new SwerveModuleIOSim(0));
         }
 
-        if (testPIDF) {
+        
+
           pidfCommand = new TestSwerveModulePIDF(module, actualXbox);
-          module.setDefaultCommand(pidfCommand);
 
-        } else {
-            if (isXbox) {
-              powerCommand = new TestSwerveModulePower(module,
-                () -> {
-                  return -this.actualXbox.getRawAxis(translationAxis);
-                }, 
-                () -> {
-                  return -this.actualXbox.getRawAxis(5);
-                }, actualXbox);
-            } else {
-              powerCommand = new TestSwerveModulePower(module,
-                () -> {
-                  return -this.actualXbox.getRawAxis(translationAxis);
-                }, 
-                () -> {
-                  return -this.additionalJoy.getRawAxis(0);
-                }, actualXbox);
-            }
-          module.setDefaultCommand(powerCommand);
+          if (isXbox) {
+            powerCommand = new TestSwerveModulePower(module,
+              () -> {
+                return -this.actualXbox.getRawAxis(translationAxis);
+              }, 
+              () -> {
+                return -this.actualXbox.getRawAxis(5);
+              }, actualXbox);
+          } else {
+            powerCommand = new TestSwerveModulePower(module,
+              () -> {
+                return -this.actualXbox.getRawAxis(translationAxis);
+              }, 
+              () -> {
+                return -this.additionalJoy.getRawAxis(0);
+              }, actualXbox);
+          }
 
-        }
-      
+          teleopCommandChooser.addOption("PIDF Module Test", pidfCommand);
+          teleopCommandChooser.addOption("Module Voltage Test", powerCommand);
+          teleopCommandChooser.setDefaultOption("Module Voltage Test", powerCommand);
     }
     
     if (autoOrNot) {
       auto = new SwerveAuto("New Path", this.swerve);
     }
+    
+    SmartDashboard.putData(teleopCommandChooser);
     this.configureBindings();
   }
 
@@ -184,6 +206,14 @@ public class RobotContainer {
       }
     } else {
       return null;
+    }
+  }
+
+  public void initCommandInTeleop() {
+    if (testSingleModule) {
+      module.setDefaultCommand(teleopCommandChooser.getSelected());
+    } else {
+      swerve.setDefaultCommand(teleopCommandChooser.getSelected());
     }
   }
 
