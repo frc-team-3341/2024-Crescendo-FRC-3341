@@ -48,11 +48,11 @@ public class RobotContainer {
 
   // Confirmed ready for testing 12/9
   // Switches to single module testing mode
-  private final boolean testSingleModule = false;
+  private final boolean testSingleModule = true;
   private final int testModuleIndex = 0;
 
   // Checks if using xBox or keyboard
-  public static final boolean isXbox = false;
+  public static final boolean isXbox = true;
 
   // If we need to data log or not
   public final boolean isDataLog = true;
