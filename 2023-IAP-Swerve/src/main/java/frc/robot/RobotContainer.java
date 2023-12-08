@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.SwerveAuto;
 import frc.robot.commands.SwerveTeleop;
@@ -11,6 +12,9 @@ import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
 import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
+
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class RobotContainer {
 
@@ -45,6 +49,9 @@ public class RobotContainer {
 
   public static final boolean isXbox = false;
 
+  // If we need to data log or not
+  public final boolean dataLog = true;
+
   private SwerveAuto auto;
 
   // Xbox + an additional one for PC use
@@ -72,6 +79,13 @@ public class RobotContainer {
   public TestSwerveModulePIDF pidfCommand;
 
   public RobotContainer() {
+
+    if (dataLog) {
+      // Data logging works on both real + simulated robot with all DriverStation outputs!
+      DataLogManager.start();
+      DriverStation.startDataLog(DataLogManager.getLog(), false);
+      SmartDashboard.putString("Data Log Folder: ", DataLogManager.getLogDir());
+    }
   
     // Initialize SwerveDrive object with modules
     if (!testSingleModule) {
@@ -181,4 +195,5 @@ public class RobotContainer {
   public static boolean getSimOrNot() {
     return isSim;
   }
+
 }
