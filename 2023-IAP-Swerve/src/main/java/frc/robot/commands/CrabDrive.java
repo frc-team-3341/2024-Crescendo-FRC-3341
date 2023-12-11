@@ -72,12 +72,12 @@ public class CrabDrive extends CommandBase {
 
       // Drive swerve with values
       this.swerve.drive(new Translation2d(correctedX, correctedY), 0.0,
-           false, false);
+           false, true);
    }
 
    // Called once the command ends or is interrupted.
    @Override
    public void end(boolean interrupted) {
-      this.swerve.drive(new Translation2d(0, 0), 0, false, false);
+      this.swerve.drive(new Translation2d(0, 0), 0, false, true);
    }
 }

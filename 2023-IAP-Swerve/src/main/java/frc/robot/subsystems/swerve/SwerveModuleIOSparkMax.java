@@ -45,6 +45,8 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     private double driveVolts = 0.0;
     private double turnVolts = 0.0;
 
+    double offset;
+
     // Object to hold swerve module state
     private SwerveModuleState state = new SwerveModuleState(0.0, new Rotation2d(0.0));
 
@@ -61,25 +63,30 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
      * @param turnEncoderOffset Offset in degrees for module (from -180 to 180)
      * @author Aric Volman
      */
-    public SwerveModuleIOSparkMax(int num, int driveID, int turnID, int turnCANCoderID, double turnEncoderOffset) {
+    public SwerveModuleIOSparkMax(int num, int driveID, int turnID, int turnCANCoderID, double turnEncoderOffset, boolean invert) {
+        
+
 
         turnEncoder = new CANCoder(turnCANCoderID);
         turnEncoder.configFactoryDefault();
+
+        offset = turnEncoderOffset;
 
         // Construct CANSparkMaxes
         driveSparkMax = new CANSparkMax(driveID, MotorType.kBrushless);
         turnSparkMax = new CANSparkMax(turnID, MotorType.kBrushless);
 
+                // Reset to defaults
+                driveSparkMax.restoreFactoryDefaults();
+                turnSparkMax.restoreFactoryDefaults();
         turnPID = new PIDController(0, 0, 0);
+
+        turnSparkMax.setInverted(true);
 
         // Initialize encoder and PID controller
         driveEncoder = driveSparkMax.getEncoder();
         drivePID = driveSparkMax.getPIDController();
         drivePID.setFeedbackDevice(driveEncoder);
-
-        // Reset to defaults
-        driveSparkMax.restoreFactoryDefaults();
-        turnSparkMax.restoreFactoryDefaults();
 
         // Set conversion factors
         driveEncoder.setPositionConversionFactor(ModuleConstants.drivingEncoderPositionFactor);
@@ -92,6 +99,9 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         drivePID.setD(ModuleConstants.drivekD);
         drivePID.setFF(ModuleConstants.drivekF);
         drivePID.setOutputRange(-1, 1);
+
+        driveSparkMax.setInverted(invert);
+       // driveEncoder.setInverted(invert);
 
         driveSparkMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
         turnSparkMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
@@ -110,11 +120,11 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         turnEncoder.setPositionToAbsolute();
         turnEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
         turnEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
-        turnEncoder.configMagnetOffset(turnEncoderOffset);
+        //turnEncoder.configMagnetOffset(turnEncoderOffset);
 
-        turnPID.setP(Constants.ModuleConstants.drivekP);
-        turnPID.setI(Constants.ModuleConstants.drivekI);
-        turnPID.setD(Constants.ModuleConstants.drivekD);
+        turnPID.setP(Constants.ModuleConstants.turnkP);
+        turnPID.setI(Constants.ModuleConstants.turnkI);
+        turnPID.setD(Constants.ModuleConstants.turnkD);
 
         // Continous input jumping from 0 to 2*PI
         // Not advisable for Derivative constant
@@ -128,7 +138,7 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
     public double getTurnPositionInRad() {
         // Divide by 1.0, as CANCoder has direct measurement of output
-        return Units.degreesToRadians(turnEncoder.getAbsolutePosition()) / ModuleConstants.CANCoderGearRatio;
+        return Units.degreesToRadians(turnEncoder.getAbsolutePosition() - offset) / ModuleConstants.CANCoderGearRatio;
     }
 
     public void setDesiredState(SwerveModuleState state) {
