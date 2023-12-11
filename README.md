@@ -1,7 +1,5 @@
 # 2023 Swerve Integrated Advanced Project (IAP)
 
-This code is ready for IAP Showcase Day (12/9/2023).
-
 WARNING: SOME AUTONOMOUS LIBRARY METHODS (PathPlannerLib) ARE DEPRECATED IN 2024!!! USE AT YOUR OWN RISK. PathPlannerLIB WILL SWITCH TO NEW FRAMEWORK OF METHODS!!!
 Autonomous is disabled until ready to test (Teleop hasn't been tested).
 
