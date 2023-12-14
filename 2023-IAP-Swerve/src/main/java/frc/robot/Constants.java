@@ -23,7 +23,7 @@ public final class Constants {
     public static final class SwerveConstants {
         // These can be safely adjusted without adjusting discrete
         // Some fudge factor is needed for safety while translating + rotating
-        public static final double maxChassisTranslationalSpeed = ModuleConstants.maxFreeWheelSpeedMeters - 0.3; // Assuming L1 swerve
+        public static final double maxChassisTranslationalSpeed = 0.3; // Assuming L1 swerve
         public static final double maxWheelLinearVelocityMeters = ModuleConstants.maxFreeWheelSpeedMeters - 0.2; // Assuming L1 swerve
         public static final double maxChassisAngularVelocity = Math.PI * 2.0; // A decent number but not fast enough
 
@@ -39,7 +39,9 @@ public final class Constants {
         public static final int[][] moduleCANIDs = {{1, 2, 9}, {3, 4, 10}, {5, 6, 11}, {7, 8, 12}};
 
         // Initially 0 until we calibrate the modules 12/9
-        public static final int[] moduleAngleOffsets = {0, 0, 0, 0};
+        public static final double[] moduleAngleOffsets = {306.5, 187.6, 109.4, 85.2};
+
+        public static final boolean[] moduleInverts = {false, true, false, true};
     }
 
     public static final class ModuleConstants {
@@ -79,7 +81,7 @@ public final class Constants {
         public static final double drivekF = 1.0/maxFreeWheelSpeedMeters;
 
         // We don't know how to calculate this yet :)
-        public static final double turnkP = 0.0;
+        public static final double turnkP = 0.00;
         public static final double turnkI = 0.0;
         public static final double turnkD = 0.0;
 

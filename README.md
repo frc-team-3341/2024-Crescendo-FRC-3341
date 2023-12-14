@@ -1,9 +1,34 @@
 # 2023 Swerve Integrated Advanced Project (IAP)
 
-This code is ready for IAP Showcase Day (12/9/2023).
-
 WARNING: SOME AUTONOMOUS LIBRARY METHODS (PathPlannerLib) ARE DEPRECATED IN 2024!!! USE AT YOUR OWN RISK. PathPlannerLIB WILL SWITCH TO NEW FRAMEWORK OF METHODS!!!
 Autonomous is disabled until ready to test (Teleop hasn't been tested).
+### CAN ID Protocol
+| Module Name  | Drive Motor | Turn Motor | CANCoder |
+| ------------- | ------------- | ------------- | ------------- |
+| Front Left  | CAN #1  | CAN #2  | CAN #9  |
+| Front Right  | CAN #3  | CAN #4  | CAN #10  |
+| Back Left  | CAN #5  | CAN #6  | CAN #11  |
+| Back Right  | CAN #7  | CAN #8  | CAN #12  |
+
+## Testing updates
+### What has been done physically (non-exhaustive):
+- Set all proper CAN IDs
+- Verified all module motors function
+- Verified all CANCoders function
+- Verified correct motor inverts
+- Tested feedforward for drive motors
+### What has been done in simulation (non-exhaustive):
+- Verified that all drive and turn motors function
+- Determined proper characterizations for all drive and turn motors
+- Verified that kinematics of swerve drive is correct with high-level controls
+- High-level control methods (Crab Drive, Swerve Teleop) are functional
+- High-level autonomous (PathPlannerLib) is functional
+### TODO List (non-exhaustive):
+- Test PID for turn motors
+- Test PIDF for drive motors
+- Verify that odometry is accurate
+- Verify that turn motors are responsive enough with regular kP control
+- Dry-run a "Crab Drive" mode to test basic driving
 
 ## Non-exhaustive list of features
 - Supports 8-motor NEO swerve
@@ -31,13 +56,3 @@ Contains a Utility class in order to support more technical/Calculus features an
 - Helps support students who are just learning AP Calculus AB or do not know it
 - Example of Calc usage: integrating angular velocity (calculated from module states, not odometry) in order to simulate gyro
 - Example of Calc usage: kinematics fix (discretize) for "curving" motion while chassis translates + rotates
-
-### CAN ID Protocol
-- Front Left: CAN #1 - Drive; CAN #2 - Turn
-- Front Right: CAN #3 - Drive; CAN #4 - Turn
-- Back Left: CAN #5 - Drive; CAN #6 - Turn
-- Back Right: CAN #7 - Drive; CAN #8 - Turn
-- CAN #9 - Front Left CANCoder
-- CAN #10 - Front Right CANCoder
-- CAN #11 - Back Left CANCoder
-- CAN #12 - Back Right CANCoder

@@ -42,13 +42,13 @@ public class RobotContainer {
   private final boolean autoOrNot = false;
 
   // Whether to set alliance for driving or not
-  private final boolean setAlliance = false;
+  private final boolean setAlliance = true;
   // Set to blue alliance
   private final boolean blueAllianceOrNot = true;
 
   // Confirmed ready for testing 12/9
   // Switches to single module testing mode
-  private final boolean testSingleModule = true;
+  private final boolean testSingleModule = false;
   private final int testModuleIndex = 0;
 
   // Checks if using xBox or keyboard
@@ -66,8 +66,8 @@ public class RobotContainer {
   private final SendableChooser<Command> teleopCommandChooser = new SendableChooser<>();
 
   // Define axises for using joystick
-  private final int translationAxis = 0;
-  private final int strafeAxis = 1;
+  private final int translationAxis = 1;
+  private final int strafeAxis = 0;
   private final int rotationAxis = 4; // For xBox
   
   // Creates a singular module for testing - null in context of code
@@ -108,7 +108,7 @@ public class RobotContainer {
       } else {
         // Construct swerve modules with real motors
         for (int i = 0; i < swerveMods.length; i++) {
-          swerveMods[i] = new SwerveModuleIOSparkMax(i, Constants.SwerveConstants.moduleCANIDs[i][0], Constants.SwerveConstants.moduleCANIDs[i][1], Constants.SwerveConstants.moduleCANIDs[i][2], Constants.SwerveConstants.moduleAngleOffsets[i]);
+          swerveMods[i] = new SwerveModuleIOSparkMax(i, Constants.SwerveConstants.moduleCANIDs[i][0], Constants.SwerveConstants.moduleCANIDs[i][1], Constants.SwerveConstants.moduleCANIDs[i][2], Constants.SwerveConstants.moduleAngleOffsets[i], Constants.SwerveConstants.moduleInverts[i]);
         }
 
       }
@@ -154,7 +154,7 @@ public class RobotContainer {
     // Else if testing singular module
     } else {
         if (!isSim) {
-          module = new SingularModule(new SwerveModuleIOSparkMax(testModuleIndex, Constants.SwerveConstants.moduleCANIDs[testModuleIndex][0], Constants.SwerveConstants.moduleCANIDs[testModuleIndex][1], Constants.SwerveConstants.moduleCANIDs[testModuleIndex][2], 0));
+          module = new SingularModule(new SwerveModuleIOSparkMax(testModuleIndex, Constants.SwerveConstants.moduleCANIDs[testModuleIndex][0], Constants.SwerveConstants.moduleCANIDs[testModuleIndex][1], Constants.SwerveConstants.moduleCANIDs[testModuleIndex][2], Constants.SwerveConstants.moduleAngleOffsets[testModuleIndex], Constants.SwerveConstants.moduleInverts[testModuleIndex]));
         } else {
           module = new SingularModule(new SwerveModuleIOSim(0));
         }
