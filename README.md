@@ -21,7 +21,7 @@ Autonomous is disabled until ready to test (Teleop hasn't been tested).
 - Verified that all drive and turn motors function
 - Determined proper characterizations for all drive and turn motors
 - Verified that kinematics of swerve drive is correct with high-level controls
-- High-level control methods (Crab Drive, Swerve Teleop) are functional
+- High-level control methods (Crab Drive, Swerve Teleop, Test Command that switches between modules) are functional
 - High-level autonomous (PathPlannerLib) is functional
 ### TODO List (non-exhaustive):
 - Test PID for turn motors
