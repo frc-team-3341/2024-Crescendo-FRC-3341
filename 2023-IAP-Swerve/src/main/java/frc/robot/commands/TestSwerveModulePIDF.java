@@ -12,6 +12,7 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.swerve.SingularModule;
 
+/** Marked for removal as of 12/14 */
 public class TestSwerveModulePIDF extends CommandBase {
 
   private SingularModule moduleSubsystem;

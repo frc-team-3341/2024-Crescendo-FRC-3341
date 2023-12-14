@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.swerve.SingularModule;
 
+/** Marked for removal as of 12/14 */
 public class TestSwerveModulePower extends CommandBase {
 
   private SingularModule moduleSubsystem;
@@ -103,7 +104,7 @@ public class TestSwerveModulePower extends CommandBase {
       }
     }
     
-    moduleSubsystem.module.setDriveVoltage( drivePowerSup.getAsDouble()*driveVoltage);
+    moduleSubsystem.module.setDriveVoltage(drivePowerSup.getAsDouble()*driveVoltage);
     moduleSubsystem.module.setTurnVoltage(turnPowerSup.getAsDouble()* turnVoltage);
   }
 

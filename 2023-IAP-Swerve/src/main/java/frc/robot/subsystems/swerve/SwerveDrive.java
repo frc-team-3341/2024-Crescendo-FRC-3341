@@ -179,6 +179,34 @@ public class SwerveDrive extends SubsystemBase {
       return states;
    }
 
+   /**
+    * Sets the voltages (drive, turn) of one module
+    * @param driveVoltage Drive voltage
+    * @param turnVoltage Turn voltage
+    * @param index Index of module
+    */
+   public void setModuleVoltage(double driveVoltage, double turnVoltage, int index) {
+      // Precondition: Safety check within bounds
+      if (index >= 0 && index < moduleIO.length) {
+         moduleIO[index].setDriveVoltage(driveVoltage);
+         moduleIO[index].setTurnVoltage(turnVoltage);
+      }
+   }
+
+   /**
+    * Sets the velocities and positions (drive, turn) of one module
+    * @param driveVel Drive velocity (m/s)
+    * @param turnPos Turn position (radians)
+    * @param index Index of module
+    */
+   public void setModuleSetpoints(double driveVel, double turnPos, int index) {
+      // Precondition: Safety check within bounds
+      if (index >= 0 && index < moduleIO.length) {
+         SwerveModuleState state = new SwerveModuleState(driveVel, new Rotation2d(turnPos));
+         moduleIO[index].setDesiredState(state);
+      }
+   }
+
    public void stopMotors() {
       for (SwerveModuleIO module : moduleIO) {
          module.setDriveVoltage(0);

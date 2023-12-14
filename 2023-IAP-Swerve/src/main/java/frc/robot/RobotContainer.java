@@ -7,8 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.CrabDrive;
 import frc.robot.commands.SwerveAuto;
 import frc.robot.commands.SwerveTeleop;
-import frc.robot.commands.TestSwerveModulePIDF;
-import frc.robot.commands.TestSwerveModulePower;
+import frc.robot.commands.TestFourModules;
 import frc.robot.subsystems.swerve.SingularModule;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
@@ -22,11 +21,15 @@ public class RobotContainer {
 
   /*
    * TO THE FUTURE READERS/REVIEWERS OF THIS FILE:
-   * Feel free to use any parts of this project or its entirety in a Competition FRC robot of any kind or team. 
-   * This codebase is 95% Competition-ready (minus some minor cosmetic things). It is designed so that the modules are modular (meaning easy to switch).
-   * This technique enables us to simulate the swerve drivebase and develop at home to our heart's content.
-   * In the future, we can also write a SwerveModuleIOTalonFX.java as well and easily "plug" it in.
-   *  
+   * Feel free to use any parts of this project or its entirety in a Competition
+   * FRC robot of any kind or team.
+   * This codebase is 95% Competition-ready (minus some minor cosmetic things). It
+   * is designed so that the modules are modular (meaning easy to switch).
+   * This technique enables us to simulate the swerve drivebase and develop at
+   * home to our heart's content.
+   * In the future, we can also write a SwerveModuleIOTalonFX.java as well and
+   * easily "plug" it in.
+   * 
    * Minor warning: advanced Java syntax that this project uses:
    * - Java Lambdas
    * - Java Suppliers and Consumers
@@ -41,21 +44,18 @@ public class RobotContainer {
   // TREAT THIS LIKE A RED BUTTON
   private final boolean autoOrNot = false;
 
-  // Whether to set alliance for driving or not
-  private final boolean setAlliance = true;
+  // TODO - use double suppliers
+  // Whether to set alliance for teleop driving or not
+  private final boolean setAlliance = false;
   // Set to blue alliance
   private final boolean blueAllianceOrNot = true;
-
-  // Confirmed ready for testing 12/9
-  // Switches to single module testing mode
-  private final boolean testSingleModule = false;
-  private final int testModuleIndex = 0;
 
   // Checks if using xBox or keyboard
   public static final boolean isXbox = true;
 
   // If we need to data log or not
-  public final boolean isDataLog = true;
+  public final boolean isDataLog = false;
+
   // Checks if robot is real or not
   private static boolean isSim = Robot.isSimulation();
 
@@ -69,16 +69,16 @@ public class RobotContainer {
   private final int translationAxis = 1;
   private final int strafeAxis = 0;
   private final int rotationAxis = 4; // For xBox
-  
+
   // Creates a singular module for testing - null in context of code
   SingularModule module;
-  // Creates array of swerve modules for use in SwerveDrive object - null in context of code
+  // Creates array of swerve modules for use in SwerveDrive object - null in
+  // context of code
   SwerveModuleIO[] swerveMods = new SwerveModuleIO[4];
   // Empty SwerveDrive object
-  public SwerveDrive swerve;
+  private SwerveDrive swerve;
   // Empty testing commands (not used if not needed)
-  public TestSwerveModulePower powerCommand;
-  public TestSwerveModulePIDF pidfCommand;
+  private TestFourModules allFour;
   // Empty Auto object
   private SwerveAuto auto;
   // Empty SwerveTeleop object
@@ -87,109 +87,77 @@ public class RobotContainer {
   private CrabDrive crabDrive;
 
   public RobotContainer() {
-    
-    //teleopCommandChooser.setDefaultOption("No test command set", null);
 
     if (isDataLog) {
-      // Data logging works on both real + simulated robot with all DriverStation outputs!
+      // Data logging works on both real + simulated robot with all DriverStation
+      // outputs!
       DataLogManager.start();
       DriverStation.startDataLog(DataLogManager.getLog(), false);
       SmartDashboard.putString("Data Log Folder: ", DataLogManager.getLogDir());
     }
-  
+
     // Initialize SwerveDrive object with modules
-    if (!testSingleModule) {
-      if (isSim) {
-        // Construct swerve modules with simulated motors
-        for (int i = 0; i < swerveMods.length; i++) {
-          swerveMods[i] = new SwerveModuleIOSim(i);
-        }
-
-      } else {
-        // Construct swerve modules with real motors
-        for (int i = 0; i < swerveMods.length; i++) {
-          swerveMods[i] = new SwerveModuleIOSparkMax(i, Constants.SwerveConstants.moduleCANIDs[i][0], Constants.SwerveConstants.moduleCANIDs[i][1], Constants.SwerveConstants.moduleCANIDs[i][2], Constants.SwerveConstants.moduleAngleOffsets[i], Constants.SwerveConstants.moduleInverts[i]);
-        }
-
+    if (isSim) {
+      // Construct swerve modules with simulated motors
+      for (int i = 0; i < swerveMods.length; i++) {
+        swerveMods[i] = new SwerveModuleIOSim(i);
       }
 
-      this.swerve = new SwerveDrive(this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
-
-      if (isXbox) {
-        // Supply teleop command with joystick methods - USES LAMBDAS
-        teleop = new SwerveTeleop(this.swerve, () -> {
-          return -this.actualXbox.getRawAxis(translationAxis);
-        }, () -> {
-          return -this.actualXbox.getRawAxis(strafeAxis);
-        }, () -> {
-          return -this.actualXbox.getRawAxis(rotationAxis);
-        }, () -> {
-          return true;
-        }, setAlliance, blueAllianceOrNot);
-
-      } else if (!isXbox) {
-        // Supply teleop command with joystick methods - USES LAMBDAS
-        teleop = new SwerveTeleop(this.swerve, () -> {
-          return -this.actualXbox.getX();
-        }, () -> {
-          return -this.actualXbox.getY();
-        }, () -> {
-          return -this.additionalJoy.getRawAxis(0);
-        }, () -> {
-          return true;
-        }, setAlliance, blueAllianceOrNot);
-
+    } else {
+      // Construct swerve modules with real motors
+      for (int i = 0; i < swerveMods.length; i++) {
+        swerveMods[i] = new SwerveModuleIOSparkMax(i, Constants.SwerveConstants.moduleCANIDs[i][0],
+            Constants.SwerveConstants.moduleCANIDs[i][1], Constants.SwerveConstants.moduleCANIDs[i][2],
+            Constants.SwerveConstants.moduleAngleOffsets[i], Constants.SwerveConstants.moduleInverts[i]);
       }
 
-      crabDrive = new CrabDrive(this.swerve, () -> {
+    }
+
+    this.swerve = new SwerveDrive(this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
+
+    if (isXbox) {
+      // Supply teleop command with joystick methods - USES LAMBDAS
+      teleop = new SwerveTeleop(this.swerve, () -> {
+        return -this.actualXbox.getRawAxis(translationAxis);
+      }, () -> {
+        return -this.actualXbox.getRawAxis(strafeAxis);
+      }, () -> {
+        return -this.actualXbox.getRawAxis(rotationAxis);
+      }, () -> {
+        return true;
+      }, setAlliance, blueAllianceOrNot);
+
+    } else if (!isXbox) {
+      // Supply teleop command with joystick methods - USES LAMBDAS
+      teleop = new SwerveTeleop(this.swerve, () -> {
         return -this.actualXbox.getX();
       }, () -> {
         return -this.actualXbox.getY();
-      });
+      }, () -> {
+        return -this.additionalJoy.getRawAxis(0);
+      }, () -> {
+        return true;
+      }, setAlliance, blueAllianceOrNot);
 
-      teleopCommandChooser.addOption("Regular Teleop", teleop);
-      teleopCommandChooser.addOption("Crab Teleop", crabDrive);
-      teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
-
-    // Else if testing singular module
-    } else {
-        if (!isSim) {
-          module = new SingularModule(new SwerveModuleIOSparkMax(testModuleIndex, Constants.SwerveConstants.moduleCANIDs[testModuleIndex][0], Constants.SwerveConstants.moduleCANIDs[testModuleIndex][1], Constants.SwerveConstants.moduleCANIDs[testModuleIndex][2], Constants.SwerveConstants.moduleAngleOffsets[testModuleIndex], Constants.SwerveConstants.moduleInverts[testModuleIndex]));
-        } else {
-          module = new SingularModule(new SwerveModuleIOSim(0));
-        }
-
-        
-
-          pidfCommand = new TestSwerveModulePIDF(module, actualXbox);
-
-          if (isXbox) {
-            powerCommand = new TestSwerveModulePower(module,
-              () -> {
-                return -this.actualXbox.getRawAxis(translationAxis);
-              }, 
-              () -> {
-                return -this.actualXbox.getRawAxis(5);
-              }, actualXbox);
-          } else {
-            powerCommand = new TestSwerveModulePower(module,
-              () -> {
-                return -this.actualXbox.getRawAxis(translationAxis);
-              }, 
-              () -> {
-                return -this.additionalJoy.getRawAxis(0);
-              }, actualXbox);
-          }
-
-          teleopCommandChooser.addOption("PIDF Module Test", pidfCommand);
-          teleopCommandChooser.addOption("Module Voltage Test", powerCommand);
-          teleopCommandChooser.setDefaultOption("Module Voltage Test", powerCommand);
     }
-    
+
+    crabDrive = new CrabDrive(this.swerve, () -> {
+      return -this.actualXbox.getX();
+    }, () -> {
+      return -this.actualXbox.getY();
+    });
+
+    allFour = new TestFourModules(swerve, actualXbox);
+
+    teleopCommandChooser.addOption("Regular Teleop", teleop);
+    teleopCommandChooser.addOption("Crab Teleop", crabDrive);
+    teleopCommandChooser.addOption("Module Test Command", allFour);
+    teleopCommandChooser.setDefaultOption("Module Test Command", allFour);
+
     if (autoOrNot) {
       auto = new SwerveAuto("New Path", this.swerve);
     }
-    
+
     SmartDashboard.putData(teleopCommandChooser);
     this.configureBindings();
   }
@@ -198,23 +166,15 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    if (!testSingleModule) {
-      if (autoOrNot) {
-        return auto;
-      } else {
-        return null;
-      }
+    if (autoOrNot) {
+      return auto;
     } else {
       return null;
     }
   }
 
   public void initCommandInTeleop() {
-    if (testSingleModule) {
-      module.setDefaultCommand(teleopCommandChooser.getSelected());
-    } else {
-      swerve.setDefaultCommand(teleopCommandChooser.getSelected());
-    }
+    swerve.setDefaultCommand(teleopCommandChooser.getSelected());
   }
 
   /**
