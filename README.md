@@ -47,8 +47,7 @@ Autonomous is disabled until ready to test (Teleop hasn't been tested).
 - Ability to switch between testing commands using SendableChooser:
   - Regular Swerve Teleop command
   - "Crab Drive" command for testing without gyro
-  - Module testing command with power/voltage only
-  - Module testing command with PIDF control
+  - Module testing command with both PIDF and voltage testing, that can switch between modules
 
 ### "250 lines or less" 
 "250 lines or less" design philosophy - SwerveDrive subsystem is small compared to most other codebases. 
