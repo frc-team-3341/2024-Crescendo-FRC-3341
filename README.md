@@ -21,7 +21,7 @@ Autonomous is disabled until ready to test (Teleop hasn't been tested).
 - Verified that all drive and turn motors function
 - Determined proper characterizations for all drive and turn motors
 - Verified that kinematics of swerve drive is correct with high-level controls
-- High-level control methods (Crab Drive, Swerve Teleop) are functional
+- High-level control methods (Crab Drive, Swerve Teleop, Test Command that switches between modules) are functional
 - High-level autonomous (PathPlannerLib) is functional
 ### TODO List (non-exhaustive):
 - Test PID for turn motors
@@ -47,8 +47,7 @@ Autonomous is disabled until ready to test (Teleop hasn't been tested).
 - Ability to switch between testing commands using SendableChooser:
   - Regular Swerve Teleop command
   - "Crab Drive" command for testing without gyro
-  - Module testing command with power/voltage only
-  - Module testing command with PIDF control
+  - Module testing command with both PIDF and voltage testing, that can switch between modules
 
 ### "250 lines or less" 
 "250 lines or less" design philosophy - SwerveDrive subsystem is small compared to most other codebases. 
@@ -56,3 +55,4 @@ Contains a Utility class in order to support more technical/Calculus features an
 - Helps support students who are just learning AP Calculus AB or do not know it
 - Example of Calc usage: integrating angular velocity (calculated from module states, not odometry) in order to simulate gyro
 - Example of Calc usage: kinematics fix (discretize) for "curving" motion while chassis translates + rotates
+- Example of Calc usage: rate-limiting control differential (dC) by infinitesimal dt for smoother control

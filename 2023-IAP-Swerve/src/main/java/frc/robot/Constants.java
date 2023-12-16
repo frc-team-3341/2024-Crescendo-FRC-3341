@@ -85,7 +85,7 @@ public final class Constants {
         public static final double turnkI = 0.0;
         public static final double turnkD = 0.0;
 
-        public static final int driveCurrentLimit = 50;
+        public static final int driveCurrentLimit = 40;
         public static final int turnCurrentLimit = 20;
 
     }
