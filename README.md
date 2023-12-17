@@ -55,4 +55,4 @@ Contains a Utility class in order to support more technical/Calculus features an
 - Helps support students who are just learning AP Calculus AB or do not know it
 - Example of Calc usage: integrating angular velocity (calculated from module states, not odometry) in order to simulate gyro
 - Example of Calc usage: kinematics fix (discretize) for "curving" motion while chassis translates + rotates
-- Example of Calc usage: rate-limiting control differential (dC) by infinitesimal dt for smoother control
+- Example of Calc usage: rate-limiting control differential (dC/dt) by certain rate for smoother control
