@@ -8,7 +8,6 @@ import frc.robot.commands.CrabDrive;
 import frc.robot.commands.SwerveAuto;
 import frc.robot.commands.SwerveTeleop;
 import frc.robot.commands.TestFourModules;
-import frc.robot.subsystems.swerve.SingularModule;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
@@ -47,6 +46,7 @@ public class RobotContainer {
   // TODO - use double suppliers
   // Whether to set alliance for teleop driving or not
   private final boolean setAlliance = false;
+  
   // Set to blue alliance
   private final boolean blueAllianceOrNot = true;
 
@@ -70,8 +70,6 @@ public class RobotContainer {
   private final int strafeAxis = 0;
   private final int rotationAxis = 4; // For xBox
 
-  // Creates a singular module for testing - null in context of code
-  SingularModule module;
   // Creates array of swerve modules for use in SwerveDrive object - null in
   // context of code
   SwerveModuleIO[] swerveMods = new SwerveModuleIO[4];

@@ -27,6 +27,12 @@ public class TestFourModules extends CommandBase {
   private double driveVoltage, turnVoltage = 0.0;
   private double velocity, angle = 0.0;
 
+  /*
+   * TODO for the future people:
+   * This may sound impossible or crazy for you, but you can do it:
+   * Create an automated testing routine that logs all the data. In industry, this is done everywhere with FPGAs and other devices. Suggested by Mr. Rongey 12/16/2023.
+   */
+
   /** Creates a new TestFourModules. */
   public TestFourModules(SwerveDrive swerve, Joystick joy) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -39,7 +45,6 @@ public class TestFourModules extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
     pidOrPowerMode.addOption(modeStrings[0], modeStrings[0]);
     pidOrPowerMode.addOption(modeStrings[1], modeStrings[1]);
     pidOrPowerMode.setDefaultOption(modeStrings[0], modeStrings[0]);
@@ -55,7 +60,7 @@ public class TestFourModules extends CommandBase {
         driveVoltage = 1.0;
         // Driving to 1.0 - Left bumper (upper)
         if (joy.getRawButton(XboxController.Button.kLeftBumper.value)) {
-          driveVoltage = 1.0;
+          driveVoltage = 8.0;
         }
   
         // Driving to 4.0 - Left trigger bumper (lower)
@@ -93,7 +98,7 @@ public class TestFourModules extends CommandBase {
           turnVoltage = 12.0;
         }
 
-        swerve.setModuleVoltage(driveVoltage*joy.getRawAxis(1), turnVoltage*joy.getRawAxis(5), index);
+        swerve.setModuleVoltage(driveVoltage*-joy.getRawAxis(1), -turnVoltage*-joy.getRawAxis(5), index);
       }
     
     // Velocity mode
@@ -141,7 +146,7 @@ public class TestFourModules extends CommandBase {
         }
       }
 
-      swerve.setModuleSetpoints(velocity*joy.getRawAxis(1), angle*joy.getRawAxis(5), index);
+      swerve.setModuleSetpoints(velocity*-joy.getRawAxis(1), angle*-joy.getRawAxis(5), index);
     }
 
     if (joy.getRawButtonPressed(XboxController.Button.kLeftStick.value)) {

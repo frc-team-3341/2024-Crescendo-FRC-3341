@@ -39,7 +39,8 @@ public final class Constants {
         public static final int[][] moduleCANIDs = {{1, 2, 9}, {3, 4, 10}, {5, 6, 11}, {7, 8, 12}};
 
         // Initially 0 until we calibrate the modules 12/9
-        public static final double[] moduleAngleOffsets = {306.5, 187.6, 109.4, 85.2};
+        // As of 12/16 -> LAST TESTING DAY -> Only have correct offset of 1 module
+        public static final double[] moduleAngleOffsets = {-52.29, 187.6, 109.4, 85.2};
 
         public static final boolean[] moduleInverts = {false, true, false, true};
     }
@@ -62,13 +63,15 @@ public final class Constants {
         public static final double turningEncoderVelocityFactor = (2 * Math.PI) / turnGearRatio / 60.0; // radians per second
 
         // Guessed kP
-        public static final double drivekP = 0.01;
+        public static final double drivekP = 0.05;
         public static final double drivekI = 0.0;
         public static final double drivekD = 0.0;
 
         // See REV: https://motors.vex.com/other-motors/neo
+        // The 5790 value is the correct empirical value for the woodblocks
+        public static final double maxRPMWoodBlocks = 5790.0;
         // Max free speed in RPM originally, converted to RPS native unit
-        public static final double maxFreeSpeed = 5676.0 / 60.0;
+        public static final double maxFreeSpeed = maxRPMWoodBlocks / 60.0;
         // Unit for this: meters/s
         // Calculating it out:
         // 94.6 RPS * pi * 0.1016 m / 8.14 gearing = 3.7094567527 meters / s = 12.1701337 feet / s
@@ -81,7 +84,7 @@ public final class Constants {
         public static final double drivekF = 1.0/maxFreeWheelSpeedMeters;
 
         // We don't know how to calculate this yet :)
-        public static final double turnkP = 0.00;
+        public static final double turnkP = 0.01;
         public static final double turnkI = 0.0;
         public static final double turnkD = 0.0;
 
