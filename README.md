@@ -16,7 +16,7 @@ Autonomous is disabled until ready to test (Teleop hasn't been tested).
 - Verified all module motors function
 - Verified all CANCoders function
 - Verified correct motor inverts
-- Tested feedforward for drive motors
+- Verified PIDF for drive motors (12/16)
 ### What has been done in simulation (non-exhaustive):
 - Verified that all drive and turn motors function
 - Determined proper characterizations for all drive and turn motors
@@ -25,7 +25,7 @@ Autonomous is disabled until ready to test (Teleop hasn't been tested).
 - High-level autonomous (PathPlannerLib) is functional
 ### TODO List (non-exhaustive):
 - Test PID for turn motors
-- Test PIDF for drive motors
+- Verify that turn motors are recording correct module angle
 - Verify that odometry is accurate
 - Verify that turn motors are responsive enough with regular kP control
 - Dry-run a "Crab Drive" mode to test basic driving
