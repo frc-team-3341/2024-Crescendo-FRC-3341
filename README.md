@@ -16,7 +16,7 @@ This code is updated to WPILib's 2024 release.
 - Verified all module motors function
 - Verified all CANCoders function
 - Verified correct motor inverts
-- Verified PIDF for drive motors (12/16)
+- Verified PIDF for drive motors (12/16/23)
 ### What has been done in simulation (non-exhaustive):
 - Verified that all drive and turn motors function
 - Determined proper characterizations for all drive and turn motors
