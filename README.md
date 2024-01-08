@@ -1,7 +1,7 @@
 # 2023 Swerve Integrated Advanced Project (IAP)
 
-WARNING: SOME AUTONOMOUS LIBRARY METHODS (PathPlannerLib) ARE DEPRECATED IN 2024!!! USE AT YOUR OWN RISK. PathPlannerLIB WILL SWITCH TO NEW FRAMEWORK OF METHODS!!!
-Autonomous is disabled until ready to test (Teleop hasn't been tested).
+This code is updated to WPILib's 2024 release.
+
 ### CAN ID Protocol
 | Module Name  | Drive Motor | Turn Motor | CANCoder |
 | ------------- | ------------- | ------------- | ------------- |
