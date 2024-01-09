@@ -116,9 +116,9 @@ public class ArcadeJoystickUtil {
         
         SmartDashboard.putNumber("Radial Output of Joystick:", radialOutput);
         SmartDashboard.putNumber("Angular Output of Joystick:", output[1]);
-        SmartDashboard.putNumber("Radial Output in Magnitude:", output[0]);
-        SmartDashboard.putNumber("Controls Hypot", controlsHypot);
-        SmartDashboard.putNumber("Unit Hypot:", unitHypot);
+        // SmartDashboard.putNumber("Radial Output in Magnitude:", output[0]);
+        // SmartDashboard.putNumber("Controls Hypot", controlsHypot);
+        // SmartDashboard.putNumber("Unit Hypot:", unitHypot);
 
         return output;
 

@@ -53,7 +53,7 @@ public class SwerveDrive extends SubsystemBase {
     * @param BR Swerve module - CAN 7 - Drive; CAN 8 - Turn; CAN 12 - BR CANCoder
     * @author Aric Volman
     */
-   public SwerveDrive(SwerveModuleIO FL, SwerveModuleIO FR, SwerveModuleIO BL, SwerveModuleIO BR) {
+   public SwerveDrive(Pose2d startingPoint, SwerveModuleIO FL, SwerveModuleIO FR, SwerveModuleIO BL, SwerveModuleIO BR) {
       // Assign modules to their object
       this.moduleIO = new SwerveModuleIO[] { FL, FR, BL, BR };
 
@@ -66,7 +66,7 @@ public class SwerveDrive extends SubsystemBase {
       // FUTURE: Seed pose with CV
       // Auto is field-oriented
       this.poseEstimator = new SwerveDrivePoseEstimator(this.kinematics, new Rotation2d(), this.modulePositions,
-            new Pose2d(2.0, 7.0, new Rotation2d()));
+           startingPoint);
       this.field = new Field2d();
    }
 
