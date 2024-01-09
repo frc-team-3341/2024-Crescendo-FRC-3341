@@ -12,7 +12,9 @@ import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
 import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
-
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -36,6 +38,8 @@ public class RobotContainer {
    * - Java For-Each Loops
    */
 
+    // ---------------------- START OF CONFIG SECTION --------------------------
+
   // WARNING: TRAJECTORY DRIVING NOT TESTED IN REAL LIFE (IRL)
   // DO NOT USE UNTIL DRIVING IN SAFE SPACE
   // THIS IS A SECOND WARNING!!! THIS IS VERY DANGEROUS.
@@ -43,18 +47,31 @@ public class RobotContainer {
   // TREAT THIS LIKE A RED BUTTON
   private final boolean autoOrNot = false;
 
-  // TODO - use double suppliers
   // Whether to set alliance for teleop driving or not
   private final boolean setAlliance = false;
   
   // Set to blue alliance
+  // Only enabled if the setAlliance boolean is enabled
+  // TODO - Set automatically via game data
   private final boolean blueAllianceOrNot = true;
 
-  // Checks if using xBox or keyboard 
-  public static final boolean isXbox = true;
+  // Checks if using xBox or keyboard
+  // False : keyboard
+  // True : Xbox
+  public static final boolean isXbox = false;
 
   // If we need to data log or not
+  // Works in simulation
+  // False : not data log
+  // True : will data log
   public final boolean isDataLog = false;
+
+  // Defines starting pose of robot
+  // TODO - Please remove this in future if developing for AprilTags
+  public final Pose2d startpose = new Pose2d(new Translation2d(0, 0), new Rotation2d());
+
+  
+  // ---------------------- END OF CONFIG SECTION --------------------------
 
   // Checks if robot is real or not
   private static boolean isSim = Robot.isSimulation();
@@ -111,7 +128,7 @@ public class RobotContainer {
 
     }
 
-    this.swerve = new SwerveDrive(this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
+    this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
 
     if (isXbox) {
       // Supply teleop command with joystick methods - USES LAMBDAS
@@ -150,7 +167,7 @@ public class RobotContainer {
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
-    teleopCommandChooser.setDefaultOption("Module Test Command", allFour);
+    teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
 
     if (autoOrNot) {
       auto = new SwerveAuto("Example Path", this.swerve);

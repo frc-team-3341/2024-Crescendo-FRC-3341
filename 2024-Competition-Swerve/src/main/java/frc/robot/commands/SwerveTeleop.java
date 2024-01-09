@@ -31,7 +31,7 @@ public class SwerveTeleop extends Command {
    // Positive limit ensures smooth acceleration (1000 * dt * dControl)
    // Negative limit ensures an ability to stop (0 * dt * dControl)
    private AsymmetricLimiter translationLimiter = new AsymmetricLimiter(1000.0D, 1000.0D);
-   private AsymmetricLimiter rotationLimiter = new AsymmetricLimiter(10.0D, 1000.0D);
+   private AsymmetricLimiter rotationLimiter = new AsymmetricLimiter(10.0D, 10.0D);
 
    /**
     * Creates a SwerveTeleop command, for controlling a Swerve bot.

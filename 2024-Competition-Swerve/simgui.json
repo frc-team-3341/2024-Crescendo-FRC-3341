@@ -51,6 +51,11 @@
           "length": 0.6984999775886536,
           "width": 0.6984999775886536
         },
+        "XModules": {
+          "arrowSize": 25,
+          "length": 0.4000000059604645,
+          "width": 0.4000000059604645
+        },
         "bottom": 544,
         "height": 8.013679504394531,
         "image": "C:\\Users\\aricv\\Desktop\\2023-IAP-Swerve\\2024-Competition-Swerve\\2024-field.png",

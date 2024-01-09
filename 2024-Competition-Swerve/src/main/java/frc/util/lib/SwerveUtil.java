@@ -5,12 +5,14 @@
 package frc.util.lib;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -22,7 +24,10 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 
 /**
- * A Swerve Utility class to carry out some of the work. Should work like legos! Our subsystem is now 200 lines! Many functions (discretize, telemetry, wrangling, getters/setters) are common for swerve and can be written here.
+ * A Swerve Utility class to carry out some of the work. Should work like legos!
+ * Our subsystem is now 200 lines! Many functions (discretize, telemetry,
+ * wrangling, getters/setters) are common for swerve and can be written here.
+ * 
  * @author Aric Volman
  */
 public class SwerveUtil {
@@ -30,41 +35,40 @@ public class SwerveUtil {
     private static double integratedSimAngle = 0.0;
 
     private static final Translation2d[] translations = new Translation2d[] {
-        new Translation2d(Constants.SwerveConstants.trackWidthX / 2.0, Constants.SwerveConstants.trackWidthY / 2.0),
-        new Translation2d(Constants.SwerveConstants.trackWidthX / 2.0,
-              -Constants.SwerveConstants.trackWidthY / 2.0),
-        new Translation2d(-Constants.SwerveConstants.trackWidthX / 2.0,
-              Constants.SwerveConstants.trackWidthY / 2.0),
-        new Translation2d(-Constants.SwerveConstants.trackWidthX / 2.0,
-              -Constants.SwerveConstants.trackWidthY / 2.0) };
-    
+            new Translation2d(Constants.SwerveConstants.trackWidthX / 2.0, Constants.SwerveConstants.trackWidthY / 2.0),
+            new Translation2d(Constants.SwerveConstants.trackWidthX / 2.0,
+                    -Constants.SwerveConstants.trackWidthY / 2.0),
+            new Translation2d(-Constants.SwerveConstants.trackWidthX / 2.0,
+                    Constants.SwerveConstants.trackWidthY / 2.0),
+            new Translation2d(-Constants.SwerveConstants.trackWidthX / 2.0,
+                    -Constants.SwerveConstants.trackWidthY / 2.0) };
+
     /**
-    * Accurately draws module poses on SmartDashboard
-    * @param modulePositions Array of swerve module angles + displacements
-    * @param field Field2d object to display modules on
-    * @param pose Pose of robot to use for position calculations
-    */
+     * Adapted from YAGSL's implementation of drawing
+     * Accurately draws module poses on SmartDashboard
+     * 
+     * @param modulePositions Array of swerve module angles + displacements
+     * @param field           Field2d object to display modules on
+     * @param pose            Pose of robot to use for position calculations
+     */
     public static void drawModulePoses(SwerveModulePosition[] modulePositions, Field2d field, Pose2d pose) {
+        Pose2d[] poseArr = new Pose2d[4];
+        List<Pose2d> poses = new ArrayList<>();
         var translations = getModuleTranslations();
+
         for (int i = 0; i < modulePositions.length; i++) {
             Rotation2d moduleRot = modulePositions[i].angle;
-            Rotation2d relRot = pose.getRotation();
-            // Multiply translation with hypotenuse and add this to the pose of the robot
-            
-            field.getObject("Module" + i).setPose(
-            
-                pose.getX() + Math.abs(translations[i].getX())
-                * relRot.plus(new Rotation2d(Math.PI/4+i*Math.PI/2)).getCos()*Constants.SwerveConstants.trackWidthHypotenuse, 
-                pose.getY() + Math.abs(translations[i].getY())
-                * relRot.plus(new Rotation2d(Math.PI/4+i*Math.PI/2)).getSin()*Constants.SwerveConstants.trackWidthHypotenuse, 
-                moduleRot
-            );
-                
+            poses.add(
+                    pose.plus(
+                            new Transform2d(translations[i], moduleRot)));
         }
+
+        field.getObject("XModules").setPoses(poses.toArray(poseArr));
     }
 
     /**
      * Sets module positions of array moduleIO
+     * 
      * @param moduleIO Array of module interface class to use (uses .getPosition())
      */
     public static SwerveModulePosition[] setModulePositions(SwerveModuleIO[] moduleIO) {
@@ -79,12 +83,13 @@ public class SwerveUtil {
     }
 
     /**
-    * <p><b>Deprecated</b> for AdvantageScope 2024</p>
-    * Gets module states as double[] for AdvantageScope compatibility
-    * @param states Array of swerve module states (size doesn't matter, preferably 4)
-    */
+     * Gets module states as double[] for AdvantageScope compatibility
+     * 
+     * @param states Array of swerve module states (size doesn't matter, preferably
+     *               4)
+     */
     public static double[] getDoubleStates(SwerveModuleState[] states) {
-    
+
         ArrayList<Double> ret = new ArrayList<Double>();
 
         for (SwerveModuleState state : states) {
@@ -92,7 +97,7 @@ public class SwerveUtil {
             ret.add(state.speedMetersPerSecond);
         }
 
-        Double[] actual = new Double[states.length*2];
+        Double[] actual = new Double[states.length * 2];
         ret.toArray(actual);
 
         return Stream.of(actual).mapToDouble(Double::doubleValue).toArray();
@@ -100,11 +105,13 @@ public class SwerveUtil {
     }
 
     /**
-    * Credit: WPIlib 2024 + Patribots (Author: Alexander Hamilton). Discretizes a continuous-time chassis speed.
-    * 
-    * @param speeds Inputed speeds from joysticks
-    * @param discretizeConstant Constant that adjusts dx/dt and dy/dt, mulitplied by omega
-    */
+     * Credit: WPIlib 2024 + Patribots (Author: Alexander Hamilton). Discretizes a
+     * continuous-time chassis speed.
+     * 
+     * @param speeds             Inputed speeds from joysticks
+     * @param discretizeConstant Constant that adjusts dx/dt and dy/dt, mulitplied
+     *                           by omega
+     */
     public static ChassisSpeeds discretize(ChassisSpeeds speeds, double discretizeConstant) {
         if (!RobotContainer.getSimOrNot()) {
             return speeds;
@@ -113,9 +120,9 @@ public class SwerveUtil {
         double dt = 0.02;
 
         var desiredDeltaPose = new Pose2d(
-            speeds.vxMetersPerSecond * dt,
-            speeds.vyMetersPerSecond * dt,
-            new Rotation2d(speeds.omegaRadiansPerSecond * dt * discretizeConstant)); // -5.0
+                speeds.vxMetersPerSecond * dt,
+                speeds.vyMetersPerSecond * dt,
+                new Rotation2d(speeds.omegaRadiansPerSecond * dt * discretizeConstant)); // -5.0
 
         var twist = new Pose2d().log(desiredDeltaPose);
 
@@ -123,13 +130,15 @@ public class SwerveUtil {
     }
 
     /**
-     * Adds simulation to the Swerve subsystem. Works together with integration of angle and SwerveModuleIO. Requires the use of the SwerveModuleIO interface.
+     * Adds simulation to the Swerve subsystem. Works together with integration of
+     * angle and SwerveModuleIO. Requires the use of the SwerveModuleIO interface.
      * 
-     * @param moduleIO Array of module interface class to use
+     * @param moduleIO     Array of module interface class to use
      * @param actualStates Array of swerve module states
-     * @param kinematics Object representing kinematics class
+     * @param kinematics   Object representing kinematics class
      */
-    public static void addSwerveSimulation(SwerveModuleIO[] moduleIO, SwerveModuleState[] actualStates, SwerveDriveKinematics kinematics) {
+    public static void addSwerveSimulation(SwerveModuleIO[] moduleIO, SwerveModuleState[] actualStates,
+            SwerveDriveKinematics kinematics) {
         // Simulate Navx
         int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
         SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
@@ -161,9 +170,10 @@ public class SwerveUtil {
     }
 
     /**
-    * Get physical positions of wheels on Swerve chassis (half of trackwidth)
-    * @return translations Translation2d[] array with several translations
-    */
+     * Get physical positions of wheels on Swerve chassis (half of trackwidth)
+     * 
+     * @return translations Translation2d[] array with several translations
+     */
     public static Translation2d[] getModuleTranslations() {
         return translations;
     }
