@@ -2,7 +2,7 @@
 
 This code is updated to WPILib's 2024 release.
 
-## [LINK TO UML STRUCTURE DIAGRAM!!! (updated as of 1/11/2024)](https://github.com/aric-volman/2023-IAP-Swerve/blob/main/2024-Competition-Swerve/SwerveUMLDiagram_structure.png)
+## [LINK TO UML STRUCTURE DIAGRAM!!! (updated as of 1/11/2024)](https://github.com/frc-team-3341/2023-IAP-Swerve/blob/main/2024-Competition-Swerve/SwerveUMLDiagram_structure.png)
 
 ### CAN ID Protocol
 | Module Name  | Drive Motor | Turn Motor | CANCoder |
