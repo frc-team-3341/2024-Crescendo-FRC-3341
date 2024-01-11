@@ -1,7 +1,7 @@
 # 2023 Swerve Integrated Advanced Project (IAP)
 
-WARNING: SOME AUTONOMOUS LIBRARY METHODS (PathPlannerLib) ARE DEPRECATED IN 2024!!! USE AT YOUR OWN RISK. PathPlannerLIB WILL SWITCH TO NEW FRAMEWORK OF METHODS!!!
-Autonomous is disabled until ready to test (Teleop hasn't been tested).
+This code is updated to WPILib's 2024 release.
+
 ### CAN ID Protocol
 | Module Name  | Drive Motor | Turn Motor | CANCoder |
 | ------------- | ------------- | ------------- | ------------- |
@@ -16,7 +16,7 @@ Autonomous is disabled until ready to test (Teleop hasn't been tested).
 - Verified all module motors function
 - Verified all CANCoders function
 - Verified correct motor inverts
-- Tested feedforward for drive motors
+- Verified PIDF for drive motors (12/16/23)
 ### What has been done in simulation (non-exhaustive):
 - Verified that all drive and turn motors function
 - Determined proper characterizations for all drive and turn motors
@@ -25,7 +25,7 @@ Autonomous is disabled until ready to test (Teleop hasn't been tested).
 - High-level autonomous (PathPlannerLib) is functional
 ### TODO List (non-exhaustive):
 - Test PID for turn motors
-- Test PIDF for drive motors
+- Verify that turn motors are recording correct module angle
 - Verify that odometry is accurate
 - Verify that turn motors are responsive enough with regular kP control
 - Dry-run a "Crab Drive" mode to test basic driving
@@ -55,4 +55,4 @@ Contains a Utility class in order to support more technical/Calculus features an
 - Helps support students who are just learning AP Calculus AB or do not know it
 - Example of Calc usage: integrating angular velocity (calculated from module states, not odometry) in order to simulate gyro
 - Example of Calc usage: kinematics fix (discretize) for "curving" motion while chassis translates + rotates
-- Example of Calc usage: rate-limiting control differential (dC) by infinitesimal dt for smoother control
+- Example of Calc usage: rate-limiting control differential (dC/dt) by certain rate for smoother control
