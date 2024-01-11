@@ -68,7 +68,8 @@ public final class Constants {
         public static final double drivekD = 0.0;
 
         // See REV: https://motors.vex.com/other-motors/neo
-        // The 5790 value is the correct empirical value for the woodblocks
+        // The 5790 value is the correct empirical value from the woodblocks
+        // TODO - Might need to be re-calibrated for carpet or concrete
         public static final double maxRPMWoodBlocks = 5790.0;
         // Max free speed in RPM originally, converted to RPS native unit
         public static final double maxFreeSpeed = maxRPMWoodBlocks / 60.0;
@@ -83,8 +84,8 @@ public final class Constants {
         // I.e. 3.709 * 0.2695 ~= 1.0
         public static final double drivekF = 1.0/maxFreeWheelSpeedMeters;
 
-        // We don't know how to calculate this yet :)
-        public static final double turnkP = 0.01;
+        // Confirmed working kP!!
+        public static final double turnkP = 0.01; // This is good!
         public static final double turnkI = 0.0;
         public static final double turnkD = 0.0;
 

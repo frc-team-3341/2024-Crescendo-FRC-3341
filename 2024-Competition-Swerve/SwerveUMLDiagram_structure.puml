@@ -1,0 +1,379 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": false,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "frc.robot.subsystems.swerve.SwerveModuleIOSim",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_108685930 { 
+   	label=robot
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   Robot529299155[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Robot</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   m_autonomousCommand: Command [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   m_robotContainer: RobotContainer [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ autonomousExit()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ autonomousInit()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ autonomousPeriodic()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ disabledExit()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ disabledInit()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ disabledPeriodic()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ robotInit()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ robotPeriodic()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ teleopExit()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ teleopInit()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ teleopPeriodic()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ testExit()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ testInit()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ testPeriodic()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+RobotContainer529299155[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)RobotContainer</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   actualXbox: Joystick [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   additionalJoy: Joystick [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   allFour: TestFourModules [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   auto: SwerveAuto [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   autoOrNot: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   blueAllianceOrNot: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   crabDrive: CrabDrive [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   isDataLog: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   rotationAxis: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   setAlliance: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   startpose: Pose2d [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   strafeAxis: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   swerve: SwerveDrive [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   swerveMods: SwerveModuleIO[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   teleop: SwerveTeleop [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   teleopCommandChooser: SendableChooser&lt;Command&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   translationAxis: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- configureBindings()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getAutonomousCommand(): Command</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getSimOrNot(): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ initCommandInTeleop()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+subgraph cluster_1301829236 { 
+   	label=commands
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   CrabDrive1359119171[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)CrabDrive</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   joyUtil: ArcadeJoystickUtil [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   swerve: SwerveDrive [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   translationLimiter: AsymmetricLimiter [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   x: DoubleSupplier [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   xMult: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   y: DoubleSupplier [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   yMult: double [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ end(interrupted: boolean)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ execute()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SwerveAuto1359119171[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SwerveAuto</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   swerve: SwerveDrive [0..1]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SwerveTeleop1359119171[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SwerveTeleop</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   joyUtil: ArcadeJoystickUtil [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   robotCentricSup: BooleanSupplier [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   rotationLimiter: AsymmetricLimiter [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   rotationSup: DoubleSupplier [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   swerve: SwerveDrive [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   translationLimiter: AsymmetricLimiter [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   x: DoubleSupplier [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   xMult: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   y: DoubleSupplier [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   yMult: double [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ end(interrupted: boolean)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ execute()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+TestFourModules1359119171[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)TestFourModules</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   angle: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   driveVoltage: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   index: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   joy: Joystick [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   modeStrings: String[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   pidOrPowerMode: SendableChooser&lt;String&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   swerve: SwerveDrive [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   turnVoltage: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   velocity: double [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ end(interrupted: boolean)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ execute()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ initialize()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isFinished(): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_1699707880 { 
+   	label=subsystems
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   SwerveDrive2066581137[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SwerveDrive</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   field: Field2d [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   kinematics: SwerveDriveKinematics [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   moduleIO: SwerveModuleIO[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   modulePositions: SwerveModulePosition[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   poseEstimator: SwerveDrivePoseEstimator [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ drive(translation: Translation2d, rotation: double, fieldRelative: boolean, isOpenLoop: boolean)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ driveRelative(speeds: ChassisSpeeds)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getActualStates(): SwerveModuleState[]</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getField(): Field2d</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getHeading(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getPoseFromEstimator(): Pose2d</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getRobotRelativeSpeeds(): ChassisSpeeds</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getRotation(): Rotation2d</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getSetpointStates(): SwerveModuleState[]</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getTurnRate(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ periodic()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ resetPose(pose: Pose2d)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setModuleSetpoints(driveVel: double, turnPos: double, index: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setModuleVoltage(driveVoltage: double, turnVoltage: double, index: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setModuleVoltages(driveVoltage: double, turnVoltage: double)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ simulationPeriodic()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ stopMotors()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SwerveModuleIOSim2066581137[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SwerveModuleIOSim</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   drivePID: PIDController [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   driveSim: FlywheelSim [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   driveVolts: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   flywheelPlant: LinearSystem&lt;N1, N1, N1&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   integratedPosition: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   num: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   state: SwerveModuleState [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   turnPID: PIDController [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   turnSim: DCMotorSim [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   turnVolts: double [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getActualModuleState(): SwerveModuleState</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDesiredState(): SwerveModuleState</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getNum(): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getPosition(): SwerveModulePosition</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getTurnPositionInRad(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setDesiredState(state: SwerveModuleState)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setDriveVoltage(voltage: double)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setTurnVoltage(voltage: double)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateSim()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateTelemetry()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SwerveModuleIOSparkMax2066581137[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SwerveModuleIOSparkMax</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   driveEncoder: RelativeEncoder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   drivePID: SparkPIDController [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   driveSparkMax: CANSparkMax [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   driveVolts: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   num: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   offset: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   state: SwerveModuleState [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   turnEncoder: CANCoder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   turnPID: PIDController [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   turnSparkMax: CANSparkMax [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   turnVolts: double [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getActualModuleState(): SwerveModuleState</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDesiredState(): SwerveModuleState</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getNum(): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getPosition(): SwerveModulePosition</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getTurnPositionInRad(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ resetEncoders()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setDesiredState(state: SwerveModuleState)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setDriveBrakeMode(enable: boolean)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setDriveVoltage(volts: double)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setTurnBrakeMode(enable: boolean)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setTurnVoltage(volts: double)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateTelemetry()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+CrabDrive1359119171 -> SwerveDrive2066581137[label="swerve
+[0..1]"];
+Robot529299155 -> RobotContainer529299155[label="m_robotContainer
+[0..1]"];
+RobotContainer529299155 -> CrabDrive1359119171[label="crabDrive
+[0..1]"];
+RobotContainer529299155 -> SwerveAuto1359119171[label="auto
+[0..1]"];
+RobotContainer529299155 -> SwerveDrive2066581137[label="swerve
+[0..1]"];
+RobotContainer529299155 -> SwerveModuleIOSim2066581137[label="swerveMods
+[0..*]", arrowhead=none];
+RobotContainer529299155 -> SwerveTeleop1359119171[label="teleop
+[0..1]"];
+RobotContainer529299155 -> TestFourModules1359119171[label="allFour
+[0..1]"];
+SwerveAuto1359119171 -> SwerveDrive2066581137[label="swerve
+[0..1]"];
+SwerveDrive2066581137 -> SwerveModuleIOSim2066581137[label="moduleIO
+[0..*]", arrowhead=none];
+SwerveModuleIOSim2066581137 -> SwerveModuleIOSparkMax2066581137[arrowhead=none];
+SwerveTeleop1359119171 -> SwerveDrive2066581137[label="swerve
+[0..1]"];
+TestFourModules1359119171 -> SwerveDrive2066581137[label="swerve
+[0..1]"];
+    
+}
+@enduml

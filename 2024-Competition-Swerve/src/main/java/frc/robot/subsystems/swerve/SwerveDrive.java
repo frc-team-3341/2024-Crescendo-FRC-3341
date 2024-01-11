@@ -220,10 +220,13 @@ public class SwerveDrive extends SubsystemBase {
       }
    }
 
+   /**
+    * Stops the motors of the swerve drive. Useful for stopping all sorts of Commands.
+    */
    public void stopMotors() {
       for (SwerveModuleIO module : moduleIO) {
-         module.setDriveVoltage(0);
-         module.setTurnVoltage(0);
+         module.setDriveVoltage(0.0);
+         module.setTurnVoltage(0.0);
       }
    }
 

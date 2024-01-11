@@ -10,7 +10,6 @@ import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -91,26 +90,18 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
       // Set internal state as passed-in state
       this.state = state;
 
-      double velocity;
-      if (!(DriverStation.isDisabled() | DriverStation.isEStopped())) {
+      // Set setpoint of the drive PID controller
+      this.drivePID.setSetpoint(state.speedMetersPerSecond);
 
-         // Set setpoint of the drive PID controller
-         this.drivePID.setSetpoint(state.speedMetersPerSecond);
+      // Find measurement in m/s and calculate PID action
+      double velocity = this.driveSim.getAngularVelocityRadPerSec() * Math.PI
+             * ModuleConstants.wheelDiameterMeters / ModuleConstants.driveGearRatio;
 
-         // Find measurement in m/s and calculate PID action
-         velocity = this.driveSim.getAngularVelocityRadPerSec() * Math.PI
-               * ModuleConstants.wheelDiameterMeters / ModuleConstants.driveGearRatio;
+      double output = this.drivePID.calculate(velocity)
+            + (12.0 / Constants.ModuleConstants.maxFreeWheelSpeedMeters) * state.speedMetersPerSecond;
 
-         double output = this.drivePID.calculate(velocity)
-               + (12.0 / Constants.ModuleConstants.maxFreeWheelSpeedMeters) * state.speedMetersPerSecond;
-
-         // Output in volts to motor
-         setDriveVoltage(output);
-      } else {
-         // Output in volts to motor
-         driveVolts = 0.0;
-         setDriveVoltage(0.0);
-      }
+      // Output in volts to motor
+      setDriveVoltage(output);
 
       // Turn with PID in volts
       this.turnPID.setSetpoint(state.angle.getRadians());
