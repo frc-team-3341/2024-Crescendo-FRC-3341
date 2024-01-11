@@ -11,6 +11,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * The element symbol (weird e character) is UTF-8 only
  * Thank you future reader :)
  * 
+ * This only occured due to the 2024 update
+ * 
+ * FIX:
+ * ADD THIS TO YOUR BUILD.GRADLE (WITHOUT ASTERISKS)
+ * compileJava.options.encoding = 'UTF-8' 
+ * compileTestJava.options.encoding = 'UTF-8'
+ * javadoc.options.encoding = 'UTF-8'
+ * 
  * Your error will look like this if you use Window's encoding:
  * ArcadeJoystickUtil.java:47: error: unmappable character (0x9D) for encoding windows-1252
  */

@@ -77,7 +77,7 @@ public class SwerveAuto extends SequentialCommandGroup {
 
     // Setting voltage to 0 is necessary in order to stop robot
     addCommands(swerveAuto.finallyDo(() -> {
-      swerve.setModuleVoltages(0.0, 0.0);
+      swerve.stopMotors();
     }));
   }
 }

@@ -38,7 +38,7 @@ public class RobotContainer {
    * - Java For-Each Loops
    */
 
-    // ---------------------- START OF CONFIG SECTION --------------------------
+  // ---------------------- START OF CONFIG SECTION --------------------------
 
   // WARNING: TRAJECTORY DRIVING NOT TESTED IN REAL LIFE (IRL)
   // DO NOT USE UNTIL DRIVING IN SAFE SPACE

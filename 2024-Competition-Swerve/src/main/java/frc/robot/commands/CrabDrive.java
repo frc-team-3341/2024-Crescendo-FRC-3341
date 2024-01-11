@@ -79,5 +79,8 @@ public class CrabDrive extends Command {
    @Override
    public void end(boolean interrupted) {
       this.swerve.drive(new Translation2d(0, 0), 0, false, true);
+      
+      // PLEASE SET THIS FOR SAFETY!!!
+      this.swerve.stopMotors();
    }
 }

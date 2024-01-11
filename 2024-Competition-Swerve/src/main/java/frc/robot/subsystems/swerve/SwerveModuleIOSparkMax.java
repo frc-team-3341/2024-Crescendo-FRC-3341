@@ -70,6 +70,10 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     public SwerveModuleIOSparkMax(int num, int driveID, int turnID, int turnCANCoderID, double turnEncoderOffset,
             boolean invert) {
 
+        // TODO - Put config method calls in separate file
+        // TIP or TODO - Put config method calls in separate Command object, call via Runnable when needed
+        //    --> When needed: when a module's motor could hypothetically reboot during a match
+
         turnEncoder = new CANCoder(turnCANCoderID);
         turnEncoder.configFactoryDefault();
 
