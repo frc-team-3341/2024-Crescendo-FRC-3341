@@ -40,7 +40,7 @@ public final class Constants {
 
         // Initially 0 until we calibrate the modules 12/9
         // As of 12/16 -> LAST TESTING DAY -> Only have correct offset of 1 module
-        public static final double[] moduleAngleOffsets = {-52.29, 187.6, 109.4, 85.2};
+        public static final double[] moduleAngleOffsets = {0, 0, 0, 0};
 
         public static final boolean[] moduleInverts = {false, true, false, true};
     }
@@ -53,17 +53,18 @@ public final class Constants {
         public static final double turnGearRatio = 150.0/7.0; // For SDS MK4i module
         public static final double CANCoderGearRatio = 1.0; // Direct measurement
 
+        // Both of these measurements should be correct
         // In rotations
         public static final double drivingEncoderPositionFactor = (Math.PI * wheelDiameterMeters) / driveGearRatio;
         
         // In RPM
-        public static final double velocityPositionFactor = ((Math.PI * wheelDiameterMeters) / driveGearRatio) / 60.0;
+        public static final double drivingEncoderVelocityPositionFactor = ((Math.PI * wheelDiameterMeters) / driveGearRatio) / 60.0;
 
         public static final double turningEncoderPositionFactor = (2 * Math.PI) / turnGearRatio; // radians
         public static final double turningEncoderVelocityFactor = (2 * Math.PI) / turnGearRatio / 60.0; // radians per second
 
-        // Guessed kP
-        public static final double drivekP = 0.05;
+        // Confirmed working kP!!
+        public static final double drivekP = 0.05; // This is good!
         public static final double drivekI = 0.0;
         public static final double drivekD = 0.0;
 
@@ -84,8 +85,7 @@ public final class Constants {
         // I.e. 3.709 * 0.2695 ~= 1.0
         public static final double drivekF = 1.0/maxFreeWheelSpeedMeters;
 
-        // Confirmed working kP!!
-        public static final double turnkP = 0.01; // This is good!
+        public static final double turnkP = 1.0;
         public static final double turnkI = 0.0;
         public static final double turnkD = 0.0;
 

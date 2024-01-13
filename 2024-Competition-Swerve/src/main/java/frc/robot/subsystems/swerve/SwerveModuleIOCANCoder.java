@@ -5,10 +5,8 @@
 package frc.robot.subsystems.swerve;
 
 import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-import com.ctre.phoenix.sensors.SensorTimeBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -37,17 +35,15 @@ import frc.robot.Constants.ModuleConstants;
  * 
  * @author Aric Volman
  */
-public class SwerveModuleIOSparkMax implements SwerveModuleIO {
+public class SwerveModuleIOCANCoder implements SwerveModuleIO {
     private CANSparkMax driveSparkMax;
     private CANSparkMax turnSparkMax;
 
     private SparkPIDController drivePID;
-    private SparkPIDController turnPID;
+    private PIDController turnPID;
 
     private RelativeEncoder driveEncoder;
-    private RelativeEncoder turnEncoder;
-
-    private CANCoder canCoder;
+    private CANCoder turnEncoder;
 
     // Variables to store voltages of motors - REV stuff doesn't like getters
     private double driveVolts = 0.0;
@@ -71,12 +67,15 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
      * @param turnEncoderOffset Offset in degrees for module (from -180 to 180)
      * @author Aric Volman
      */
-    public SwerveModuleIOSparkMax(int num, int driveID, int turnID, int turnCANCoderID, double turnEncoderOffset,
+    public SwerveModuleIOCANCoder(int num, int driveID, int turnID, int turnCANCoderID, double turnEncoderOffset,
             boolean invert) {
 
         // TODO - Put config method calls in separate file
         // TIP or TODO - Put config method calls in separate Command object, call via Runnable when needed
         //    --> When needed: when a module's motor could hypothetically reboot during a match
+
+        turnEncoder = new CANCoder(turnCANCoderID);
+        turnEncoder.configFactoryDefault();
 
         offset = turnEncoderOffset;
 
@@ -88,29 +87,18 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         driveSparkMax.restoreFactoryDefaults();
         turnSparkMax.restoreFactoryDefaults();
 
+        turnPID = new PIDController(Constants.ModuleConstants.turnkP, 0, 0);
+
+        // turnSparkMax.setInverted(true);
+
         // Initialize encoder and PID controller
         driveEncoder = driveSparkMax.getEncoder();
         drivePID = driveSparkMax.getPIDController();
         drivePID.setFeedbackDevice(driveEncoder);
 
-        turnEncoder = turnSparkMax.getEncoder();
-        turnPID = turnSparkMax.getPIDController();
-        turnPID.setFeedbackDevice(turnEncoder);
-
         // Set conversion factors
         driveEncoder.setPositionConversionFactor(ModuleConstants.drivingEncoderPositionFactor);
         driveEncoder.setVelocityConversionFactor(ModuleConstants.drivingEncoderVelocityPositionFactor);
-
-        turnEncoder.setPositionConversionFactor(ModuleConstants.turningEncoderPositionFactor);
-        turnEncoder.setVelocityConversionFactor(ModuleConstants.turningEncoderVelocityFactor);
-
-        // Derived from: https://github.com/BroncBotz3481/YAGSL-Configs/tree/main/sds/mk4i/neo
-        turnSparkMax.setInverted(true); // True for MK4i - which is inverted
-        // Need to explore this one!!!
-
-        turnPID.setPositionPIDWrappingEnabled(true);
-        turnPID.setPositionPIDWrappingMinInput(-Math.PI);
-        turnPID.setPositionPIDWrappingMaxInput(Math.PI);
 
         // Set SPARK MAX PIDF
         // More advantageous due to 1 KHz cycle (can ramp up action quicker)
@@ -123,32 +111,36 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         driveSparkMax.setInverted(invert);
 
         driveSparkMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        turnSparkMax.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        turnSparkMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
         driveSparkMax.setSmartCurrentLimit(ModuleConstants.driveCurrentLimit);
         turnSparkMax.setSmartCurrentLimit(ModuleConstants.turnCurrentLimit);
 
         driveSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
         turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
-        turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
+
+        // Only useful for encoder
+        // turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
+
+        driveEncoder.setPosition(0);
+
+        // Set position of encoder to absolute mode
+        turnEncoder.setPositionToAbsolute();
+        turnEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
+        // As of 12/16 -> Changed to +- 180 instead
+        // Now this is from -90 to 0 to 90
+        turnEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
+        // turnEncoder.configSensorDirection(true);
+        // turnEncoder.configMagnetOffset(turnEncoderOffset);
 
         turnPID.setP(Constants.ModuleConstants.turnkP);
         turnPID.setI(Constants.ModuleConstants.turnkI);
         turnPID.setD(Constants.ModuleConstants.turnkD);
-        turnPID.setFF(0);
-        turnPID.setOutputRange(-1, 1);
 
-        driveEncoder.setPosition(0);
+        // Continous input jumping from 0 to 2*PI
+        // Not advisable for Derivative constant
+        turnPID.enableContinuousInput(0, 2 * Math.PI);
 
-        CANCoderConfiguration canCoderConfiguration = new CANCoderConfiguration();
-        canCoderConfiguration.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
-        canCoderConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-        canCoderConfiguration.sensorTimeBase = SensorTimeBase.PerSecond;
-    
-        canCoder.configFactoryDefault();
-        canCoder.configAllSettings(canCoderConfiguration);
-       
-        //turnEncoder.setPosition(Units.degreesToRadians(canCoder.getAbsolutePosition() - turnEncoderOffset));
-        state.angle = new Rotation2d(turnEncoder.getPosition());
+        this.state.angle = new Rotation2d(getTurnPositionInRad());
 
         this.num = num;
 
@@ -156,12 +148,12 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
     public double getTurnPositionInRad() {
         // Divide by 1.0, as CANCoder has direct measurement of output
-        return Units.degreesToRadians(turnEncoder.getPosition() - offset);
+        return Units.degreesToRadians(turnEncoder.getAbsolutePosition() - offset);
     }
 
     public void setDesiredState(SwerveModuleState state) {
         // Optimize state so that movement is minimized
-        state = frc.util.lib.OnboardModuleState.optimize(state, new Rotation2d(getTurnPositionInRad()));
+        state = SwerveModuleState.optimize(state, new Rotation2d(getTurnPositionInRad()));
 
         // Cap setpoints at max speeds for safety
         state.speedMetersPerSecond = MathUtil.clamp(state.speedMetersPerSecond,
@@ -172,7 +164,13 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         drivePID.setReference(state.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
 
         // Set setpoint of WPILib PID controller for turning
-        this.turnPID.setReference(state.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+        this.turnPID.setSetpoint(state.angle.getRadians());
+
+        // Calculate PID in motor power (from -1.0 to 1.0)
+        double turnOutput = MathUtil.clamp(this.turnPID.calculate(getTurnPositionInRad()), -1.0, 1.0);
+
+        // Set voltage of SPARK MAX
+        turnSparkMax.setVoltage(turnOutput * 12.0);
 
         // Set internal state as passed-in state
         this.state = state;
@@ -250,7 +248,7 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         SmartDashboard.putNumber("Drive RPS #" + this.num,
                 driveEncoder.getVelocity() / Constants.ModuleConstants.drivingEncoderPositionFactor);
 
-        SmartDashboard.putNumber("Raw CanCODER #" + this.num, canCoder.getAbsolutePosition());
+        SmartDashboard.putNumber("Raw CanCODER #" + this.num, turnEncoder.getAbsolutePosition());
     }
 
     public int getNum() {

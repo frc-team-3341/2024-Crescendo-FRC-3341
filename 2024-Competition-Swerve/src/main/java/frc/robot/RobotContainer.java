@@ -11,7 +11,7 @@ import frc.robot.commands.TestFourModules;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
-import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
+import frc.robot.subsystems.swerve.SwerveModuleIOCANCoder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -58,7 +58,7 @@ public class RobotContainer {
   // Checks if using xBox or keyboard
   // False : keyboard
   // True : Xbox
-  public static final boolean isXbox = false;
+  public static final boolean isXbox = true;
 
   // If we need to data log or not
   // Works in simulation
@@ -121,7 +121,7 @@ public class RobotContainer {
     } else {
       // Construct swerve modules with real motors
       for (int i = 0; i < swerveMods.length; i++) {
-        swerveMods[i] = new SwerveModuleIOSparkMax(i, Constants.SwerveConstants.moduleCANIDs[i][0],
+        swerveMods[i] = new SwerveModuleIOCANCoder(i, Constants.SwerveConstants.moduleCANIDs[i][0],
             Constants.SwerveConstants.moduleCANIDs[i][1], Constants.SwerveConstants.moduleCANIDs[i][2],
             Constants.SwerveConstants.moduleAngleOffsets[i], Constants.SwerveConstants.moduleInverts[i]);
       }
@@ -167,7 +167,7 @@ public class RobotContainer {
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
-    teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
+    teleopCommandChooser.setDefaultOption("Module Test Command", allFour);
 
     if (autoOrNot) {
       auto = new SwerveAuto("Example Path", this.swerve);
