@@ -4,17 +4,15 @@
 
 package frc.robot.subsystems.swerve;
 
-import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
+import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-import com.ctre.phoenix.sensors.SensorTimeBase;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -172,13 +170,14 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     }
 
     public double getTurnPositionInRad() {
-        // return new Rotation2d(turnEncoder.getPosition() - offset).getRadians();
         // Position should be already offsetted in constructor
         return new Rotation2d(turnEncoder.getPosition()).getRadians();
     }
 
     public void setDesiredState(SwerveModuleState state) {
         // Optimize state so that movement is minimized
+        // Should be fine optimizing with PID strategy of -180 to 180 scope, not 0 to 360 scope
+        // https://first.wpi.edu/wpilib/allwpilib/docs/release/java/src-html/edu/wpi/first/math/kinematics/SwerveModuleState.html#line.65
         state = SwerveModuleState.optimize(state, new Rotation2d(getTurnPositionInRad()));
 
         // Cap setpoints at max speeds for safety
@@ -251,9 +250,10 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         SmartDashboard.putNumber("Wheel Displacement #" + this.num, getPosition().distanceMeters);
 
         // Show turning position and setpoints
-        SmartDashboard.putNumber("Turn Pos Degrees #" + this.num, Units.radiansToDegrees(this.getTurnPositionInRad()));
+        SmartDashboard.putNumber("Turn Pos Deg #" + this.num, Units.radiansToDegrees(this.getTurnPositionInRad()));
         SmartDashboard.putNumber("Radian Turn Pos #" + num, getTurnPositionInRad());
         SmartDashboard.putNumber("Setpoint Turn Pos #" + this.num, state.angle.getRadians());
+        SmartDashboard.putNumber("Setpoint Turn Pos Deg #" + this.num, Units.radiansToDegrees(state.angle.getRadians()));
 
         // Show driving velocity and setpoints
         SmartDashboard.putNumber("Drive Vel #" + this.num, driveEncoder.getVelocity());

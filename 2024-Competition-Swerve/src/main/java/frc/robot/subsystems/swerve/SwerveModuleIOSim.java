@@ -63,8 +63,8 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
     */
    public SwerveModuleIOSim(int num) {
       this.num = num;
-      // This should be correct!
-      turnPID.enableContinuousInput(0, Math.PI * 2);
+      // This should be correct! Scope: -180 to 180
+      turnPID.enableContinuousInput(-Math.PI, Math.PI);
    }
 
    public void setDriveVoltage(double voltage) {

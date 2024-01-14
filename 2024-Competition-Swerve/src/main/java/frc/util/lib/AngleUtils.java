@@ -1,19 +1,14 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.util.lib;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
-public class OnboardModuleState {
-
-  /**
-   * Minimize the change in heading the desired swerve module state would require by potentially
-   * reversing the direction the wheel spins. Customized from WPILib's version to include placing in
-   * appropriate scope for CTRE and REV onboard control as both controllers as of writing don't have
-   * support for continuous input.
-   *
-   * @param desiredState The desired state.
-   * @param currentAngle The current module angle.
-   */
+public final class AngleUtils {
+  
   public static SwerveModuleState optimize(
       SwerveModuleState desiredState, Rotation2d currentAngle) {
     double targetAngle =

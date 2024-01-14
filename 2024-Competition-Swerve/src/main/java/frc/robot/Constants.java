@@ -41,6 +41,7 @@ public final class Constants {
         // Initially 0 until we calibrate the modules 12/9
         // As of 1/13-> LAST TESTING DAY -> Only have correct offset of 1 module
         // WRONG OFFSETS: DO NOT USE [0, 360) degrees to measure swerve offsets
+        // ONLY USE [-180, 180)
         // public static final double[] moduleAngleOffsets = {309, 186, 113, 84};
         public static final double[] moduleAngleOffsets = {0, 0, 0, 0};
 
