@@ -39,8 +39,11 @@ public final class Constants {
         public static final int[][] moduleCANIDs = {{1, 2, 9}, {3, 4, 10}, {5, 6, 11}, {7, 8, 12}};
 
         // Initially 0 until we calibrate the modules 12/9
-        // As of 12/16 -> LAST TESTING DAY -> Only have correct offset of 1 module
-        public static final double[] moduleAngleOffsets = {309, 186, 113, 84};
+        // As of 1/13-> LAST TESTING DAY -> Only have correct offset of 1 module
+        // WRONG OFFSETS: DO NOT USE [0, 360) degrees to measure swerve offsets
+        // ONLY USE [-180, 180)
+        // public static final double[] moduleAngleOffsets = {309, 186, 113, 84};
+        public static final double[] moduleAngleOffsets = {0, 0, 0, 0};
 
         public static final boolean[] moduleInverts = {false, true, false, true};
     }
@@ -85,7 +88,7 @@ public final class Constants {
         // I.e. 3.709 * 0.2695 ~= 1.0
         public static final double drivekF = 1.0/maxFreeWheelSpeedMeters;
 
-        public static final double turnkP = 1.0;
+        public static final double turnkP = 1.0; // Works as of 1/13/24!
         public static final double turnkI = 0.0;
         public static final double turnkD = 0.0;
 

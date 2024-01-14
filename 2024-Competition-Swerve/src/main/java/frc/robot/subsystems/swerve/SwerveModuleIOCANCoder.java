@@ -138,7 +138,7 @@ public class SwerveModuleIOCANCoder implements SwerveModuleIO {
 
         // Continous input jumping from 0 to 2*PI
         // Not advisable for Derivative constant
-        turnPID.enableContinuousInput(0, 2 * Math.PI);
+        turnPID.enableContinuousInput(-Math.PI, Math.PI);
 
         this.state.angle = new Rotation2d(getTurnPositionInRad());
 
