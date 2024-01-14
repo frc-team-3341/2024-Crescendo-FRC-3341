@@ -53,7 +53,7 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     private double driveVolts = 0.0;
     private double turnVolts = 0.0;
 
-    double offset;
+    double offset = 0.0;
 
     // Object to hold swerve module state
     private SwerveModuleState state = new SwerveModuleState(0.0, new Rotation2d(0.0));
@@ -80,6 +80,8 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
         offset = turnEncoderOffset;
 
+         canCoder = new CANCoder(turnCANCoderID);
+        canCoder.configFactoryDefault();
         // Construct CANSparkMaxes
         driveSparkMax = new CANSparkMax(driveID, MotorType.kBrushless);
         turnSparkMax = new CANSparkMax(turnID, MotorType.kBrushless);
@@ -123,7 +125,7 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         driveSparkMax.setInverted(invert);
 
         driveSparkMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        turnSparkMax.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        turnSparkMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
         driveSparkMax.setSmartCurrentLimit(ModuleConstants.driveCurrentLimit);
         turnSparkMax.setSmartCurrentLimit(ModuleConstants.turnCurrentLimit);
 
@@ -139,15 +141,15 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
         driveEncoder.setPosition(0);
 
-        CANCoderConfiguration canCoderConfiguration = new CANCoderConfiguration();
-        canCoderConfiguration.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
-        canCoderConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-        canCoderConfiguration.sensorTimeBase = SensorTimeBase.PerSecond;
-    
-        canCoder.configFactoryDefault();
-        canCoder.configAllSettings(canCoderConfiguration);
+                // Set position of encoder to absolute mode
+                canCoder.setPositionToAbsolute();
+                canCoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
+                // As of 12/16 -> Changed to +- 180 instead
+                // Now this is from -90 to 0 to 90
+                // turnEncoder.configSensorDirection(true);
+                // turnEncoder.configMagnetOffset(turnEncoderOffset);
        
-        //turnEncoder.setPosition(Units.degreesToRadians(canCoder.getAbsolutePosition() - turnEncoderOffset));
+        turnEncoder.setPosition(Units.degreesToRadians(canCoder.getAbsolutePosition() - turnEncoderOffset));
         state.angle = new Rotation2d(turnEncoder.getPosition());
 
         this.num = num;
@@ -156,12 +158,12 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
     public double getTurnPositionInRad() {
         // Divide by 1.0, as CANCoder has direct measurement of output
-        return Units.degreesToRadians(turnEncoder.getPosition() - offset);
+        return new Rotation2d(turnEncoder.getPosition()- offset).getRadians();
     }
 
     public void setDesiredState(SwerveModuleState state) {
         // Optimize state so that movement is minimized
-        state = frc.util.lib.OnboardModuleState.optimize(state, new Rotation2d(getTurnPositionInRad()));
+        state = SwerveModuleState.optimize(state, new Rotation2d(getTurnPositionInRad()));
 
         // Cap setpoints at max speeds for safety
         state.speedMetersPerSecond = MathUtil.clamp(state.speedMetersPerSecond,
@@ -228,13 +230,13 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     }
 
     public void updateTelemetry() {
+        
         SmartDashboard.putNumber("Max Free Speed", ModuleConstants.maxFreeWheelSpeedMeters);
         SmartDashboard.putNumber("Wheel Displacement #" + this.num, getPosition().distanceMeters);
 
         // Show turning position and setpoints
-        SmartDashboard.putNumber("Turn Pos Degrees #" + this.num,
-                Units.radiansToDegrees(getTurnPositionInRad()));
-        SmartDashboard.putNumber("Raw Turn Pos #" + num, getTurnPositionInRad());
+        SmartDashboard.putNumber("Turn Pos Degrees #" + this.num, Units.radiansToDegrees(turnEncoder.getPosition()));
+        SmartDashboard.putNumber("Radian Turn Pos #" + num, getTurnPositionInRad());
         SmartDashboard.putNumber("Setpoint Turn Pos #" + this.num, state.angle.getRadians());
 
         // Show driving velocity and setpoints
@@ -249,8 +251,8 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         SmartDashboard.putNumber("Turn RPM #" + this.num, (turnEncoder.getVelocity() / 360.0) * 60.0);
         SmartDashboard.putNumber("Drive RPS #" + this.num,
                 driveEncoder.getVelocity() / Constants.ModuleConstants.drivingEncoderPositionFactor);
-
-        SmartDashboard.putNumber("Raw CanCODER #" + this.num, canCoder.getAbsolutePosition());
+        SmartDashboard.putNumber("CANCoder" + this.num, canCoder.getAbsolutePosition());
+          
     }
 
     public int getNum() {
