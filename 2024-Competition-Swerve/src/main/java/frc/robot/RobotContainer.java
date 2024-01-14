@@ -11,6 +11,7 @@ import frc.robot.commands.TestFourModules;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
+import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
 import frc.robot.subsystems.swerve.SwerveModuleIOCANCoder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -121,7 +122,7 @@ public class RobotContainer {
     } else {
       // Construct swerve modules with real motors
       for (int i = 0; i < swerveMods.length; i++) {
-        swerveMods[i] = new SwerveModuleIOCANCoder(i, Constants.SwerveConstants.moduleCANIDs[i][0],
+        swerveMods[i] = new SwerveModuleIOSparkMax(i, Constants.SwerveConstants.moduleCANIDs[i][0],
             Constants.SwerveConstants.moduleCANIDs[i][1], Constants.SwerveConstants.moduleCANIDs[i][2],
             Constants.SwerveConstants.moduleAngleOffsets[i], Constants.SwerveConstants.moduleInverts[i]);
       }

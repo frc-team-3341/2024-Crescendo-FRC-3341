@@ -40,7 +40,7 @@ public final class Constants {
 
         // Initially 0 until we calibrate the modules 12/9
         // As of 12/16 -> LAST TESTING DAY -> Only have correct offset of 1 module
-        public static final double[] moduleAngleOffsets = {0, 0, 0, 0};
+        public static final double[] moduleAngleOffsets = {309, 186, 113, 84};
 
         public static final boolean[] moduleInverts = {false, true, false, true};
     }
