@@ -62,7 +62,7 @@ public class SwerveDrive extends SubsystemBase {
 
       // Initialize all other objects
       this.kinematics = new SwerveDriveKinematics(SwerveUtil.getModuleTranslations());
-      // Can set any robot pose here (x, y, theta)
+      // Can set any robot pose here (x, y, theta) -> Built in Kalman Filter
       // FUTURE: Seed pose with CV
       // Auto is field-oriented
       this.poseEstimator = new SwerveDrivePoseEstimator(this.kinematics, new Rotation2d(), this.modulePositions,
@@ -86,7 +86,8 @@ public class SwerveDrive extends SubsystemBase {
 
       // Put field on SmartDashboard
       SmartDashboard.putData("Field", this.field);
-      SmartDashboard.putNumberArray("States", SwerveUtil.getDoubleStates(getActualStates()));
+      SmartDashboard.putNumberArray("Actual States", SwerveUtil.getDoubleStates(getActualStates()));
+      SmartDashboard.putNumberArray("Setpoint States", SwerveUtil.getDoubleStates(getSetpointStates()));
       SmartDashboard.putNumber("Robot Rotation", getPoseFromEstimator().getRotation().getRadians());
    }
 

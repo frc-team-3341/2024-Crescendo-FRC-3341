@@ -80,7 +80,6 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
    public void setDesiredState(SwerveModuleState state) {
 
       // Optimize state so that movement is minimized
-      // Turns out you can optimize with SwerveModuleState and a Rotation2d
       state = SwerveModuleState.optimize(state, new Rotation2d(getTurnPositionInRad()));
 
       // Cap setpoints at max speeds for safety
@@ -122,10 +121,10 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
    }
 
    public double getTurnPositionInRad() {
-      // FIX: Modulo the angle of the sim by 2PI to wrap it around to 0!
-      double rawAngle = Math.signum(this.turnSim.getAngularPositionRad())
-            * (Math.abs(this.turnSim.getAngularPositionRad()) % (Math.PI * 2));
-      return rawAngle;
+      // FIX: Modulo the angle of the sim to wrap it around!
+      // Same fix applies to the real robot
+      return MathUtil.angleModulus(this.turnSim.getAngularPositionRad());
+
    }
 
    public SwerveModuleState getActualModuleState() {
