@@ -98,7 +98,7 @@ public class TestFourModules extends Command {
           turnVoltage = 12.0;
         }
 
-        swerve.setModuleVoltage(driveVoltage*-joy.getRawAxis(1), -turnVoltage*-joy.getRawAxis(5), index);
+        swerve.setModuleVoltage(driveVoltage*-joy.getRawAxis(1), turnVoltage*-joy.getRawAxis(5), index);
       }
     
     // Velocity mode

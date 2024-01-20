@@ -159,6 +159,27 @@ public class SwerveUtil {
         }
     }
 
+     /**
+     * Adds fake gyro to the Swerve subsystem. Works together with integration of
+     * angle and SwerveModuleIO. Requires the use of the SwerveModuleIO interface.
+     * 
+     * @param moduleIO     Array of module interface class to use
+     * @param actualStates Array of swerve module states
+     * @param kinematics   Object representing kinematics class
+     */
+    public static double addFakeGyro(SwerveModuleIO[] moduleIO, SwerveModuleState[] actualStates,
+            SwerveDriveKinematics kinematics) {
+
+        // Find omega/angular velocity of chassis' rotation
+        // Robot oriented speeds, not field oriented
+        double omega = kinematics.toChassisSpeeds(actualStates).omegaRadiansPerSecond;
+
+        // Integrate dAngle into angular displacement
+        SwerveUtil.integratedSimAngle += 0.02 * omega * (180 / Math.PI); // convert dradians to degrees
+
+        return SwerveUtil.integratedSimAngle;
+    }
+
     /**
      * Updates all telemetry for the module every 20 ms in periodic. Very important!
      */

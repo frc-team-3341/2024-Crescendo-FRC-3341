@@ -52,6 +52,9 @@ public class CrabDrive extends Command {
       double xVal = -this.x.getAsDouble(); // Flip for XBox support
       double yVal = this.y.getAsDouble();
 
+      xVal = MathUtil.applyDeadband(xVal, Constants.SwerveConstants.deadBand);
+      yVal = MathUtil.applyDeadband(yVal, Constants.SwerveConstants.deadBand);
+
       double[] output = new double[2];
       if (RobotContainer.isXbox) {
          output = joyUtil.regularGamePadControls(xVal, yVal, 
@@ -72,7 +75,7 @@ public class CrabDrive extends Command {
 
       // Drive swerve with values
       this.swerve.drive(new Translation2d(correctedX, correctedY), 0.0,
-           false, true);
+           false, false);
    }
 
    // Called once the command ends or is interrupted.
