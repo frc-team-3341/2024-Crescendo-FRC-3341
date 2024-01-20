@@ -75,6 +75,9 @@ public class SwerveTeleop extends Command {
       double xVal = -this.x.getAsDouble(); // Flip for XBox support
       double yVal = this.y.getAsDouble();
 
+      xVal = MathUtil.applyDeadband(xVal, Constants.SwerveConstants.deadBand);
+      yVal = MathUtil.applyDeadband(yVal, Constants.SwerveConstants.deadBand);
+
       double rotationVal = this.rotationSup.getAsDouble();
       rotationVal = MathUtil.applyDeadband(rotationVal, Constants.SwerveConstants.deadBand);
 
