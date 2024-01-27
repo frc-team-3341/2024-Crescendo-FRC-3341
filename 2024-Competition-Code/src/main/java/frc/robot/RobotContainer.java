@@ -102,8 +102,8 @@ public class RobotContainer {
   // Empty CrabDrive object
   private CrabDrive crabDrive;
 
-  // Auto Trajectoriess
-  private final SwerveAuto DriveToSpeaker1 = new SwerveAuto("", swerve)
+  // Auto Trajectories
+  private final SwerveAuto driveToSpeaker1 = new SwerveAuto("DriveToSpeaker1.path", swerve);
 
   public RobotContainer() {
 
