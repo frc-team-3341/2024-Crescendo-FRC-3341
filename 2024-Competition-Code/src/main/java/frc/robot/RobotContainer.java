@@ -103,7 +103,7 @@ public class RobotContainer {
   private CrabDrive crabDrive;
 
   // Auto Trajectories
-  private final SwerveAuto driveToSpeaker2 = new SwerveAuto("DriveToSpeaker2.path", swerve);
+  private final SwerveAuto startToAmp1 = new SwerveAuto("StartToAmp1.path", swerve);
 
   public RobotContainer() {
 
@@ -190,7 +190,7 @@ public class RobotContainer {
     // } else {
     //   return null;
     // }
-    return driveToSpeaker2;
+    return startToAmp1;
   }
 
   public void initCommandInTeleop() {
