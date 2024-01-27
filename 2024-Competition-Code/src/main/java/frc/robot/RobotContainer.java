@@ -4,10 +4,13 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.CrabDrive;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.SwerveAuto;
 import frc.robot.commands.SwerveTeleop;
 import frc.robot.commands.TestFourModules;
+import frc.robot.subsystems.swerve.Intake;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
@@ -80,6 +83,7 @@ public class RobotContainer {
   // Xbox + an additional one for PC use
   private final Joystick actualXbox = new Joystick(0);
   private final Joystick additionalJoy = new Joystick(1);
+  private final Joystick intakeJoy = new Joystick(2);
   // Chooser for testing teleop commands
   private final SendableChooser<Command> teleopCommandChooser = new SendableChooser<>();
 
@@ -101,6 +105,8 @@ public class RobotContainer {
   private SwerveTeleop teleop;
   // Empty CrabDrive object
   private CrabDrive crabDrive;
+  //Empty Intake object
+  private Intake intake;
 
   public RobotContainer() {
 
@@ -170,6 +176,8 @@ public class RobotContainer {
     teleopCommandChooser.addOption("Module Test Command", allFour);
     teleopCommandChooser.setDefaultOption("Module Test Command", allFour);
 
+    intake = new Intake();
+
     if (autoOrNot) {
       auto = new SwerveAuto("Example Path", this.swerve);
     }
@@ -179,6 +187,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    JoystickButton triggerIntake = new JoystickButton(intakeJoy, Constants.ButtonMap.intakeNote);
+    triggerIntake.onTrue(new IntakeCommand(0.6, intake));
   }
 
   public Command getAutonomousCommand() {

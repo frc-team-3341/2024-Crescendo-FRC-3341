@@ -20,6 +20,21 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
+    public static final class IntakeConstants {
+        public static final int beamBreak1 = 1;
+        public static final int beamBreak2 = 9;
+        public static final int feeder = 3;
+        public static final int shooter = 4;
+    }
+    public static final class feedForwardConsts {
+        public static final double kS = 0.80824;
+        public static final double kV = 0.12407;
+        public static final double kA = 0.015099;
+    }
+
+    public static final class ButtonMap{
+        public static final int intakeNote = 2;
+    }
     public static final class SwerveConstants {
         // These can be safely adjusted without adjusting discrete
         // Some fudge factor is needed for safety while translating + rotating
