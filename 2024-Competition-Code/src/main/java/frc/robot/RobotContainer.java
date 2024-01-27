@@ -183,7 +183,8 @@ public class RobotContainer {
   private void configureBindings() {
   }
 
-  public Command getAutonomousCommand() {
+  public Command getAutonomousCommand() { 
+    // TODO: Create auto command switcher/chooser
     return DriveToAmp;
   }
 

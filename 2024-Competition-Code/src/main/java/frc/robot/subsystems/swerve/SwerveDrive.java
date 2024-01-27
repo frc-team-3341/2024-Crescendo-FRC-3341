@@ -88,7 +88,7 @@ public class SwerveDrive extends SubsystemBase {
       SmartDashboard.putData("Field", this.field);
       SmartDashboard.putNumberArray("Actual States", SwerveUtil.getDoubleStates(getActualStates()));
       SmartDashboard.putNumberArray("Setpoint States", SwerveUtil.getDoubleStates(getSetpointStates()));
-      SmartDashboard.putNumber("Robot Rotation", getPoseFromEstimator().getRotation().getRadians());
+      SmartDashboard.putNumber("Robot Rotation", getPoseFromEstimator().getRotation().getDegrees()); // Switch to getRadians() if needed
    }
 
    public void simulationPeriodic() {
