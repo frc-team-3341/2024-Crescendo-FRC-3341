@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.util.Units;
+import frc.robot.subsystems.Shooter;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -99,4 +100,22 @@ public final class Constants {
 
     }
 
+  public final int joystick = 1;
+  public final int buttonUno = 0;
+
+  public static class OperatorConstants {
+    public static final int kDriverControllerPort = 0;
+  }
+  public static class Shooter {
+    public final static int upperShooter = 0;
+    public final static int lowerShooter = 0;
+  }
+  public static final class feedForwardConstants {
+    public static final double kS = 0;
+    public static final double kV = 0;
+    public static final double kA = 0;
+  }
+    public static Object feedForwardConstants;
+    public static Object Shooter;
+   
 }
