@@ -99,4 +99,11 @@ public final class Constants {
 
     }
 
+    public static final class PhotonVisionConstants{
+        public static double cameraHeightMeters = 0;
+        public static double targetHeightMeters = 0;
+        public static double cameraPitchRadians = 0;
+        public static double targetPitchRadians = 0;
+    }
+
 }
