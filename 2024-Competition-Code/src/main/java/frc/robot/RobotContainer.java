@@ -101,6 +101,8 @@ public class RobotContainer {
   private SwerveTeleop teleop;
   // Empty CrabDrive object
   private CrabDrive crabDrive;
+  // Used the object template to create a DriveToAmp object which will have our swerve path 
+  private final SwerveAuto DriveToAmp = new SwerveAuto("DriveToAmp.path", swerve);
 
   public RobotContainer() {
 
@@ -182,11 +184,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    if (autoOrNot) {
-      return auto;
-    } else {
-      return null;
-    }
+    return DriveToAmp;
   }
 
   public void initCommandInTeleop() {
