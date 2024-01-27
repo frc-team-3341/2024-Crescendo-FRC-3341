@@ -102,6 +102,9 @@ public class RobotContainer {
   // Empty CrabDrive object
   private CrabDrive crabDrive;
 
+  // Auto Trajectoriess
+  private final SwerveAuto DriveToSpeaker1 = new SwerveAuto("", swerve)
+
   public RobotContainer() {
 
     if (isDataLog) {
