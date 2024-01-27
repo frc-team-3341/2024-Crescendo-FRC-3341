@@ -185,11 +185,12 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    if (autoOrNot) {
-      return auto;
-    } else {
-      return null;
-    }
+    // if (autoOrNot) {
+    //   return auto;
+    // } else {
+    //   return null;
+    // }
+    return driveToSpeaker1;
   }
 
   public void initCommandInTeleop() {
