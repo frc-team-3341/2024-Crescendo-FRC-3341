@@ -102,6 +102,9 @@ public class RobotContainer {
   // Empty CrabDrive object
   private CrabDrive crabDrive;
 
+  // Auto Trajectories
+  private final SwerveAuto driveToSpeaker1 = new SwerveAuto("DriveToSpeaker1.path", swerve);
+
   public RobotContainer() {
 
     if (isDataLog) {
@@ -182,11 +185,12 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    if (autoOrNot) {
-      return auto;
-    } else {
-      return null;
-    }
+    // if (autoOrNot) {
+    //   return auto;
+    // } else {
+    //   return null;
+    // }
+    return driveToSpeaker1;
   }
 
   public void initCommandInTeleop() {
