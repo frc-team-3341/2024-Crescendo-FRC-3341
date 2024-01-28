@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.swerve.Intake;
+import frc.robot.subsystems.Intake;
 
 public class IntakeCommand extends Command {
   /** Creates a new IntakeCommand. */

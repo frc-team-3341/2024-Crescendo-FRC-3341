@@ -19,7 +19,15 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
+    public static class ShooterConstants {
+        public final static int upperShooter = 17;
+        public final static int lowerShooter = 20;
+      }
+      public static final class feedForwardConstants {
+        public static final double kS = 0;
+        public static final double kV = 0;
+        public static final double kA = 0;
+      }
     public static final class IntakeConstants {
         public static final int beamBreak1 = 1;
         public static final int beamBreak2 = 9;

@@ -10,7 +10,8 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.SwerveAuto;
 import frc.robot.commands.SwerveTeleop;
 import frc.robot.commands.TestFourModules;
-import frc.robot.subsystems.swerve.Intake;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
@@ -80,10 +81,11 @@ public class RobotContainer {
   // Checks if robot is real or not
   private static boolean isSim = Robot.isSimulation();
 
+
   // Xbox + an additional one for PC use
   private final Joystick actualXbox = new Joystick(0);
   private final Joystick additionalJoy = new Joystick(1);
-  private final Joystick intakeJoy = new Joystick(2);
+  private final static Joystick intakeJoy = new Joystick(2);
   // Chooser for testing teleop commands
   private final SendableChooser<Command> teleopCommandChooser = new SendableChooser<>();
 
@@ -107,6 +109,8 @@ public class RobotContainer {
   private CrabDrive crabDrive;
   //Empty Intake object
   private Intake intake;
+
+  private Shooter shooter;
 
   public RobotContainer() {
 
@@ -136,7 +140,6 @@ public class RobotContainer {
     }
 
     this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
-
     if (isXbox) {
       // Supply teleop command with joystick methods - USES LAMBDAS
       teleop = new SwerveTeleop(this.swerve, () -> {
@@ -177,7 +180,8 @@ public class RobotContainer {
     teleopCommandChooser.setDefaultOption("Module Test Command", allFour);
 
     intake = new Intake();
-
+    shooter = new Shooter();
+    
     if (autoOrNot) {
       auto = new SwerveAuto("Example Path", this.swerve);
     }
@@ -198,6 +202,9 @@ public class RobotContainer {
       return null;
     }
   }
+  public static Joystick getIntakeJoy(){
+    return intakeJoy;
+  }
 
   public void initCommandInTeleop() {
     swerve.setDefaultCommand(teleopCommandChooser.getSelected());
@@ -211,5 +218,6 @@ public class RobotContainer {
   public static boolean getSimOrNot() {
     return isSim;
   }
+  
 
 }

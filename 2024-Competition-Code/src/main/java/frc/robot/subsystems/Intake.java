@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.swerve;
+package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -18,6 +18,7 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
   public final WPI_TalonSRX feedwheel = new WPI_TalonSRX(Constants.IntakeConstants.feeder);
+  public final WPI_TalonSRX flywheel = new WPI_TalonSRX(Constants.IntakeConstants.shooter);
   public double ticks2RPS = 4096/10;
   //private double power = 0;
   DigitalInput beamBreak1 = new DigitalInput(Constants.IntakeConstants.beamBreak1);
