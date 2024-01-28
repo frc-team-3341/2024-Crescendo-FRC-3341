@@ -46,7 +46,7 @@ public class RobotContainer {
   // THIS IS A SECOND WARNING!!! THIS IS VERY DANGEROUS.
   // To do trajectory driving or not
   // TREAT THIS LIKE A RED BUTTON
-  private final boolean autoOrNot = false;
+  private final boolean autoOrNot = true;
 
   // Whether to set alliance for teleop driving or not
   private final boolean setAlliance = false;
@@ -103,7 +103,7 @@ public class RobotContainer {
   private CrabDrive crabDrive;
 
   // Auto Trajectories
-  private final SwerveAuto driveToSpeaker1 = new SwerveAuto("DriveToSpeaker1.path", swerve);
+  private final SwerveAuto driveForward;
 
   public RobotContainer() {
 
@@ -133,6 +133,10 @@ public class RobotContainer {
     }
 
     this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
+
+    // Auto Trajectories
+    //driveForward = new SwerveAuto("DriveForward", swerve);
+
 
     if (isXbox) {
       // Supply teleop command with joystick methods - USES LAMBDAS
@@ -174,7 +178,8 @@ public class RobotContainer {
     teleopCommandChooser.setDefaultOption("Module Test Command", allFour);
 
     if (autoOrNot) {
-      auto = new SwerveAuto("Example Path", this.swerve);
+      driveForward = new SwerveAuto("DriveForward", this.swerve);
+      // auto = new SwerveAuto("DriveForward", this.swerve);
     }
 
     SmartDashboard.putData(teleopCommandChooser);
@@ -190,7 +195,7 @@ public class RobotContainer {
     // } else {
     //   return null;
     // }
-    return driveToSpeaker1;
+    return driveForward;
   }
 
   public void initCommandInTeleop() {
