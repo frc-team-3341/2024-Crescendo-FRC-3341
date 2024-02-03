@@ -220,6 +220,12 @@ public class SwerveDrive extends SubsystemBase {
          moduleIO[index].setDesiredState(state);
       }
    }
+   // Uses setModuleSetpoints to reset the PID setpoints to 0; meant solely for resetting setpoints to 0
+   public void resetModuleSetpoints(double velocity, double angle){
+      for(int i = 0; i < 4; i++){
+         setModuleSetpoints(velocity, angle, i);
+      }
+   }
 
    /**
     * Stops the motors of the swerve drive. Useful for stopping all sorts of Commands.
