@@ -277,5 +277,12 @@ public class SwerveDrive extends SubsystemBase {
    public Field2d getField() {
       return field;
    }
+
+   /** Resets position of each module */
+   public void setModulesPositions(double velocity, double angle){
+      for(int i = 0; i < 4; i++){
+         setModuleSetpoints(velocity, angle, i);
+      }
+   }
    
 }
