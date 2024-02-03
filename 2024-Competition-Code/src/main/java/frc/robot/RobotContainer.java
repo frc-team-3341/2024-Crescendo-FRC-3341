@@ -49,7 +49,7 @@ public class RobotContainer {
   private final boolean autoOrNot = true;
 
   // Whether to set alliance for teleop driving or not
-  private final boolean setAlliance = false;
+  private final boolean setAlliance = true;
   
   // Set to blue alliance
   // Only enabled if the setAlliance boolean is enabled
@@ -95,15 +95,13 @@ public class RobotContainer {
   private SwerveDrive swerve;
   // Empty testing commands (not used if not needed)
   private TestFourModules allFour;
-  // Empty Auto object
-  private SwerveAuto auto;
   // Empty SwerveTeleop object
   private SwerveTeleop teleop;
   // Empty CrabDrive object
   private CrabDrive crabDrive;
 
   // Auto Trajectories
-  private final SwerveAuto driveForward;
+  private SwerveAuto driveForward;
 
   public RobotContainer() {
 
@@ -135,7 +133,7 @@ public class RobotContainer {
     this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
 
     // Auto Trajectories
-    //driveForward = new SwerveAuto("DriveForward", swerve);
+    driveForward = new SwerveAuto("DriveForward", swerve);
 
 
     if (isXbox) {
@@ -175,10 +173,10 @@ public class RobotContainer {
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
-    teleopCommandChooser.setDefaultOption("Module Test Command", allFour);
+    teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
 
     if (autoOrNot) {
-      driveForward = new SwerveAuto("DriveForward", this.swerve);
+     // driveForward = new SwerveAuto("DriveForward", this.swerve);
       // auto = new SwerveAuto("DriveForward", this.swerve);
     }
 
