@@ -80,6 +80,8 @@ public class RobotContainer {
   // Xbox + an additional one for PC use
   private final Joystick actualXbox = new Joystick(0);
   private final Joystick additionalJoy = new Joystick(1);
+
+  private final static Joystick joy = new Joystick(2);
   // Chooser for testing teleop commands
   private final SendableChooser<Command> teleopCommandChooser = new SendableChooser<>();
 
@@ -201,5 +203,9 @@ public class RobotContainer {
   public static boolean getSimOrNot() {
     return isSim;
   }
+
+  public static Joystick getJoy(){
+    return joy;
+}
 
 }
