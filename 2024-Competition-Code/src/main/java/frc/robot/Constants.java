@@ -21,18 +21,19 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
     public static class ShooterConstants {
         public final static int upperShooter = 17;
-        public final static int lowerShooter = 20;
-      }
-      public static final class feedForwardConstants {
-        public static final double kS = 0;
-        public static final double kV = 0;
-        public static final double kA = 0;
+        public final static int lowerShooter = 18;
       }
     public static final class IntakeConstants {
         public static final int beamBreak1 = 1;
         public static final int beamBreak2 = 9;
         public static final int feeder = 3;
         public static final int shooter = 4;
+        public static final int feederMax = 18;
+    }
+    public static final class PIDShooterConsts {
+        public static final double kP = 0.1;
+        public static final double kI = 0;
+        public static final double kD = 0;
     }
     public static final class feedForwardConsts {
         public static final double kS = 0.80824;
@@ -92,7 +93,7 @@ public final class Constants {
         public static final double turningEncoderVelocityFactor = (2 * Math.PI) / turnGearRatio / 60.0; // radians per second
 
         // Confirmed working kP!!
-        public static final double drivekP = 0.1; // This is good!
+        public static final double drivekP = 0.01; // This is good!
         public static final double drivekI = 0.0;
         public static final double drivekD = 0.0;
 

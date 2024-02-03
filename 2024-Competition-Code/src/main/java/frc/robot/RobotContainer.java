@@ -193,6 +193,8 @@ public class RobotContainer {
   private void configureBindings() {
     JoystickButton triggerIntake = new JoystickButton(intakeJoy, Constants.ButtonMap.intakeNote);
     triggerIntake.onTrue(new IntakeCommand(0.6, intake));
+    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 3);
+    triggerManualIntake.onTrue(new IntakeCommand(0.8, intake));
   }
 
   public Command getAutonomousCommand() {
