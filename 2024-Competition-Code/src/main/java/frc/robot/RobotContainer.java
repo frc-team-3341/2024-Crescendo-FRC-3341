@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.CrabDrive;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeManual;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.SwerveAuto;
 import frc.robot.commands.SwerveTeleop;
 import frc.robot.commands.TestFourModules;
@@ -108,7 +110,6 @@ public class RobotContainer {
   // Empty CrabDrive object
   private CrabDrive crabDrive;
   //Empty Intake object
-  private Intake intake;
 
   private Shooter shooter;
 
@@ -178,8 +179,6 @@ public class RobotContainer {
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
     teleopCommandChooser.setDefaultOption("Module Test Command", allFour);
-
-    intake = new Intake();
     shooter = new Shooter();
     
     if (autoOrNot) {
@@ -192,9 +191,11 @@ public class RobotContainer {
 
   private void configureBindings() {
     JoystickButton triggerIntake = new JoystickButton(intakeJoy, Constants.ButtonMap.intakeNote);
-    triggerIntake.onTrue(new IntakeCommand(0.6, intake));
-    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 3);
-    triggerManualIntake.onTrue(new IntakeCommand(0.8, intake));
+    triggerIntake.onTrue(new IntakeCommand(0.6, shooter));
+    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 1);
+    triggerManualIntake.whileTrue(new IntakeManual(0.8, shooter));
+    JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 8);
+    triggerShooterButton.whileTrue(new Shoot(2500, shooter));
   }
 
   public Command getAutonomousCommand() {
@@ -203,6 +204,8 @@ public class RobotContainer {
     } else {
       return null;
     }
+    
+    
   }
   public static Joystick getIntakeJoy(){
     return intakeJoy;

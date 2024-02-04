@@ -28,7 +28,7 @@ public final class Constants {
         public static final int beamBreak2 = 9;
         public static final int feeder = 3;
         public static final int shooter = 4;
-        public static final int feederMax = 18;
+        public static final int feederMax = 19;
     }
     public static final class PIDShooterConsts {
         public static final double kP = 0.1;

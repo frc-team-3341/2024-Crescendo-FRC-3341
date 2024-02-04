@@ -5,14 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class IntakeCommand extends Command {
-  /** Creates a new IntakeCommand. */
+
+public class Shoot extends Command {
   private double power;
   private Shooter shooter;
-  public IntakeCommand(double power, Shooter shooter) {
+  /** Creates a new Shoot. */
+  public Shoot(double power, Shooter shooter) {
     this.power = power;
     this.shooter = shooter;
     addRequirements(shooter);
@@ -21,24 +21,23 @@ public class IntakeCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setFeedSimple(power);
+    shooter.setupperSpeed(power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.setFeedSimple(0);
+    shooter.setupperSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return shooter.getSensor();
+    return false;
   }
 }

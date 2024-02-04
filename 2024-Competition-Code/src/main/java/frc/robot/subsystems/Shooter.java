@@ -18,6 +18,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -31,15 +32,20 @@ public class Shooter extends SubsystemBase {
   private RelativeEncoder relativeEncoder2;
   public final CANSparkMax upperShooter = new CANSparkMax(Constants.ShooterConstants.upperShooter, MotorType.kBrushless);
   public final CANSparkMax lowerShooter = new CANSparkMax(Constants.ShooterConstants.lowerShooter, MotorType.kBrushless);
-  public double TicksToRPM = 42.0/60.0/100.0;
+
   public double setPoint;
-  private double power = 1000;
-  private double lowerPower = 1000;
+  private double power = 0;
+  private double lowerPower = 0;
+  private double intakePower = 0;
   private double rpm = 0;
   public SparkPIDController Controller;
   public SparkPIDController lowerController;
-  private SimpleMotorFeedforward neoMotorFeedforward = new SimpleMotorFeedforward(Constants.feedForwardConsts.kS, Constants.feedForwardConsts.kV, Constants.feedForwardConsts.kA);
-  /** Creates a new Shooter. */
+  
+  private RelativeEncoder intakeEncoder;
+  public final CANSparkMax intakeMax = new CANSparkMax(Constants.IntakeConstants.feederMax, MotorType.kBrushless);
+  //private double power = 0;
+  DigitalInput beamBreak1 = new DigitalInput(Constants.IntakeConstants.beamBreak1);
+  DigitalInput beamBreak2 = new DigitalInput(Constants.IntakeConstants.beamBreak2);  /** Creates a new Shooter. */
   public Shooter() {
     upperShooter.restoreFactoryDefaults();
     lowerShooter.restoreFactoryDefaults();
@@ -51,8 +57,8 @@ public class Shooter extends SubsystemBase {
     relativeEncoder2 = lowerShooter.getEncoder();
     
     Controller = upperShooter.getPIDController();
-    Controller.setP(0);
-    Controller.setI(0);
+    Controller.setP(0.0001);
+    Controller.setI(0.000001);
     Controller.setD(0);
     //Controller.setFF(1.0/5891.0); decently working
     Controller.setFF(1.0/6100.0);
@@ -61,9 +67,16 @@ public class Shooter extends SubsystemBase {
     lowerController.setP(0);
     lowerController.setI(0);
     lowerController.setD(0);
-    lowerController.setFF(1.0/5891.0);
+    lowerController.setFF(1.0/6100.0);
     Preferences.initDouble("power", power);
     Preferences.initDouble("Lower Power", lowerPower);
+    Preferences.initDouble("intake Power", intakePower);
+
+    intakeMax.restoreFactoryDefaults();
+    //resetIntakeEncoder();
+    intakeMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    intakeMax.setSmartCurrentLimit(ModuleConstants.driveCurrentLimit);
+    intakeEncoder = intakeMax.getEncoder();
     
     
     
@@ -86,6 +99,10 @@ public class Shooter extends SubsystemBase {
   }
    public void resetupperShooter(){
     relativeEncoder2.setPosition(0);
+  }
+
+  public void resetIntakeEncoder(){
+    intakeEncoder.setPosition(0);
   }
 
   public void setupperSpeed(double setPoint){
@@ -111,21 +128,45 @@ public class Shooter extends SubsystemBase {
     upperShooter.setVoltage(speed*12.0);
   }
 
+  public boolean getSensor(){
+    return !beamBreak1.get();
+  }
+   public boolean getSecondSensor(){
+     return !beamBreak2.get();
+  }
+
+  public double getRPS(){
+    return intakeEncoder.getVelocity();
+  }
+
+  public void setFeedSimple(double setPoint){
+    intakeMax.setVoltage(setPoint*12.0);
+  }
+  
+
   @Override
   public void periodic() {
     power = Preferences.getDouble("power", power);
     lowerPower = Preferences.getDouble("lower power", lowerPower);
+    intakePower = Preferences.getDouble("Intake Power", intakePower);
     //setNeoSpeed(power);
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(5)){
-      rpm = 500;
+      power = 2500;
+    }
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(7)){
+      lowerPower = 2500;
     }
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(6)){
-      rpm= 0;
+      power = 0;
     }
+    
     setupperSpeed(power);
     setlowerSpeed(lowerPower);
-    SmartDashboard.putNumber("joyY", RobotContainer.getIntakeJoy().getY());
+    setFeedSimple(intakePower);
+    
     SmartDashboard.putNumber("rpm", getUpperRPM());
+    SmartDashboard.putBoolean("beamBreak1", getSensor());
+    SmartDashboard.putBoolean("beamBreak2", getSecondSensor());
     // This method will be called once per scheduler run
   }
 }
