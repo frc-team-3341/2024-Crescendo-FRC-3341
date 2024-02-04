@@ -49,7 +49,7 @@ public class RobotContainer {
   private final boolean autoOrNot = false;
 
   // Whether to set alliance for teleop driving or not
-  private final boolean setAlliance = false;
+  private final boolean setAlliance = true;
   
   // Set to blue alliance
   // Only enabled if the setAlliance boolean is enabled
@@ -65,7 +65,7 @@ public class RobotContainer {
   // Works in simulation
   // False : not data log
   // True : will data log
-  public final boolean isDataLog = false;
+  public final boolean isDataLog = true;
 
   // Defines starting pose of robot
   // TODO - Please remove this in future if developing for AprilTags

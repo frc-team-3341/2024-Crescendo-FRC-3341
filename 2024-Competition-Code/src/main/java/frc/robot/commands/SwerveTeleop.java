@@ -30,7 +30,7 @@ public class SwerveTeleop extends Command {
    // Slew rate limit controls
    // Positive limit ensures smooth acceleration (1000 * dt * dControl)
    // Negative limit ensures an ability to stop (0 * dt * dControl)
-   private AsymmetricLimiter translationLimiter = new AsymmetricLimiter(10.0D, 1000.0D);
+   private AsymmetricLimiter translationLimiter = new AsymmetricLimiter(5.0D, 1000.0D);
    private AsymmetricLimiter rotationLimiter = new AsymmetricLimiter(10.0D, 10.0D);
 
    /**
@@ -52,8 +52,8 @@ public class SwerveTeleop extends Command {
       } else {
          // If blue alliance
          if (blueAllianceOrNot) {
-            this.x = y;
-            this.y = x;
+            this.x = x;
+            this.y = y;
             xMult = -1.0;
          // If red alliance
          } else if (!blueAllianceOrNot) {
