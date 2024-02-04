@@ -1,9 +1,3 @@
-package frc.robot.subsystems.intake;
-
-public class XboxController {
-    
-}
-
 package frc.robot;
 
 public class XboxController {
