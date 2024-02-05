@@ -65,7 +65,7 @@ public class RobotContainer {
   // Works in simulation
   // False : not data log
   // True : will data log
-  public final boolean isDataLog = false;
+  public final boolean isDataLog = true;
 
   // Defines starting pose of robot
   // TODO - Please remove this in future if developing for AprilTags

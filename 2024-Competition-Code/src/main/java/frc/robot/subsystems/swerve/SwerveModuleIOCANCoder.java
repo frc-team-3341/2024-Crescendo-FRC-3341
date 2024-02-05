@@ -249,6 +249,7 @@ public class SwerveModuleIOCANCoder implements SwerveModuleIO {
                 driveEncoder.getVelocity() / Constants.ModuleConstants.drivingEncoderPositionFactor);
 
         SmartDashboard.putNumber("Raw CanCODER #" + this.num, turnEncoder.getAbsolutePosition());
+
     }
 
     public int getNum() {
