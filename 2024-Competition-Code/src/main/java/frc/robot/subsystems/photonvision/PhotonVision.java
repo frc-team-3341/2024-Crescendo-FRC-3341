@@ -1,11 +1,14 @@
 package frc.robot.subsystems.photonvision;
 
 
-import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -18,6 +21,7 @@ public class PhotonVision extends SubsystemBase {
     public static boolean hasTarget;
     public double ZAngle; //Angle of rotation to correct with the AprilTag
     public double XOffset; //the X-offset with the AprilTag
+    public PhotonPoseEstimator poseEstimator;
 
 
     public PhotonVision() {
@@ -32,30 +36,6 @@ public class PhotonVision extends SubsystemBase {
         return hasTarget;
     }
 
-//    public Rotation2d getYawOffset(){
-//        Pose2d robotPose;
-//        Pose2d targetPose;
-//        //getYawToPose provides a delta yaw between the robot and the apriltag
-//        //Need to calculate the robot and apriltag pose
-//        //We want to move the robot until the yaw is 0 or within a threshold near 0
-//        //We are using the built-in yaw for now just to get things working <-- Can change and update later
-//        double yaw = this.getYaw();
-//        return Rotation2d.fromDegrees(yaw);
-//    }
-//
-//    public double getXOffset1(){
-//        double distanceToTargetMeters = PhotonUtils.calculateDistanceToTargetMeters(
-//                Constants.PhotonVisionConstants.cameraHeightMeters,
-//                Constants.PhotonVisionConstants.targetHeightMeters,
-//                Constants.PhotonVisionConstants.cameraPitchRadians,
-//                Constants.PhotonVisionConstants.targetPitchRadians
-//        );
-//
-//        Translation2d dist = PhotonUtils.estimateCameraToTargetTranslation(distanceToTargetMeters, Rotation2d.fromRadians(this.getYaw()));
-//        //Should return the x offset from the target (can use y offset to get the distance which can be adjusted for different distances)
-//        return dist.getX();
-//    }
-
     public double getZAngle(){
         return targetPos.getRotation().getZ();
     }
@@ -65,6 +45,22 @@ public class PhotonVision extends SubsystemBase {
     }
 
     //Z Angle can determine if the camera is flat to the april tag <-- Needs calibration first
+
+    public Pose3d getFieldCentricPose(){
+        //Can load custom layouts as well
+        AprilTagFieldLayout aprilTagLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+        // v the position of the camera from the center of the robot
+        Transform3d robotToCamera = new Transform3d(new Translation3d(0,0,0), new Rotation3d(0,0,0));
+        poseEstimator = new PhotonPoseEstimator(aprilTagLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCamera, robotToCamera);
+        return poseEstimator.getReferencePose();
+    }
+
+    public void setPose(Pose3d initPose){
+        //Only use this during initialization
+        poseEstimator.setLastPose(initPose);
+    }
+
+
     @Override
     public void periodic() {
         if (this.targetExists()){
