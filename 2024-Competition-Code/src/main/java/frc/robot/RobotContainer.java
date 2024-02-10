@@ -47,10 +47,10 @@ public class RobotContainer {
   // THIS IS A SECOND WARNING!!! THIS IS VERY DANGEROUS.
   // To do trajectory driving or not
   // TREAT THIS LIKE A RED BUTTON
-  private final boolean autoOrNot = false;
+  private final boolean autoOrNot = true;
 
   // Whether to set alliance for teleop driving or not
-  private final boolean setAlliance = false;
+  private final boolean setAlliance = true;
   
   // Set to blue alliance
   // Only enabled if the setAlliance boolean is enabled
@@ -66,7 +66,7 @@ public class RobotContainer {
   // Works in simulation
   // False : not data log
   // True : will data log
-  public final boolean isDataLog = false;
+  public final boolean isDataLog = true;
 
   // Defines starting pose of robot
   // TODO - Please remove this in future if developing for AprilTags
@@ -96,14 +96,13 @@ public class RobotContainer {
   private SwerveDrive swerve;
   // Empty testing commands (not used if not needed)
   private TestFourModules allFour;
-  // Empty Auto object
-  private SwerveAuto auto;
   // Empty SwerveTeleop object
   private SwerveTeleop teleop;
   // Empty CrabDrive object
   private CrabDrive crabDrive;
 
-  private RIOVision vision;
+  private SwerveAuto driveForward;
+  // private RIOVision vision;
 
   public RobotContainer() {
 
@@ -136,6 +135,10 @@ public class RobotContainer {
     }
 
     this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
+
+    // Auto Trajectories
+    driveForward = new SwerveAuto("DriveForward", swerve);
+
 
     if (isXbox) {
       // Supply teleop command with joystick methods - USES LAMBDAS
@@ -174,10 +177,11 @@ public class RobotContainer {
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
-    teleopCommandChooser.setDefaultOption("Module Test Command", allFour);
+    teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
 
     if (autoOrNot) {
-      auto = new SwerveAuto("Example Path", this.swerve);
+     // driveForward = new SwerveAuto("DriveForward", this.swerve);
+      // auto = new SwerveAuto("DriveForward", this.swerve);
     }
 
     SmartDashboard.putData(teleopCommandChooser);
@@ -188,11 +192,12 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    if (autoOrNot) {
-      return auto;
-    } else {
-      return null;
-    }
+    // if (autoOrNot) {
+    //   return auto;
+    // } else {
+    //   return null;
+    // }
+    return driveForward;
   }
 
   public void initCommandInTeleop() {
