@@ -88,7 +88,7 @@ public class SwerveDrive extends SubsystemBase {
       SmartDashboard.putData("Field", this.field);
       SmartDashboard.putNumberArray("Actual States", SwerveUtil.getDoubleStates(getActualStates()));
       SmartDashboard.putNumberArray("Setpoint States", SwerveUtil.getDoubleStates(getSetpointStates()));
-      SmartDashboard.putNumber("Robot Rotation", getPoseFromEstimator().getRotation().getRadians());
+      SmartDashboard.putNumber("Robot Rotation", getPoseFromEstimator().getRotation().getDegrees()); // Switch to getRadians() if needed
    }
 
    public void simulationPeriodic() {
@@ -218,6 +218,12 @@ public class SwerveDrive extends SubsystemBase {
       if (index >= 0 && index < moduleIO.length) {
          SwerveModuleState state = new SwerveModuleState(driveVel, new Rotation2d(turnPos));
          moduleIO[index].setDesiredState(state);
+      }
+   }
+   // Uses setModuleSetpoints to reset the PID setpoints to 0; meant solely for resetting setpoints to 0
+   public void resetModuleSetpoints(double velocity, double angle){
+      for(int i = 0; i < 4; i++){
+         setModuleSetpoints(velocity, angle, i);
       }
    }
 
