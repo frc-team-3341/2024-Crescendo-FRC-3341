@@ -105,6 +105,28 @@ public final class Constants {
 
     }
 
+     public static class OperatorConstants {
+        public static final int kDriverControllerPort = 0;
+        public static final int extPort = 0;
+      }
+    
+      public static class Measurements{
+        public static final int maxExtension = 0;
+        public static final double ticksToInches = 0;
+      }
+    
+      public static class ButtonMap{
+        public static final int manualOverride = 0;
+      }
+    
+      public static final int joy = 0;
+    
+      public static final double climberConversionFactor = (1/3.0) * Units.inchesToMeters(0.2);
+    
+      public static final double velocityConversionFactor = (1/3.0)/60.0 * Units.inchesToMeters(0.2);
+    
+    public static final double maxExtension = Units.inchesToMeters(26.55);
+  
     public static final class PhotonVisionConstants{
         public static double cameraHeightMeters = 0;
         public static double targetHeightMeters = 0;
