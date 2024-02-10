@@ -49,7 +49,7 @@ public class RobotContainer {
   private final boolean autoOrNot = true;
 
   // Whether to set alliance for teleop driving or not
-  private final boolean setAlliance = false;
+  private final boolean setAlliance = true;
   
   // Set to blue alliance
   // Only enabled if the setAlliance boolean is enabled
@@ -65,7 +65,7 @@ public class RobotContainer {
   // Works in simulation
   // False : not data log
   // True : will data log
-  public final boolean isDataLog = false;
+  public final boolean isDataLog = true;
 
   // Defines starting pose of robot
   // TODO - Please remove this in future if developing for AprilTags
@@ -95,15 +95,17 @@ public class RobotContainer {
   private SwerveDrive swerve;
   // Empty testing commands (not used if not needed)
   private TestFourModules allFour;
-  // Empty Auto object
-  private SwerveAuto auto;
   // Empty SwerveTeleop object
   private SwerveTeleop teleop;
   // Empty CrabDrive object
   private CrabDrive crabDrive;
 
   // Auto Trajectories
+<<<<<<< HEAD
   private final SwerveAuto driveForward;
+=======
+  private SwerveAuto driveForward;
+>>>>>>> f865c7089537cc53a41241f490594a9ba30efbdc
 
   public RobotContainer() {
 
@@ -135,7 +137,11 @@ public class RobotContainer {
     this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
 
     // Auto Trajectories
+<<<<<<< HEAD
     //driveForward = new SwerveAuto("DriveForward", swerve);
+=======
+    driveForward = new SwerveAuto("DriveForward", swerve);
+>>>>>>> f865c7089537cc53a41241f490594a9ba30efbdc
 
 
     if (isXbox) {
@@ -175,10 +181,14 @@ public class RobotContainer {
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
-    teleopCommandChooser.setDefaultOption("Module Test Command", allFour);
+    teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
 
     if (autoOrNot) {
+<<<<<<< HEAD
       driveForward = new SwerveAuto("DriveForward", this.swerve);
+=======
+     // driveForward = new SwerveAuto("DriveForward", this.swerve);
+>>>>>>> f865c7089537cc53a41241f490594a9ba30efbdc
       // auto = new SwerveAuto("DriveForward", this.swerve);
     }
 

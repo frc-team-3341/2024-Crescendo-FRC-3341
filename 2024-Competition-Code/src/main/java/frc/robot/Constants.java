@@ -23,18 +23,22 @@ public final class Constants {
     public static final class SwerveConstants {
         // These can be safely adjusted without adjusting discrete
         // Some fudge factor is needed for safety while translating + rotating
-        //public static final double maxChassisTranslationalSpeed = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
-        //public static final double maxWheelLinearVelocityMeters = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
-        public static final double maxChassisTranslationalSpeed = 0.5;
-        public static final double maxWheelLinearVelocityMeters = 0.5;
-        public static final double maxChassisAngularVelocity = Math.PI * 2.0; // A decent number but not fast enough
+      
+        // Max speed is 3.4 m/s
+        public static final double maxChassisTranslationalSpeed = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
+        public static final double maxWheelLinearVelocityMeters = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
+      
+        // public static final double maxChassisTranslationalSpeed = 0.5;
+        // public static final double maxWheelLinearVelocityMeters = 0.5;
+      
+        public static final double maxChassisAngularVelocity = Math.PI * 1.0; // A decent number but not fast enough
 
         public static final double trackWidthX = Units.inchesToMeters(27.5); // 27.5 inch
         public static final double trackWidthY = Units.inchesToMeters(27.5); // 27.5 inch
         public static final double trackWidthHypotenuse = Math.sqrt(Math.pow(trackWidthX, 2) + Math.pow(trackWidthY, 2));
 
         // Joystick deadband for no accidental movement
-        public static final double deadBand = 0.1;
+        public static final double deadBand = 0.05;
 
         // Convenient array of module CAN IDs
         // Convention of first array: Front Left, Front Right, Back Left, Back Right
@@ -70,6 +74,7 @@ public final class Constants {
 
         // Confirmed working kP!!
         public static final double drivekP = 0.1; // This is good!
+        //public static final double drivekP = 0.0;
         public static final double drivekI = 0.0;
         public static final double drivekD = 0.0;
 
@@ -77,8 +82,10 @@ public final class Constants {
         // The 5790 value is the correct empirical value from the woodblocks
         // TODO - Might need to be re-calibrated for carpet or concrete
         public static final double maxRPMWoodBlocks = 5790.0;
+        public static final double maxRPMCarpet = 5280.0;
+
         // Max free speed in RPM originally, converted to RPS native unit
-        public static final double maxFreeSpeed = maxRPMWoodBlocks / 60.0;
+        public static final double maxFreeSpeed = maxRPMCarpet / 60.0;
         // Unit for this: meters/s
         // Calculating it out:
         // 94.6 RPS * pi * 0.1016 m / 8.14 gearing = 3.7094567527 meters / s = 12.1701337 feet / s
@@ -88,13 +95,13 @@ public final class Constants {
         // Calculating it out: 1/3.709 = 0.26958125317 power per meters/second
         // If we want to go to the max speed of 3.709, then multiply velocity error by this constant
         // I.e. 3.709 * 0.2695 ~= 1.0
-        public static final double drivekF = 1.0/maxFreeWheelSpeedMeters;
+        public static final double drivekF = 0.3/maxFreeWheelSpeedMeters;
 
-        public static final double turnkP = 0.3; // Works as of 1/13/24!
+        public static final double turnkP = 0.3; 
         public static final double turnkI = 0.0;
         public static final double turnkD = 0.0;
 
-        public static final int driveCurrentLimit = 40;
+        public static final int driveCurrentLimit = 35;
         public static final int turnCurrentLimit = 20;
 
     }
