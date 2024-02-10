@@ -113,9 +113,10 @@ public class SwerveUtil {
      *                           by omega
      */
     public static ChassisSpeeds discretize(ChassisSpeeds speeds, double discretizeConstant) {
-        if (!RobotContainer.getSimOrNot()) {
+        /*if (!RobotContainer.getSimOrNot()) {
             return speeds;
         }
+    */
 
         double dt = 0.02;
 
