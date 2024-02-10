@@ -95,9 +95,9 @@ public final class Constants {
         // Calculating it out: 1/3.709 = 0.26958125317 power per meters/second
         // If we want to go to the max speed of 3.709, then multiply velocity error by this constant
         // I.e. 3.709 * 0.2695 ~= 1.0
-        public static final double drivekF = 0.3/maxFreeWheelSpeedMeters;
+        public static final double drivekF = 1.0/maxFreeWheelSpeedMeters;
 
-        public static final double turnkP = 0.3; 
+        public static final double turnkP = 0.7; 
         public static final double turnkI = 0.0;
         public static final double turnkD = 0.0;
 
