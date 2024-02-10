@@ -12,7 +12,6 @@ import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
 import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
-import frc.robot.subsystems.swerve.SwerveModuleIOCANCoder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -173,7 +172,10 @@ public class RobotContainer {
 
     if (autoOrNot) {
       driveForward = new SwerveAuto("DriveForward", this.swerve);
+<<<<<<< Updated upstream
       // auto = new SwerveAuto("DriveForward", this.swerve);
+=======
+>>>>>>> Stashed changes
     }
 
     SmartDashboard.putData(teleopCommandChooser);
