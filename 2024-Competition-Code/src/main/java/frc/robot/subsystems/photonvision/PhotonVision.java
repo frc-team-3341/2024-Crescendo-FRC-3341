@@ -14,7 +14,8 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 
 public class PhotonVision extends SubsystemBase {
-    public PhotonCamera photonCamera;
+    public PhotonCamera AprilTagCamera;
+    public PhotonCamera NoteCamera;
     public PhotonPipelineResult result;
     public PhotonTrackedTarget target;
     public Transform3d targetPos;
@@ -25,24 +26,26 @@ public class PhotonVision extends SubsystemBase {
 
 
     public PhotonVision() {
-        photonCamera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+        AprilTagCamera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+        NoteCamera = new PhotonCamera("Microsoft_LifeCam_HD-3000 (1)");
+
         PortForwarder.add(5800, "photonvision", 5800);
-        photonCamera.setPipelineIndex(0);
+
+        AprilTagCamera.setPipelineIndex(0);
+        NoteCamera.setPipelineIndex(0);
     }
 
     public boolean targetExists(){
-        result = photonCamera.getLatestResult();
+        result = AprilTagCamera.getLatestResult();
         hasTarget = result.hasTargets();
         return hasTarget;
     }
 
     public double getZAngle(){
-        return targetPos.getRotation().getZ();
+        return Math.toDegrees(targetPos.getRotation().getAngle());
     }
 
-    public double getXOffset(){
-        return targetPos.getY(); //Y is the left direction but the offset is on a 2D x-axis
-    }
+    public double getXOffset(){return targetPos.getY();} //Y is the left direction but the offset is on a 2D x-axis
 
     //Z Angle can determine if the camera is flat to the april tag <-- Needs calibration first
 
@@ -51,7 +54,7 @@ public class PhotonVision extends SubsystemBase {
         AprilTagFieldLayout aprilTagLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
         // v the position of the camera from the center of the robot
         Transform3d robotToCamera = new Transform3d(new Translation3d(0,0,0), new Rotation3d(0,0,0));
-        poseEstimator = new PhotonPoseEstimator(aprilTagLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCamera, robotToCamera);
+        poseEstimator = new PhotonPoseEstimator(aprilTagLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, AprilTagCamera, robotToCamera);
         return poseEstimator.getReferencePose();
     }
 

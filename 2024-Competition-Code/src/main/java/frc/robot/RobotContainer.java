@@ -1,23 +1,15 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.CrabDrive;
-import frc.robot.commands.SwerveAuto;
-import frc.robot.commands.SwerveTeleop;
-import frc.robot.commands.TestFourModules;
-import frc.robot.subsystems.swerve.SwerveDrive;
-import frc.robot.subsystems.swerve.SwerveModuleIO;
-import frc.robot.subsystems.swerve.SwerveModuleIOSim;
-import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.SwerveTeleop;
+import frc.robot.commands.TargetAprilTag;
+import frc.robot.subsystems.photonvision.PhotonVision;
+import frc.robot.subsystems.swerve.SwerveDrive;
 
 public class RobotContainer {
 
@@ -90,96 +82,16 @@ public class RobotContainer {
 
   // Creates array of swerve modules for use in SwerveDrive object - null in
   // context of code
-  SwerveModuleIO[] swerveMods = new SwerveModuleIO[4];
   // Empty SwerveDrive object
   private SwerveDrive swerve;
   // Empty testing commands (not used if not needed)
-  private TestFourModules allFour;
   // Empty SwerveTeleop object
   private SwerveTeleop teleop;
   // Empty CrabDrive object
-  private CrabDrive crabDrive;
 
   // Auto Trajectories
-  private final SwerveAuto driveForward;
 
   public RobotContainer() {
-
-    if (isDataLog) {
-      // Data logging works on both real + simulated robot with all DriverStation
-      // outputs!
-      DataLogManager.start();
-      DriverStation.startDataLog(DataLogManager.getLog(), false);
-      SmartDashboard.putString("Data Log Folder: ", DataLogManager.getLogDir());
-    }
-
-    // Initialize SwerveDrive object with modules
-    if (isSim) {
-      // Construct swerve modules with simulated motors
-      for (int i = 0; i < swerveMods.length; i++) {
-        swerveMods[i] = new SwerveModuleIOSim(i);
-      }
-
-    } else {
-      // Construct swerve modules with real motors
-      for (int i = 0; i < swerveMods.length; i++) {
-        swerveMods[i] = new SwerveModuleIOSparkMax(i, Constants.SwerveConstants.moduleCANIDs[i][0],
-            Constants.SwerveConstants.moduleCANIDs[i][1], Constants.SwerveConstants.moduleCANIDs[i][2],
-            Constants.SwerveConstants.moduleAngleOffsets[i], Constants.SwerveConstants.moduleInverts[i]);
-      }
-
-    }
-
-    this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
-
-    if (isXbox) {
-      // Supply teleop command with joystick methods - USES LAMBDAS
-      teleop = new SwerveTeleop(this.swerve, () -> {
-        return -this.actualXbox.getRawAxis(translationAxis);
-      }, () -> {
-        return -this.actualXbox.getRawAxis(strafeAxis);
-      }, () -> {
-        return -this.actualXbox.getRawAxis(rotationAxis);
-      }, () -> {
-        return this.actualXbox.getRawAxis(XboxController.Axis.kRightTrigger.value);
-      }, () -> {
-        return true;
-      }, setAlliance, blueAllianceOrNot);
-
-    } else if (!isXbox) {
-      // Supply teleop command with joystick methods - USES LAMBDAS
-      teleop = new SwerveTeleop(this.swerve, () -> {
-        return -this.actualXbox.getX();
-      }, () -> {
-        return -this.actualXbox.getY();
-      }, () -> {
-        return -this.additionalJoy.getRawAxis(0);
-      }, () -> {
-        return 1.0;
-      }, () -> {
-        return true;
-      }, setAlliance, blueAllianceOrNot);
-
-    }
-
-    crabDrive = new CrabDrive(this.swerve, () -> {
-      return -this.actualXbox.getX();
-    }, () -> {
-      return -this.actualXbox.getY();
-    });
-
-    allFour = new TestFourModules(swerve, actualXbox);
-
-    teleopCommandChooser.addOption("Regular Teleop", teleop);
-    teleopCommandChooser.addOption("Crab Teleop", crabDrive);
-    teleopCommandChooser.addOption("Module Test Command", allFour);
-    teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
-
-    if (autoOrNot) {
-      driveForward = new SwerveAuto("DriveForward", this.swerve);
-    }
-
-    SmartDashboard.putData(teleopCommandChooser);
     this.configureBindings();
   }
 
@@ -192,7 +104,7 @@ public class RobotContainer {
     // } else {
     //   return null;
     // }
-    return driveForward;
+    return new TargetAprilTag(new PhotonVision());
   }
 
   public void initCommandInTeleop() {
