@@ -25,7 +25,7 @@ public class Intake extends SubsystemBase {
 
   // Declare a Talon SRX motor controller for the flywheel
     // Initialize the Talon SRX motor controller for the flywheel with a specific port
-  private final WPI_TalonSRX FlyWheelTalon = new WPI_TalonSRX(Constants.IntakePorts);
+  private final CanSparkMAX FlyWheelTalon = new WPI_CanSparkMAX(Constants.IntakePorts);
 
   public Intake(){
       // Set the inversion of the flywheel motor controller (whether it runs in the opposite direction)
@@ -44,7 +44,7 @@ public class Intake extends SubsystemBase {
  }
 
  public void setFlywheelPower(double speed) {
-      FlyWheelTalon.set(ControlMode.PercentOutput, speed);
+  CanSparkMAX.set(ControlMode.PercentOutput, speed);
     }
   
  @Override
@@ -85,7 +85,7 @@ public class Intake extends SubsystemBase {
    
     // Method to retrieve the current drawn by the flywheel motor controller
     public final double getCurrent() {
-      return FlyWheelTalon.getStatorCurrent();
+      return CanSparkMAX.getStatorCurrent();
     }
 
   }
