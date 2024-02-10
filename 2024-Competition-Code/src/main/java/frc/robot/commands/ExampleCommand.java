@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.BeamBreak;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -14,10 +13,6 @@ public class ExampleCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ExampleCommand(BeamBreak subsystem) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
-  }
 
   // Called when the command is initially scheduled.
   @Override

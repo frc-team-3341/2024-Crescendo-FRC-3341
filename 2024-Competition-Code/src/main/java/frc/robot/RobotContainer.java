@@ -8,7 +8,6 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeComm;
-import frc.robot.subsystems.BeamBreak;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final BeamBreak beam = new BeamBreak();
   private final static Joystick joystickCool = new Joystick(0);
   private final Intake intake = new Intake();
   //private final IntakeComm ate = new IntakeComm();
@@ -51,8 +49,8 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     
     JoystickButton fries = new JoystickButton(joystickCool, 11);
-    IntakeComm ate = new IntakeComm(intake, beam, 0.5);
-    fries.onTrue(ate);
+  
+    
 
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
