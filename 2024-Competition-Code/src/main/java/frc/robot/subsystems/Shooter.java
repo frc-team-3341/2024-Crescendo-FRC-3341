@@ -148,21 +148,37 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     power = Preferences.getDouble("power", power);
     lowerPower = Preferences.getDouble("lower power", lowerPower);
-    intakePower = Preferences.getDouble("Intake Power", intakePower);
+    //intakePower = Preferences.getDouble("Intake Power", intakePower);
     //setNeoSpeed(power);
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(7)){
+      power = 500;
+      lowerPower = -500;
+    }
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(5)){
       power = 2500;
-    }
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(7)){
       lowerPower = 2500;
     }
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(6)){
       power = 0;
+      lowerPower = 0;
+    }
+     if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){
+      power = 4000;
+      lowerPower = 4000;
+    }
+
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(4)){
+      power = 5000;
+      lowerPower = 5000;
+    }
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(10)){
+      power = 1000;
+      lowerPower = 1000;
     }
     
     setupperSpeed(power);
     setlowerSpeed(lowerPower);
-    setFeedSimple(intakePower);
+    //setFeedSimple(intakePower);
     
     SmartDashboard.putNumber("rpm", getUpperRPM());
     SmartDashboard.putBoolean("beamBreak1", getSensor());
