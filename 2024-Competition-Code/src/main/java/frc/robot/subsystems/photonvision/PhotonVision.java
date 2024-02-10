@@ -82,6 +82,6 @@ public class PhotonVision extends SubsystemBase {
             SmartDashboard.putNumber("x-val", targetPos.getX());
             SmartDashboard.putNumber("y-val", targetPos.getY());
         }
-    
+
     }
 }
