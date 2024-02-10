@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -140,6 +141,8 @@ public class RobotContainer {
       }, () -> {
         return -this.actualXbox.getRawAxis(rotationAxis);
       }, () -> {
+        return this.actualXbox.getRawAxis(XboxController.Axis.kRightTrigger.value);
+      }, () -> {
         return true;
       }, setAlliance, blueAllianceOrNot);
 
@@ -151,6 +154,8 @@ public class RobotContainer {
         return -this.actualXbox.getY();
       }, () -> {
         return -this.additionalJoy.getRawAxis(0);
+      }, () -> {
+        return 1.0;
       }, () -> {
         return true;
       }, setAlliance, blueAllianceOrNot);
