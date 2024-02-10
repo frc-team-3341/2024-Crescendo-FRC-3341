@@ -71,13 +71,21 @@ public class PhotonVision extends SubsystemBase {
 
         //Its confusingly described how the cameraToTarget method works and what it gives, so I have put a bunch of targetPosData values set to print for testing. The correct value will become the "Z angle" which can be plugged into the rest of the program
         //We also can use this for the y m which gives the x positioning of the april tag which can once again be plugged in when properly tested
-        SmartDashboard.putNumber("targetPosData_1", targetPos.getX());
-        SmartDashboard.putNumber("targetPosData_2", targetPos.getY());
-        SmartDashboard.putNumber("targetPosData_3", targetPos.getZ());
+        if (targetPos.getRotation() != null){
+            
+            SmartDashboard.putNumber("targetPosData_4", Math.toDegrees(targetPos.getRotation().getAngle()));
+            SmartDashboard.putNumber("targetPosData_6", Math.toDegrees(targetPos.getRotation().getQuaternion().getZ()));
+            SmartDashboard.putNumber("targetPosData_8", Math.toDegrees(targetPos.getTranslation().getZ()));
+            SmartDashboard.putNumber("funnyTargetData", Math.toDegrees(result.getBestTarget().getAlternateCameraToTarget().getRotation().getZ()));
 
-        SmartDashboard.putNumber("targetPosData_4", targetPos.getRotation().getAngle());
-        SmartDashboard.putNumber("targetPosData_5", targetPos.getRotation().getX());
-        SmartDashboard.putNumber("targetPosData_6", targetPos.getRotation().getY());
-        SmartDashboard.putNumber("targetPosData_7", targetPos.getRotation().getZ());
+        }
+        if (targetPos.getTranslation() != null){
+            SmartDashboard.putNumber("targetPosData_1", targetPos.getX());
+            SmartDashboard.putNumber("targetPosData_2", targetPos.getY());
+            SmartDashboard.putNumber("targetPosData_3", targetPos.getZ());
+        }
+        
+    
+    
     }
 }
