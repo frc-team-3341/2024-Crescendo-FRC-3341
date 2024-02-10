@@ -172,10 +172,6 @@ public class RobotContainer {
 
     if (autoOrNot) {
       driveForward = new SwerveAuto("DriveForward", this.swerve);
-<<<<<<< Updated upstream
-      // auto = new SwerveAuto("DriveForward", this.swerve);
-=======
->>>>>>> Stashed changes
     }
 
     SmartDashboard.putData(teleopCommandChooser);
