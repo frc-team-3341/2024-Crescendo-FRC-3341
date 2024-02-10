@@ -52,8 +52,8 @@ public class SwerveAuto extends SequentialCommandGroup {
         this.swerve::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         this.swerve::driveRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            new PIDConstants(0.0, 0.0, 0.0), // Translation PID constants -> path independent
-            new PIDConstants(0.0, 0.0, 0.0), // Rotation PID constants -> more or less path dependent
+            new PIDConstants(1.0, 0.0, 0.0), // Translation PID constants -> path independent
+            new PIDConstants(0.5, 0.0, 0.0), // Rotation PID constants -> more or less path dependent
             Constants.SwerveConstants.maxChassisTranslationalSpeed, // Max module speed, in m/s
             Constants.SwerveConstants.trackWidthHypotenuse, // Drive base radius in meters. Distance from robot center
                                                             // to furthest module.
