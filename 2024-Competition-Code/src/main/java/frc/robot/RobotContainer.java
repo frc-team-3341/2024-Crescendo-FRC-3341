@@ -8,6 +8,7 @@ import frc.robot.commands.CrabDrive;
 import frc.robot.commands.SwerveAuto;
 import frc.robot.commands.SwerveTeleop;
 import frc.robot.commands.TestFourModules;
+import frc.robot.subsystems.RIOVision;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
@@ -102,7 +103,11 @@ public class RobotContainer {
   // Empty CrabDrive object
   private CrabDrive crabDrive;
 
+  private RIOVision vision;
+
   public RobotContainer() {
+
+    // vision = new RIOVision();
 
     if (isDataLog) {
       // Data logging works on both real + simulated robot with all DriverStation

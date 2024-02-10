@@ -69,7 +69,7 @@ public final class Constants {
         public static final double turningEncoderVelocityFactor = (2 * Math.PI) / turnGearRatio / 60.0; // radians per second
 
         // Confirmed working kP!!
-        public static final double drivekP = 0.1; // This is good!
+        public static final double drivekP = 0.15; // This is good!
         public static final double drivekI = 0.0;
         public static final double drivekD = 0.0;
 
