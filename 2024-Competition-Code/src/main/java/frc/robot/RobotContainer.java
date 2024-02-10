@@ -100,7 +100,8 @@ public class RobotContainer {
   private SwerveTeleop teleop;
   // Empty CrabDrive object
   private CrabDrive crabDrive;
-
+  
+  // Auto Trajectories
   private SwerveAuto driveForward;
   // private RIOVision vision;
 
@@ -137,8 +138,6 @@ public class RobotContainer {
     this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
 
     // Auto Trajectories
-    driveForward = new SwerveAuto("DriveForward", swerve);
-
 
     if (isXbox) {
       // Supply teleop command with joystick methods - USES LAMBDAS
@@ -180,7 +179,7 @@ public class RobotContainer {
     teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
 
     if (autoOrNot) {
-     // driveForward = new SwerveAuto("DriveForward", this.swerve);
+      driveForward = new SwerveAuto("DriveForward", this.swerve);
       // auto = new SwerveAuto("DriveForward", this.swerve);
     }
 
