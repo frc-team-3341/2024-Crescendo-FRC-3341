@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.BeamBreak;
 import frc.robot.subsystems.Intake;
 
 public class IntakeComm extends Command {
@@ -15,7 +14,7 @@ public class IntakeComm extends Command {
 
 public Intake intake = new Intake();
 public double power = 0;
-  public IntakeComm(Intake intake, BeamBreak bream, double power) {
+  public IntakeComm(Intake intake, double power) {
     this.intake = intake;
     this.power = power;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -33,6 +32,7 @@ public double power = 0;
   public void execute() {
     if(RobotContainer.getJoystickCommand().getRawButtonPressed(10)){
         intake.setFlywheelPower(power);
+        intake.getBeambreak1();
       }
       power = Preferences.getDouble("power", power);
       
@@ -45,12 +45,5 @@ public double power = 0;
   @Override
   public void end(boolean interrupted) {
     intake.setFlywheelPower(0); //at the end, the speed stops
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-
-    return beam.getSensor();
   }
 }
