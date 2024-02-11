@@ -73,8 +73,7 @@ public final class Constants {
         public static final double turningEncoderVelocityFactor = (2 * Math.PI) / turnGearRatio / 60.0; // radians per second
 
         // Confirmed working kP!!
-        public static final double drivekP = 0.1; // This is good!
-        //public static final double drivekP = 0.0;
+        public static final double drivekP = 0.15;
         public static final double drivekI = 0.0;
         public static final double drivekD = 0.0;
 
@@ -104,6 +103,35 @@ public final class Constants {
         public static final int driveCurrentLimit = 35;
         public static final int turnCurrentLimit = 20;
 
+    }
+
+     public static class OperatorConstants {
+        public static final int kDriverControllerPort = 0;
+        public static final int extPort = 0;
+      }
+    
+      public static class Measurements{
+        public static final int maxExtension = 0;
+        public static final double ticksToInches = 0;
+      }
+    
+      public static class ButtonMap{
+        public static final int manualOverride = 0;
+      }
+    
+      public static final int joy = 0;
+    
+      public static final double climberConversionFactor = (1/3.0) * Units.inchesToMeters(0.2);
+    
+      public static final double velocityConversionFactor = (1/3.0)/60.0 * Units.inchesToMeters(0.2);
+    
+    public static final double maxExtension = Units.inchesToMeters(26.55);
+  
+    public static final class PhotonVisionConstants{
+        public static double cameraHeightMeters = 0;
+        public static double targetHeightMeters = 0;
+        public static double cameraPitchRadians = 0;
+        public static double targetPitchRadians = 0;
     }
 
 }
