@@ -36,8 +36,8 @@
         "y": 0.0
       },
       "prevControl": {
-        "x": 1.75,
-        "y": 0.0
+        "x": 3.75,
+        "y": -1.2246467991473532e-16
       },
       "nextControl": null,
       "isLocked": false,

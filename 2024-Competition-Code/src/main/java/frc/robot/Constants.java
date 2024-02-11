@@ -97,7 +97,7 @@ public final class Constants {
         // I.e. 3.709 * 0.2695 ~= 1.0
         public static final double drivekF = 1.0/maxFreeWheelSpeedMeters;
 
-        public static final double turnkP = 0.7; 
+        public static final double turnkP = 0.7;
         public static final double turnkI = 0.0;
         public static final double turnkD = 0.0;
 
