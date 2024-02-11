@@ -12,7 +12,7 @@ public class TargetAprilTag extends Command {
     public float[] threshold = {1,1};
     // {rotation threshold (Degrees), centering threshold (meters)}
 
-    public double absZAngle;
+    public double ZAngle;
     public double xVal;
     public boolean rotationAligned = false;
     public boolean centered = false;
@@ -33,27 +33,27 @@ public class TargetAprilTag extends Command {
 
     @Override
     public void execute() {
-        if (photonVision.targetExists() && controller.getLeftBumperPressed()){
-            while (!centered){
-                xVal = photonVision.getXOffset();
-                //Move toward center (left or right)
-                if ( (-threshold[1] + xVal) <= 0 && 0 <= (threshold[1] + xVal) ){
-                    centered = true;
-                    break;
-                }
-            }
-
-            while (!rotationAligned){
-                absZAngle = Math.abs(photonVision.getZAngle());
-                //Swerve turn (move right if val is > 180 and to the left if val is < 180)
-
-                if ( (-threshold[0] + absZAngle) <= 180 && 180 <= (threshold[0] + absZAngle) ){
-                    rotationAligned = true;
-                    break;
-                }
-            }
-            //Using swerve autonomous functions we can move toward the center of the April Tag
-        }
+//        if (photonVision.targetExists() && controller.getLeftBumperPressed()){
+//            while (!centered){
+//                xVal = photonVision.getXOffset();
+//                //Move toward center (left or right)
+//                if ( (-threshold[1] + xVal) <= 0 && 0 <= (threshold[1] + xVal) ){
+//                    centered = true;
+//                    break;
+//                }
+//            }
+//
+//            while (!rotationAligned){
+//                ZAngle = Math.abs(photonVision.getZAngle());
+//                //Swerve turn (move right if val is > 180 and to the left if val is < 180)
+//
+//                if ( (-threshold[0] + ZAngle) <= 180 && 180 <= (threshold[0] + ZAngle) ){
+//                    rotationAligned = true;
+//                    break;
+//                }
+//            }
+//            //Using swerve autonomous functions we can move toward the center of the April Tag
+//        }
     }
 
     @Override
