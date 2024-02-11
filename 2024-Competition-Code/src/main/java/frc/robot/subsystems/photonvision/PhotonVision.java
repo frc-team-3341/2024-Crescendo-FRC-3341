@@ -1,4 +1,4 @@
-package frc.robot.subsystems.photonvision;
+package frc.robot.subsystems.PhotonVision;
 
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -27,7 +27,7 @@ public class PhotonVision extends SubsystemBase {
 
     public PhotonVision() {
         AprilTagCamera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
-        NoteCamera = new PhotonCamera("Microsoft_LifeCam_HD-3000 (1)");
+        //NoteCamera = new PhotonCamera("Microsoft_LifeCam_HD-3000 (1)");
 
         PortForwarder.add(5800, "photonvision", 5800);
 
@@ -41,11 +41,11 @@ public class PhotonVision extends SubsystemBase {
         return hasTarget;
     }
 
-    public double getZAngle(){
-        return Math.toDegrees(targetPos.getRotation().getAngle());
-    }
+   // public double getZAngle(){
+     //   return Math.toDegrees(targetPos.getRotation().getAngle());
+    //}
 
-    public double getXOffset(){return targetPos.getY();} //Y is the left direction but the offset is on a 2D x-axis
+   // public double getXOffset(){return targetPos.getY();} //Y is the left direction but the offset is on a 2D x-axis
 
     //Z Angle can determine if the camera is flat to the april tag <-- Needs calibration first
 
@@ -69,19 +69,15 @@ public class PhotonVision extends SubsystemBase {
         if (this.targetExists()){
             target = result.getBestTarget();
             targetPos = target.getBestCameraToTarget();
-        }
-        SmartDashboard.putBoolean("Target", this.targetExists());
-
-        //Its confusingly described how the cameraToTarget method works and what it gives, so I have put a bunch of targetPosData values set to print for testing. The correct value will become the "Z angle" which can be plugged into the rest of the program
-        //We also can use this for the y m which gives the x positioning of the april tag which can once again be plugged in when properly tested
-        if (targetPos.getRotation() != null){
             SmartDashboard.putNumber("z-angle", Math.toDegrees(targetPos.getRotation().getAngle()));
-        }
-
-        if (targetPos.getTranslation() != null){
             SmartDashboard.putNumber("x-val", targetPos.getX());
             SmartDashboard.putNumber("y-val", targetPos.getY());
+
         }
+        SmartDashboard.putBoolean("Target", this.targetExists());
+        SmartDashboard.updateValues();
+        //Its confusingly described how the cameraToTarget method works and what it gives, so I have put a bunch of targetPosData values set to print for testing. The correct value will become the "Z angle" which can be plugged into the rest of the program
+        //We also can use this for the y m which gives the x positioning of the april tag which can once again be plugged in when properly tested
 
     }
 }
