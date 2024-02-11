@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -13,7 +14,6 @@ import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
 import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
-import frc.robot.subsystems.swerve.SwerveModuleIOCANCoder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -104,7 +104,7 @@ public class RobotContainer {
   private CrabDrive crabDrive;
   
   // Auto Trajectories
-  private SwerveAuto driveForward;
+  private final SwerveAuto driveForward;
   // private RIOVision vision;
 
   public RobotContainer() {
@@ -139,8 +139,6 @@ public class RobotContainer {
 
     this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
 
-    // Auto Trajectories
-
     if (isXbox) {
       // Supply teleop command with joystick methods - USES LAMBDAS
       teleop = new SwerveTeleop(this.swerve, () -> {
@@ -149,6 +147,8 @@ public class RobotContainer {
         return -this.actualXbox.getRawAxis(strafeAxis);
       }, () -> {
         return -this.actualXbox.getRawAxis(rotationAxis);
+      }, () -> {
+        return this.actualXbox.getRawAxis(XboxController.Axis.kRightTrigger.value);
       }, () -> {
         return true;
       }, setAlliance, blueAllianceOrNot);
@@ -161,6 +161,8 @@ public class RobotContainer {
         return -this.actualXbox.getY();
       }, () -> {
         return -this.additionalJoy.getRawAxis(0);
+      }, () -> {
+        return 1.0;
       }, () -> {
         return true;
       }, setAlliance, blueAllianceOrNot);
@@ -182,7 +184,6 @@ public class RobotContainer {
 
     if (autoOrNot) {
       driveForward = new SwerveAuto("DriveForward", this.swerve);
-      // auto = new SwerveAuto("DriveForward", this.swerve);
     }
 
     SmartDashboard.putData(teleopCommandChooser);
@@ -213,9 +214,5 @@ public class RobotContainer {
   public static boolean getSimOrNot() {
     return isSim;
   }
-
-  public static Joystick getJoy(){
-    return joy;
-}
 
 }
