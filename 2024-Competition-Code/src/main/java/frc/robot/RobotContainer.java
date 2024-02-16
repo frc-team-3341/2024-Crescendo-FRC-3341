@@ -16,6 +16,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import org.photonvision.PhotonCamera;
+
+import java.lang.annotation.Target;
 
 public class RobotContainer {
 
@@ -97,6 +100,7 @@ public class RobotContainer {
   private SwerveTeleop teleop;
   // Empty CrabDrive object
   private CrabDrive crabDrive;
+  private TargetAprilTag targetAprilTag;
 
   // Auto Trajectories
   private final SwerveAuto driveForward;
@@ -168,6 +172,11 @@ public class RobotContainer {
 
     allFour = new TestFourModules(swerve, actualXbox);
 
+    PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+    PhotonVision photonVision = new PhotonVision(camera);
+    targetAprilTag = new TargetAprilTag(photonVision, swerve);
+
+    teleopCommandChooser.addOption("AprilTagTargetingTEST", targetAprilTag);
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
@@ -190,7 +199,7 @@ public class RobotContainer {
     // } else {
     //   return null;
     // }
-    return new TargetAprilTag(new PhotonVision());
+    return driveForward;
   }
 
   public void initCommandInTeleop() {
