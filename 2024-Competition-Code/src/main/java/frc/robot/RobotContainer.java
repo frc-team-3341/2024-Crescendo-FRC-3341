@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.*;
+import frc.robot.subsystems.PhotonVision.photonvision;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeManual;
@@ -23,6 +25,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import org.photonvision.PhotonCamera;
 
 public class RobotContainer {
 
@@ -108,6 +111,9 @@ public class RobotContainer {
   // Empty CrabDrive object
   private CrabDrive crabDrive;
   
+  // Empty AprilTag command object
+  private TargetAprilTag targetAprilTag;
+  
   // Empty Shooter object
   private Shooter shooter;
   
@@ -181,6 +187,11 @@ public class RobotContainer {
 
     allFour = new TestFourModules(swerve, actualXbox);
 
+    PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+    photonvision photonVision = new photonvision(camera);
+    targetAprilTag = new TargetAprilTag(photonVision, swerve);
+
+    teleopCommandChooser.addOption("AprilTagTargetingTEST", targetAprilTag);
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
