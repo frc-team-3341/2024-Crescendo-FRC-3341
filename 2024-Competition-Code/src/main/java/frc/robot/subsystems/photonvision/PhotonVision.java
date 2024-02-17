@@ -14,7 +14,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 
-public class photonvision extends SubsystemBase {
+public class PhotonVision extends SubsystemBase {
     public PhotonCamera camera;
     public PhotonPipelineResult result;
     public PhotonTrackedTarget target;
@@ -25,7 +25,7 @@ public class photonvision extends SubsystemBase {
     public Constants.PhotonVisionConstants c;
 
 
-    public photonvision(PhotonCamera camera) {
+    public PhotonVision(PhotonCamera camera) {
         this.camera = camera;
         PortForwarder.add(5800, "photonvision", 5800);
         this.camera.setPipelineIndex(0);

@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.*;
-import frc.robot.subsystems.PhotonVision.photonvision;
+import frc.robot.subsystems.PhotonVision.PhotonVision;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeManual;
@@ -188,7 +188,7 @@ public class RobotContainer {
     allFour = new TestFourModules(swerve, actualXbox);
 
     PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
-    photonvision photonVision = new photonvision(camera);
+    PhotonVision photonVision = new PhotonVision(camera);
     targetAprilTag = new TargetAprilTag(photonVision, swerve);
 
     teleopCommandChooser.addOption("AprilTagTargetingTEST", targetAprilTag);
