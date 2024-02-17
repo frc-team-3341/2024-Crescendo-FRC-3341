@@ -12,7 +12,7 @@ public class TargetAprilTag extends Command {
     private SwerveDrive swerveDrive;
     public XboxController controller;
 
-    public float[] threshold = {1,1};
+    public double[] threshold = {0.1,0.1};
     // {rotation threshold (Degrees), centering threshold (meters)}
     public double ZAngle;
     public double XVal;
@@ -40,10 +40,11 @@ public class TargetAprilTag extends Command {
         if (photonVision.targetExists() && controller.getLeftBumperPressed()){
             while (!centered){
                 XVal = photonVision.getXOffset();
-                swerveDrive.drive(new Translation2d(-1, 0), 0, true, false);
+                swerveDrive.drive(new Translation2d(-1, 0), 0, false, false);
                 //Move toward center (left or right)
                 if ( (-threshold[1] + XVal) <= 0 && 0 <= (threshold[1] + XVal) ){
                     centered = true;
+                    swerveDrive.drive(new Translation2d(0, 0), 0, false, false);
                     break;
                 }
             }
