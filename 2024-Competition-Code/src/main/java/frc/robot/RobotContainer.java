@@ -189,7 +189,7 @@ public class RobotContainer {
 
     PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
     photonvision photonVision = new photonvision(camera);
-    targetAprilTag = new TargetAprilTag(photonVision, swerve);
+    targetAprilTag = new TargetAprilTag(photonVision, swerve, actualXbox);
 
     teleopCommandChooser.addOption("AprilTagTargetingTEST", targetAprilTag);
     teleopCommandChooser.addOption("Regular Teleop", teleop);
