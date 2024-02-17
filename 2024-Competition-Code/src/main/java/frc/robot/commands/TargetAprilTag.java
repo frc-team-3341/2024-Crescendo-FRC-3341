@@ -17,6 +17,11 @@ public class TargetAprilTag extends Command {
     // {rotation threshold (Degrees), centering threshold (meters)}
     public double ZAngle;
     public double XVal;
+    public int moveDirection = 1;
+    //Positive means move left, negative means move right
+
+    public int rotationDirection = 1;
+    // Positive means clockwise, negative means counter-clockwise
     public boolean rotationAligned = false;
     public boolean centered = false;
 
@@ -40,9 +45,32 @@ public class TargetAprilTag extends Command {
         //TESTING Procedure #1 Test to see if this code works and infinitely moves the robot to the left
         //TESTING Procedure: Test the centering and rotation independently, then test them together, then add swerve manual control
         if (photonVision.targetExists() && controller.getRawButtonPressed(XboxController.Button.kLeftBumper.value)){
+
+//            while (!rotationAligned){
+//                ZAngle = photonVision.getZAngle();
+//                if (ZAngle > 0){
+//                    rotationDirection = -1;
+//                }else{
+//                    moveDirection = 1;
+//                }
+//                //Swerve turn (move right if val is > 180 and to the left if val is < 180) [OLD] ??
+//                swerveDrive.drive(new Translation2d(0,0), 5, false, false);
+//                if ( (-threshold[0] <= 0) && (0 <= threshold[0]) ){
+//                    rotationAligned = true;
+//                    swerveDrive.drive(new Translation2d(0,0), 0, false, false);
+//                    break;
+//                }
+//            }
+
             while (!centered){
                 XVal = photonVision.getXOffset();
-                swerveDrive.drive(new Translation2d(0, 0.1), 0, false, false);
+                if (XVal > 0){
+                    moveDirection = -1;
+                }else{
+                    moveDirection = 1;
+                }
+                //positive y is left, negative y is right
+                swerveDrive.drive(new Translation2d(0, 0.1 * moveDirection), 0, false, false);
                 //Move toward center (left or right)
                 if ( (-threshold[1] <= XVal) && (XVal <= threshold[1]) ){
                     centered = true;
@@ -51,17 +79,6 @@ public class TargetAprilTag extends Command {
                 }
             }
 
-
-//            while (!rotationAligned){
-//                ZAngle = Math.abs(photonVision.getZAngle());
-//                //Swerve turn (move right if val is > 180 and to the left if val is < 180)
-//
-//                if ( (-threshold[0] + ZAngle) <= 180 && 180 <= (threshold[0] + ZAngle) ){
-//                    rotationAligned = true;
-//                    break;
-//                }
-//            }
-            //Using swerve autonomous functions we can move toward the center of the April Tag
         }
     }
 
