@@ -4,70 +4,86 @@
 
 package frc.robot.subsystems;
 
-import org.opencv.video.SparsePyrLKOpticalFlow;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkLimitSwitch;
-import com.revrobotics.SparkMaxLimitSwitch;
-import com.revrobotics.SparkRelativeEncoder;
-import com.revrobotics.CANDigitalInput;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
-
 
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
-  CANSparkMax climbSparkMax = new CANSparkMax(Constants.OperatorConstants.extPort, MotorType.kBrushless);
+  CANSparkMax climbSparkMax = new CANSparkMax(Constants.ClimberConstants.extPort, MotorType.kBrushless);
   SparkLimitSwitch forwardLimit;
   SparkLimitSwitch reverseLimit;
+
+  SparkPIDController pid;
   RelativeEncoder encoder;
-  
-  public static boolean override = true;
+
+  public boolean override = true;
 
   public Climber() {
     forwardLimit = climbSparkMax.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyClosed);
     forwardLimit.enableLimitSwitch(true);
 
     reverseLimit = climbSparkMax.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyClosed);
+    reverseLimit.enableLimitSwitch(true);
 
     encoder = climbSparkMax.getEncoder();
 
-    encoder.setPositionConversionFactor(Constants.climberConversionFactor);
-    encoder.setVelocityConversionFactor(Constants.velocityConversionFactor);
+    encoder.setPositionConversionFactor(Constants.ClimberConstants.climberConversionFactor);
+    encoder.setVelocityConversionFactor(Constants.ClimberConstants.velocityConversionFactor);
+
+    pid = climbSparkMax.getPIDController();
+    pid.setP(Constants.ClimberConstants.climbkP);
+    pid.setI(Constants.ClimberConstants.climbkI);
+    pid.setD(Constants.ClimberConstants.climbkD);
   }
 
+  public boolean getOverride() {
+    return override;
+  }
 
-  public static boolean getOverride(){
-      return override;
-    }
-  public void setOverride(boolean o){
-      override = o;
-    }
-  
-  //joystick
-  public void extendArm(double power){
-    power = RobotContainer.getJoy().getY();
+  public void setOverride(boolean o) {
+    override = o;
+  }
+
+  public void extendArmWithPower(double power) {
     climbSparkMax.set(power);
+  }
+
+  public void extendArmWithVelocity(double velocity) {
+    if (forwardLimit.isPressed() | reverseLimit.isPressed()) {
+      pid.setReference(0.0, ControlType.kVelocity);
+    } else {
+      pid.setReference(velocity, ControlType.kVelocity);
+    }
+
+  }
+
+  public double getArmPositionInMeters() {
+    return encoder.getPosition();
+  }
+
+  public double getArmVelocityInMeters() {
+    return encoder.getVelocity();
   }
 
   @Override
   public void periodic() {
-    if (RobotContainer.getJoy().getRawButtonReleased(Constants.ButtonMap.manualOverride)) {
-      override = !override;
-    }
 
-    if(forwardLimit.isPressed()){
+    if (forwardLimit.isPressed()) {
       encoder.setPosition(0);
     }
-    if(reverseLimit.isPressed()){
-      encoder.setPosition(Constants.maxExtension); 
+
+    if (reverseLimit.isPressed()) {
+      encoder.setPosition(Constants.ClimberConstants.maxExtensionLimit);
     }
+
+    forwardLimit.enableLimitSwitch(!override);
+    reverseLimit.enableLimitSwitch(!override);
+
   }
 }
