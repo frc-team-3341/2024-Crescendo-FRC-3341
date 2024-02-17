@@ -56,11 +56,8 @@
           "length": 0.4000000059604645,
           "width": 0.4000000059604645
         },
-        "bottom": 544,
         "height": 8.013679504394531,
-        "left": 46,
-        "right": 1088,
-        "top": 36,
+        "image": "C:\\Users\\outre\\Documents\\2024-Crescendo-FRC-3341\\2024-Competition-Code\\2024-field.png",
         "traj": {
           "arrowColor": [
             1.0,
