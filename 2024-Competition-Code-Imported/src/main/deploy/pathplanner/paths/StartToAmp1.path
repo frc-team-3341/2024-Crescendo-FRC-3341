@@ -1,0 +1,104 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+<<<<<<<< HEAD:2024-Competition-Code/src/main/deploy/pathplanner/paths/StartToAmp1.path
+        "x": 0.0,
+        "y": 0.0
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 0.999847695156391,
+        "y": 0.017452406437283408
+========
+        "x": 1.343662687325376,
+        "y": 7.094331880971454
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.7186065141361067,
+        "y": 7.044997166917411
+>>>>>>>> f865c7089537cc53a41241f490594a9ba30efbdc:2024-Competition-Code/src/main/deploy/pathplanner/paths/DriveToSpeaker1.path
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+<<<<<<<< HEAD:2024-Competition-Code/src/main/deploy/pathplanner/paths/StartToAmp1.path
+        "x": 1.4,
+        "y": 1.0
+      },
+      "prevControl": {
+        "x": 1.4900630726318354,
+        "y": 0.31590304565207106
+      },
+      "nextControl": {
+        "x": 1.3099369273681645,
+        "y": 1.684096954347929
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.9,
+        "y": 3.3
+      },
+      "prevControl": {
+        "x": 0.9,
+        "y": 2.5299999999999994
+========
+        "x": 2.4684941677575676,
+        "y": 6.660186397295872
+      },
+      "prevControl": {
+        "x": 2.419159453703524,
+        "y": 7.3410054512416725
+      },
+      "nextControl": {
+        "x": 2.5707724473153175,
+        "y": 5.248746139398921
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.343662687325376,
+        "y": 5.525487974052871
+      },
+      "prevControl": {
+        "x": 2.0639495125144114,
+        "y": 5.722826830269045
+>>>>>>>> f865c7089537cc53a41241f490594a9ba30efbdc:2024-Competition-Code/src/main/deploy/pathplanner/paths/DriveToSpeaker1.path
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+<<<<<<<< HEAD:2024-Competition-Code/src/main/deploy/pathplanner/paths/StartToAmp1.path
+    "rotation": 90.07760970475381,
+========
+    "rotation": 180.0,
+>>>>>>>> f865c7089537cc53a41241f490594a9ba30efbdc:2024-Competition-Code/src/main/deploy/pathplanner/paths/DriveToSpeaker1.path
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": null,
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}
