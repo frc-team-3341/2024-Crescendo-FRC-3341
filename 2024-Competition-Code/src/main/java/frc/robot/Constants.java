@@ -19,7 +19,31 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static class ShooterConstants {
+        public final static int upperShooter = 17;
+        public final static int lowerShooter = 18;
+      }
+    public static final class IntakeConstants {
+        public static final int beamBreak1 = 1;
+        public static final int beamBreak2 = 9;
+        public static final int feeder = 3;
+        public static final int shooter = 4;
+        public static final int feederMax = 19;
+    }
+    public static final class PIDShooterConsts {
+        public static final double kP = 0.1;
+        public static final double kI = 0;
+        public static final double kD = 0;
+    }
+    public static final class feedForwardConsts {
+        public static final double kS = 0.80824;
+        public static final double kV = 0.12407;
+        public static final double kA = 0.015099;
+    }
 
+    public static final class ButtonMap{
+        public static final int intakeNote = 2;
+    }
     public static final class SwerveConstants {
         // These can be safely adjusted without adjusting discrete
         // Some fudge factor is needed for safety while translating + rotating
@@ -72,7 +96,7 @@ public final class Constants {
         public static final double turningEncoderVelocityFactor = (2 * Math.PI) / turnGearRatio / 60.0; // radians per second
 
         // Confirmed working kP!!
-        public static final double drivekP = 0.15;
+        public static final double drivekP = 0.1;
         public static final double drivekI = 0.0;
         public static final double drivekD = 0.0;
 

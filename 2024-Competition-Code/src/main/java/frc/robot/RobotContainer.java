@@ -5,10 +5,15 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeManual;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.swerve.CrabDrive;
 import frc.robot.commands.swerve.SwerveAuto;
 import frc.robot.commands.swerve.SwerveTeleop;
 import frc.robot.commands.swerve.TestFourModules;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
@@ -77,11 +82,12 @@ public class RobotContainer {
   // Checks if robot is real or not
   private static boolean isSim = Robot.isSimulation();
 
+
   // Xbox + an additional one for PC use
   private final Joystick actualXbox = new Joystick(0);
   private final Joystick additionalJoy = new Joystick(1);
-
-  private final static Joystick joy = new Joystick(2);
+  private final static Joystick intakeJoy = new Joystick(2);
+  
   // Chooser for testing teleop commands
   private final SendableChooser<Command> teleopCommandChooser = new SendableChooser<>();
 
@@ -102,13 +108,13 @@ public class RobotContainer {
   // Empty CrabDrive object
   private CrabDrive crabDrive;
   
+  // Empty Shooter object
+  private Shooter shooter;
+  
   // Auto Trajectories
   private final SwerveAuto driveForward;
-  // private RIOVision vision;
 
   public RobotContainer() {
-
-    // vision = new RIOVision();
 
     if (isDataLog) {
       // Data logging works on both real + simulated robot with all DriverStation
@@ -137,7 +143,6 @@ public class RobotContainer {
     }
 
     this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
-
     if (isXbox) {
       // Supply teleop command with joystick methods - USES LAMBDAS
       teleop = new SwerveTeleop(this.swerve, () -> {
@@ -179,6 +184,7 @@ public class RobotContainer {
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
+    shooter = new Shooter();
     teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
 
     if (autoOrNot) {
@@ -190,15 +196,20 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    JoystickButton triggerIntake = new JoystickButton(intakeJoy, Constants.ButtonMap.intakeNote);
+    triggerIntake.onTrue(new IntakeCommand(0.6, shooter));
+    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 1);
+    triggerManualIntake.whileTrue(new IntakeManual(0.8, shooter));
+    JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 8);
+    triggerShooterButton.whileTrue(new Shoot(2500, shooter));
   }
 
   public Command getAutonomousCommand() {
-    // if (autoOrNot) {
-    //   return auto;
-    // } else {
-    //   return null;
-    // }
     return driveForward;
+    
+  }
+  public static Joystick getIntakeJoy(){
+    return intakeJoy;
   }
 
   public void initCommandInTeleop() {
@@ -213,5 +224,6 @@ public class RobotContainer {
   public static boolean getSimOrNot() {
     return isSim;
   }
+  
 
 }
