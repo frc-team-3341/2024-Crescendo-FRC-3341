@@ -9,14 +9,22 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Intake;
 
+enum IntakeState {
+  Idle,
+  FirstBeamIsBroken,
+  SecondBeamIsBroken
+}
+
 public class IntakeComm extends Command {
   /** Creates a new IntakeCommand. */
 
 public Intake intake = new Intake();
-public double power = 0;
-  public IntakeComm(Intake intake, double power) {
+public double conveyingPower = 0;
+private IntakeState internalState = IntakeState.Idle;
+
+  public IntakeComm(Intake intake, double conveyingPower) {
     this.intake = intake;
-    this.power = power;
+    this.conveyingPower = conveyingPower;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
   }
@@ -24,18 +32,32 @@ public double power = 0;
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Preferences.initDouble("power", power);
+    Preferences.initDouble("power", conveyingPower);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(RobotContainer.getJoystickCommand().getRawButtonPressed(10)){
-        intake.setFlywheelPower(power);
-        intake.getBeambreak1();
-      }
-      power = Preferences.getDouble("power", power);
-      
+    conveyingPower = Preferences.getDouble("power", conveyingPower);
+
+    switch(internalState) {
+      case Idle:
+        intake.setFlywheelPower(0.1); // Positive is conveying into/up the chassis
+        if (intake.getBeambreak1()) {
+          internalState = IntakeState.FirstBeamIsBroken;
+        }
+    
+      case FirstBeamIsBroken:
+        intake.setFlywheelPower(conveyingPower);
+
+        if (intake.getBeambreak2()) {
+         internalState = IntakeState.SecondBeamIsBroken;
+        }
+
+      case SecondBeamIsBroken:
+        intake.setFlywheelPower(0.0);
+        end(true); // End the program
+    }
     
   }
 
