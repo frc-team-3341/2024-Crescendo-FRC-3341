@@ -48,12 +48,12 @@ public class SwerveAuto extends SequentialCommandGroup {
 
     AutoBuilder.configureHolonomic(
         this.swerve::getPoseFromEstimator, // Robot pose supplier
-        this.swerve::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+        this.swerve::setPose, // Method to reset odometry (will be called if your auto has a starting pose)
         this.swerve::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         this.swerve::driveRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            new PIDConstants(1.0, 0.0, 0.0), // Translation PID constants -> path independent
-            new PIDConstants(0.5, 0.0, 0.0), // Rotation PID constants -> more or less path dependent
+            new PIDConstants(3.0, 0.0, 0.0), // Translation PID constants -> path independent
+            new PIDConstants(3.0, 0.0, 0.0), // Rotation PID constants -> more or less path dependent
             Constants.SwerveConstants.maxChassisTranslationalSpeed, // Max module speed, in m/s
             Constants.SwerveConstants.trackWidthHypotenuse, // Drive base radius in meters. Distance from robot center
                                                             // to furthest module.
@@ -79,7 +79,8 @@ public class SwerveAuto extends SequentialCommandGroup {
     // Setting voltage to 0 is necessary in order to stop robot
     addCommands(swerveAuto.finallyDo(() -> {
       swerve.stopMotors();
-      swerve.resetModuleSetpoints(0, 0);
-    }));
+      swerve.setModulesPositions(0,0);})
+      
+      );
   }
 }

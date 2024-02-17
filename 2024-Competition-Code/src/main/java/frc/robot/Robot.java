@@ -48,9 +48,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+   // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-    SmartDashboard.putBoolean("Is Running", !m_autonomousCommand.isFinished());
+   // SmartDashboard.putBoolean("Is Running", !m_autonomousCommand.isFinished());
   }
 
   @Override

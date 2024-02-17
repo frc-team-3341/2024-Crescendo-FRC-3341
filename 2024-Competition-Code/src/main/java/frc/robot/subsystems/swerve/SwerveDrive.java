@@ -88,7 +88,7 @@ public class SwerveDrive extends SubsystemBase {
       SmartDashboard.putData("Field", this.field);
       SmartDashboard.putNumberArray("Actual States", SwerveUtil.getDoubleStates(getActualStates()));
       SmartDashboard.putNumberArray("Setpoint States", SwerveUtil.getDoubleStates(getSetpointStates()));
-      SmartDashboard.putNumber("Robot Rotation", getPoseFromEstimator().getRotation().getDegrees()); // Switch to getRadians() if needed
+      SmartDashboard.putNumber("Robot Rotation", getPoseFromEstimator().getRotation().getRadians());
    }
 
    public void simulationPeriodic() {
@@ -220,12 +220,6 @@ public class SwerveDrive extends SubsystemBase {
          moduleIO[index].setDesiredState(state);
       }
    }
-   // Uses setModuleSetpoints to reset the PID setpoints to 0; meant solely for resetting setpoints to 0
-   public void resetModuleSetpoints(double velocity, double angle){
-      for(int i = 0; i < 4; i++){
-         setModuleSetpoints(velocity, angle, i);
-      }
-   }
 
    /**
     * Stops the motors of the swerve drive. Useful for stopping all sorts of Commands.
@@ -266,9 +260,9 @@ public class SwerveDrive extends SubsystemBase {
    }
 
    /**
-    * Reset pose of robot to pose
+    * Sets pose of the robot
     */
-   public void resetPose(Pose2d pose) {
+   public void setPose(Pose2d pose) {
       poseEstimator.resetPosition(getRotation(), modulePositions, pose);
    }
 

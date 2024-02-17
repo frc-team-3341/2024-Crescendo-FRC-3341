@@ -99,11 +99,6 @@ public class RobotContainer {
   private SwerveTeleop teleop;
   // Empty CrabDrive object
   private CrabDrive crabDrive;
-// SwerveAutos:
-  private final SwerveAuto DriveForward;
-  private final SwerveAuto DriveForward1;
-  private final SwerveAuto DriveToAmp;
-
 
   // Auto Trajectories
   private SwerveAuto driveForward;
@@ -136,14 +131,6 @@ public class RobotContainer {
     }
 
     this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
-    // Used the object template to create a DriveToAmp object which will have our swerve path 
-    DriveToAmp = new SwerveAuto("DriveToAmp", swerve);
-    DriveForward = new SwerveAuto("DriveForward", swerve);
-    DriveForward1 = new SwerveAuto("DriveForward1", swerve);
-
-    // Auto Trajectories
-    driveForward = new SwerveAuto("DriveForward", swerve);
-
 
     if (isXbox) {
       // Supply teleop command with joystick methods - USES LAMBDAS
@@ -184,8 +171,9 @@ public class RobotContainer {
     teleopCommandChooser.addOption("Module Test Command", allFour);
     teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
 
-    if (autoOrNot) { //default is set to false
-      auto = new SwerveAuto("Example Path", this.swerve);
+    if (autoOrNot) {
+      driveForward = new SwerveAuto("DriveForward", this.swerve);
+      // auto = new SwerveAuto("DriveForward", this.swerve);
     }
 
     SmartDashboard.putData(teleopCommandChooser);
@@ -193,14 +181,10 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+
   }
 
   public Command getAutonomousCommand() {
-    // if (autoOrNot) {
-    //   return auto;
-    // } else {
-    //   return null;
-    // }
     return driveForward;
   }
 
