@@ -285,4 +285,7 @@ public class SwerveDrive extends SubsystemBase {
       }
    }
    
+   public double getNavxPitch() {
+      return navx.getPitch();
+   }
 }
