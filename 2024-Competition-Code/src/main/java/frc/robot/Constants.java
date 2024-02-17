@@ -22,7 +22,31 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static class ShooterConstants {
+        public final static int upperShooter = 17;
+        public final static int lowerShooter = 18;
+      }
+    public static final class IntakeConstants {
+        public static final int beamBreak1 = 1;
+        public static final int beamBreak2 = 9;
+        public static final int feeder = 3;
+        public static final int shooter = 4;
+        public static final int feederMax = 19;
+    }
+    public static final class PIDShooterConsts {
+        public static final double kP = 0.1;
+        public static final double kI = 0;
+        public static final double kD = 0;
+    }
+    public static final class feedForwardConsts {
+        public static final double kS = 0.80824;
+        public static final double kV = 0.12407;
+        public static final double kA = 0.015099;
+    }
 
+    public static final class ButtonMap{
+        public static final int intakeNote = 2;
+    }
     public static final class SwerveConstants {
         // These can be safely adjusted without adjusting discrete
         // Some fudge factor is needed for safety while translating + rotating
@@ -51,8 +75,7 @@ public final class Constants {
         // As of 1/13-> LAST TESTING DAY -> Only have correct offset of 1 module
         // WRONG OFFSETS: DO NOT USE [0, 360) degrees to measure swerve offsets
         // ONLY USE [-180, 180)
-         public static final double[] moduleAngleOffsets = {-50.5, -178.2, 112.8, 84.5};
-        //public static final double[] moduleAngleOffsets = {0, 0, 0, 0};
+        public static final double[] moduleAngleOffsets = {-50.5, -178.2, 112.8, 84.5};
 
         public static final boolean[] moduleInverts = {false, true, false, true};
     }
@@ -76,8 +99,7 @@ public final class Constants {
         public static final double turningEncoderVelocityFactor = (2 * Math.PI) / turnGearRatio / 60.0; // radians per second
 
         // Confirmed working kP!!
-        public static final double drivekP = 0.1; // This is good!
-        //public static final double drivekP = 0.0;
+        public static final double drivekP = 0.1;
         public static final double drivekI = 0.0;
         public static final double drivekD = 0.0;
 
@@ -109,10 +131,28 @@ public final class Constants {
 
     }
 
+    public static class ClimberConstants {
+      public static final int extPort = 0;
+
+      public static final double climberConversionFactor = (1/3.0) * Units.inchesToMeters(0.2);
+      public static final double velocityConversionFactor = (1/3.0)/60.0 * Units.inchesToMeters(0.2);
+      public static final double maxExtensionLimit = Units.inchesToMeters(26.55);
+
+      public static final double maxExtensionVelocity = 0.1;
+
+      public static final double climbkP = 0.0;
+      public static final double climbkI = 0.0;
+      public static final double climbkD = 0.0;
+
+    }
+  
     public static final class PhotonVisionConstants {
         // the position of the camera from the center of the robot
         public static final Transform3d robotToCamera = new Transform3d(new Translation3d(0,0,0), new Rotation3d(0,0,0));
-
+        public static double cameraHeightMeters = 0;
+        public static double targetHeightMeters = 0;
+        public static double cameraPitchRadians = 0;
+        public static double targetPitchRadians = 0;
     }
 
 }
