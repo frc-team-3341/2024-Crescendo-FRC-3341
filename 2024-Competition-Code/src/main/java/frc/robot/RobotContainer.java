@@ -51,7 +51,7 @@ public class RobotContainer {
 
   // WARNING: TRAJECTORY DRIVING NOT TESTED IN REAL LIFE (IRL)
   // DO NOT USE UNTIL DRIVING IN SAFE SPACE
-  // THIS IS A SECOND WARNING!!! THIS IS VERY DANGEROUS.
+  // THIS IS A SECOND WARNING!!! Tx`HIS IS VERY DANGEROUS.
   // To do trajectory driving or not
   // TREAT THIS LIKE A RED BUTTON
   private final boolean autoOrNot = true;
@@ -149,6 +149,7 @@ public class RobotContainer {
     }
 
     this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
+
     if (isXbox) {
       // Supply teleop command with joystick methods - USES LAMBDAS
       teleop = new SwerveTeleop(this.swerve, () -> {
