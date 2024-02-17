@@ -176,7 +176,7 @@ public class RobotContainer {
     teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
 
     if (autoOrNot) {
-      driveForward = new SwerveAuto("DriveForward", this.swerve);
+      driveForward = new SwerveAuto("DriveForward (test)", this.swerve);
       // auto = new SwerveAuto("DriveForward", this.swerve);
     }
 
