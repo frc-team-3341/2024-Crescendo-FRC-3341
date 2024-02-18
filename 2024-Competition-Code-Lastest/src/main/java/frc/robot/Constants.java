@@ -31,7 +31,7 @@ public final class Constants {
         // public static final double maxChassisTranslationalSpeed = 0.5;
         // public static final double maxWheelLinearVelocityMeters = 0.5;
       
-        public static final double maxChassisAngularVelocity = Math.PI * 1.0; // A decent number but not fast enough
+        public static final double maxChassisAngularVelocity = Math.PI * 2.0; // A decent number but not fast enough
 
         public static final double trackWidthX = Units.inchesToMeters(27.5); // 27.5 inch
         public static final double trackWidthY = Units.inchesToMeters(27.5); // 27.5 inch
@@ -95,9 +95,9 @@ public final class Constants {
         // Calculating it out: 1/3.709 = 0.26958125317 power per meters/second
         // If we want to go to the max speed of 3.709, then multiply velocity error by this constant
         // I.e. 3.709 * 0.2695 ~= 1.0
-        public static final double drivekF = 0.3/maxFreeWheelSpeedMeters;
+        public static final double drivekF = 1.0/maxFreeWheelSpeedMeters;
 
-        public static final double turnkP = 0.3; 
+        public static final double turnkP = 0.7; 
         public static final double turnkI = 0.0;
         public static final double turnkD = 0.0;
 
