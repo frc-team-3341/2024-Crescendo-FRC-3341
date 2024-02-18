@@ -77,8 +77,8 @@ public class RobotContainer {
 
   // Defines starting pose of robot
   // TODO - Please remove this in future if developing for AprilTags
+  
   public final Pose2d startpose = new Pose2d(new Translation2d(0, 0), new Rotation2d());
-
   
   // ---------------------- END OF CONFIG SECTION --------------------------
 
@@ -200,7 +200,7 @@ public class RobotContainer {
     teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
 
     if (autoOrNot) {
-      driveForward = new SwerveAuto("DriveForward (test)", this.swerve);
+      driveForward = new SwerveAuto("B1 Note to Amp", this.swerve);
       // auto = new SwerveAuto("DriveForward", this.swerve);
     }
 
