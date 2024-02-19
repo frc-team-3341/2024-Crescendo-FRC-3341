@@ -51,18 +51,13 @@ public class RobotContainer {
 
   // WARNING: TRAJECTORY DRIVING NOT TESTED IN REAL LIFE (IRL)
   // DO NOT USE UNTIL DRIVING IN SAFE SPACE
-  // THIS IS A SECOND WARNING!!! Tx`HIS IS VERY DANGEROUS.
+  // THIS IS A SECOND WARNING!!! THIS IS VERY DANGEROUS.
   // To do trajectory driving or not
   // TREAT THIS LIKE A RED BUTTON
   private final boolean autoOrNot = true;
 
   // Whether to set alliance for teleop driving or not
   private final boolean setAlliance = true;
-  
-  // Set to blue alliance
-  // Only enabled if the setAlliance boolean is enabled
-  // TODO - Set automatically via game data
-  private final boolean blueAllianceOrNot = true;
 
   // Checks if using xBox or keyboard
   // False : keyboard
@@ -161,8 +156,8 @@ public class RobotContainer {
       }, () -> {
         return this.actualXbox.getRawAxis(XboxController.Axis.kRightTrigger.value);
       }, () -> {
-        return true;
-      }, setAlliance, blueAllianceOrNot);
+        return !this.actualXbox.getRawButtonPressed(XboxController.Button.kX.value);
+      }, setAlliance);
 
     } else if (!isXbox) {
       // Supply teleop command with joystick methods - USES LAMBDAS
@@ -176,7 +171,7 @@ public class RobotContainer {
         return 1.0;
       }, () -> {
         return true;
-      }, setAlliance, blueAllianceOrNot);
+      }, setAlliance);
 
     }
 
@@ -200,7 +195,7 @@ public class RobotContainer {
     teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
 
     if (autoOrNot) {
-      driveForward = new SwerveAuto("DriveForward", this.swerve);
+      driveForward = new SwerveAuto("DriveForward (test)", this.swerve);
     }
 
     SmartDashboard.putData(teleopCommandChooser);

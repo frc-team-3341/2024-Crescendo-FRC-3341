@@ -25,7 +25,7 @@ public class SwerveTeleop extends Command {
    private DoubleSupplier y;
    private DoubleSupplier rotationSup;
    private BooleanSupplier robotCentricSup;
-   private DoubleSupplier translationLeftTrigger;
+   private DoubleSupplier translationRightTrigger;
 
    public boolean setAlliance;
 
@@ -49,8 +49,8 @@ public class SwerveTeleop extends Command {
     * @param rotationSup     - the rotational velocity of the chassis
     * @param robotCentricSup - whether to drive as robot centric or not
     */
-   public SwerveTeleop(SwerveDrive swerve, DoubleSupplier x, DoubleSupplier y, DoubleSupplier rotationSup, DoubleSupplier translationLeftTrigger,
-         BooleanSupplier robotCentricSup, boolean setAlliance, boolean blueAllianceOrNot) {
+   public SwerveTeleop(SwerveDrive swerve, DoubleSupplier x, DoubleSupplier y, DoubleSupplier rotationSup, DoubleSupplier translationRightTrigger,
+         BooleanSupplier robotCentricSup, boolean setAlliance) {
       this.swerve = swerve;
       // If doesn't want to set alliance
 
@@ -59,7 +59,7 @@ public class SwerveTeleop extends Command {
       this.inputY = y;
       this.rotationSup = rotationSup;
       this.robotCentricSup = robotCentricSup;
-      this.translationLeftTrigger = translationLeftTrigger;
+      this.translationRightTrigger = translationRightTrigger;
       this.joyUtil = new ArcadeJoystickUtil();
       this.addRequirements(swerve);
    }
@@ -91,7 +91,7 @@ public class SwerveTeleop extends Command {
       double yVal = this.y.getAsDouble();
 
       // Could consider subtracting this from 1
-      double leftTriggerVal = this.translationLeftTrigger.getAsDouble();
+      double leftTriggerVal = this.translationRightTrigger.getAsDouble();
 
       if (leftTriggerVal < 0.1) {
          leftTriggerVal = 0.1;
@@ -112,7 +112,7 @@ public class SwerveTeleop extends Command {
          Constants.SwerveConstants.maxChassisTranslationalSpeed);
       } else {
          // Function to map joystick output to scaled polar coordinates
-         output = joyUtil.convertXYToScaledPolar(xVal, yVal,
+         output = joyUtil.convertXYToScaledPolar(-xVal, yVal,
          Constants.SwerveConstants.maxChassisTranslationalSpeed);
       }
 
