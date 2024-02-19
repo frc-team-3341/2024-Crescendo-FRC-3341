@@ -89,6 +89,11 @@
       "povCount": 0
     }
   ],
+  "robotJoysticks": [
+    {
+      "guid": "Keyboard0"
+    }
+  ],
   "tabPane": [
     {
       "autoPopulate": false,
