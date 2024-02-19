@@ -13,6 +13,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.auto.BlueAlliance1.B1_AmpToNote;
@@ -84,9 +85,9 @@ public class B1_StartAmpNoteSpeaker extends SequentialCommandGroup {
     // Setting voltage to 0 is necessary in order to stop robot
     addCommands(swerveAuto.finallyDo(() -> {
       swerve.reset(0,0);
-      addCommands(new B1_AmpToNote("B1 Amp To Note", this.swerve));
+      CommandScheduler.getInstance().schedule(new B1_AmpToNote("B1 Amp To Note", this.swerve));
       swerve.reset(0,0);
-      addCommands(new B1_NoteToSpeaker("B1 Note to Speaker", this.swerve));
+      CommandScheduler.getInstance().schedule(new B1_NoteToSpeaker("B1 Note to Speaker", this.swerve));
       swerve.reset(0,0);
     }));
   }
