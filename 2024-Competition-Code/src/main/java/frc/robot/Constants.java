@@ -74,10 +74,6 @@ public final class Constants {
         // Joystick deadband for no accidental movement
         public static final double deadBand = 0.05;
 
-        // Convenient array of module CAN IDs
-        // Convention of first array: Front Left, Front Right, Back Left, Back Right
-        public static final int[][] moduleCANIDs = {{1, 2, 9}, {3, 4, 10}, {5, 6, 11}, {7, 8, 12}};
-
         // Initially 0 until we calibrate the modules 12/9
         // As of 1/13-> LAST TESTING DAY -> Only have correct offset of 1 module
         // WRONG OFFSETS: DO NOT USE [0, 360) degrees to measure swerve offsets
