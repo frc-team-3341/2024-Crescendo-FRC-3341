@@ -10,11 +10,13 @@ import frc.robot.subsystems.Shooter;
 
 public class Shoot extends Command {
   private double power;
+  private double lowerRPM;
   private Shooter shooter;
   /** Creates a new Shoot. */
-  public Shoot(double power, Shooter shooter) {
+  public Shoot(double power, double lowerRPM, Shooter shooter) {
     this.power = power;
     this.shooter = shooter;
+    this.lowerRPM = lowerRPM;
     addRequirements(shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -27,6 +29,8 @@ public class Shoot extends Command {
   @Override
   public void execute() {
     shooter.setupperSpeed(power);
+    shooter.setlowerSpeed(lowerRPM);
+    shooter.setFeedSimple(0.5);
   }
 
   // Called once the command ends or is interrupted.

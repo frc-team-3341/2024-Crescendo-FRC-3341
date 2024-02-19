@@ -87,6 +87,7 @@ public class RobotContainer {
   private final Joystick actualXbox = new Joystick(0);
   private final Joystick additionalJoy = new Joystick(1);
   private final static Joystick intakeJoy = new Joystick(2);
+  private final static Joystick intakeXbox = new Joystick(3);
   // Chooser for testing teleop commands
   private final SendableChooser<Command> teleopCommandChooser = new SendableChooser<>();
 
@@ -189,12 +190,21 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    JoystickButton triggerIntake = new JoystickButton(intakeJoy, Constants.ButtonMap.intakeNote);
-    triggerIntake.onTrue(new IntakeCommand(0.6, shooter));
-    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 1);
-    triggerManualIntake.whileTrue(new IntakeManual(0.8, shooter));
+    JoystickButton triggerIntake = new JoystickButton(intakeJoy, 1);
+    triggerIntake.onTrue(new IntakeCommand(1.0, shooter));
+    JoystickButton triggerIntake2 = new JoystickButton(intakeJoy, 11);
+    triggerIntake2.onTrue(new IntakeCommand(0.4, shooter));
+    JoystickButton triggerIntake3 = new JoystickButton(intakeJoy, 9);
+    triggerIntake3.onTrue(new IntakeCommand(0.8, shooter));
+    JoystickButton triggerIntake4 = new JoystickButton(intakeJoy, 13);
+    triggerIntake4.onTrue(new IntakeCommand(0.7, shooter));
+    JoystickButton triggerIntake5 = new JoystickButton(intakeJoy, 13);
+    triggerIntake5.onTrue(new IntakeCommand(0.5, shooter)); 
+
+    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 2);
+    triggerManualIntake.whileTrue(new IntakeManual(-0.4, shooter));
     JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 8);
-    triggerShooterButton.whileTrue(new Shoot(2500, shooter));
+    triggerShooterButton.whileTrue(new Shoot(2500, -2500, shooter));
   }
 
   public Command getAutonomousCommand() {
@@ -208,6 +218,9 @@ public class RobotContainer {
   }
   public static Joystick getIntakeJoy(){
     return intakeJoy;
+  }
+  public static Joystick getIntakeXbox(){
+    return intakeXbox;
   }
 
   public void initCommandInTeleop() {
