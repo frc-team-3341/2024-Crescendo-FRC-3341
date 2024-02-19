@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeManual;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.auto.BlueAlliance1.B1_StartToAmp;
 import frc.robot.commands.swerve.CrabDrive;
 import frc.robot.commands.swerve.SwerveAuto;
 import frc.robot.commands.swerve.SwerveTeleop;
@@ -94,6 +95,10 @@ public class RobotContainer {
   // Chooser for testing teleop commands
   private final SendableChooser<Command> teleopCommandChooser = new SendableChooser<>();
 
+  // Autonomous selector
+  private final SendableChooser<Command> autoCommandChooser = new SendableChooser<>();
+
+
   // Define axises for using joystick
   private final int translationAxis = 1;
   private final int strafeAxis = 0;
@@ -118,7 +123,12 @@ public class RobotContainer {
   private Shooter shooter;
   
   // Auto Trajectories
-  private final SwerveAuto driveForward;
+  private final SwerveAuto auto;
+  private final frc.robot.commands.auto.BlueAlliance1.B1_StartToAmp B1_StartToAmp;
+  private final frc.robot.commands.auto.BlueAlliance1.B1_NoteToSpeaker B1_NoteToSpeaker;
+  private final frc.robot.commands.auto.BlueAlliance1.B1_SpeakerToNote B1_SpeakerToNote;
+  private final frc.robot.commands.auto.BlueAlliance1.B1_NoteToAmp B1_NoteToAmp;
+
 
   public RobotContainer() {
 
@@ -200,11 +210,24 @@ public class RobotContainer {
     teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
 
     if (autoOrNot) {
-      driveForward = new SwerveAuto("B1 Note to Amp", this.swerve);
+      // driveForward = new SwerveAuto("B1 Note to Amp", this.swerve);
       // auto = new SwerveAuto("DriveForward", this.swerve);
+      B1_StartToAmp = new frc.robot.commands.auto.BlueAlliance1.B1_StartToAmp("B1 Start to Amp", this.swerve);
+      B1_NoteToAmp = new frc.robot.commands.auto.BlueAlliance1.B1_NoteToAmp("B1 Note to Amp", this.swerve);
+      B1_NoteToSpeaker = new frc.robot.commands.auto.BlueAlliance1.B1_NoteToSpeaker("B1 Note to Speaker", this.swerve);
+      B1_SpeakerToNote = new frc.robot.commands.auto.BlueAlliance1.B1_SpeakerToNote("B1 Speaker to Note", this.swerve);
+
     }
 
+    // Autonomous command selector
+    autoCommandChooser.addOption("B1_StartToAmp", B1_StartToAmp);
+    autoCommandChooser.addOption("B1_NoteToAmp", B1_NoteToAmp);
+    autoCommandChooser.addOption("B1_NoteToSpeaker", B1_NoteToSpeaker);
+    autoCommandChooser.addOption("B1_SpeakerToNote", B1_SpeakerToNote);
+
+
     SmartDashboard.putData(teleopCommandChooser);
+    SmartDashboard.putData(autoCommandChooser);
     this.configureBindings();
   }
 
@@ -218,7 +241,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return driveForward;
+    return auto;
     
   }
   public static Joystick getIntakeJoy(){
