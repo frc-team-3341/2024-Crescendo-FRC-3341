@@ -74,12 +74,6 @@ public final class Constants {
         // Joystick deadband for no accidental movement
         public static final double deadBand = 0.05;
 
-        // Initially 0 until we calibrate the modules 12/9
-        // As of 1/13-> LAST TESTING DAY -> Only have correct offset of 1 module
-        // WRONG OFFSETS: DO NOT USE [0, 360) degrees to measure swerve offsets
-        // ONLY USE [-180, 180)
-        public static final double[] moduleAngleOffsets = {-50.5, -178.2, 112.8, 84.5};
-
         public static final boolean[] moduleInverts = {false, true, false, true};
     }
 
