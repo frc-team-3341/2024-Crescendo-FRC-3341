@@ -84,9 +84,9 @@ public class B1_StartAmpNoteSpeaker extends SequentialCommandGroup {
     // Setting voltage to 0 is necessary in order to stop robot
     addCommands(swerveAuto.finallyDo(() -> {
       swerve.reset(0,0);
-      new B1_AmpToNote("B1 Amp To Note", this.swerve);
+      addCommands(new B1_AmpToNote("B1 Amp To Note", this.swerve));
       swerve.reset(0,0);
-      new B1_NoteToSpeaker("B1 Note to Speaker", this.swerve);
+      addCommands(new B1_NoteToSpeaker("B1 Note to Speaker", this.swerve));
       swerve.reset(0,0);
     }));
   }
