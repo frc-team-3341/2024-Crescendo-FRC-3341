@@ -22,27 +22,13 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    
+    // Checks if robot is real or not
+    public static boolean isSim = Robot.isSimulation();
 
     // MODIFY THIS WHEN SWITCHING BETWEEN CHASSIS
-    public final static RobotType selectedRobot = RobotType.ROBOT_2024_COMPETITION;
-
-    public static enum RobotType {
-        // 2023 IAP Robot
-        ROBOT_2023_IAP_SLOTH(new double[]{-50.5, -178.2, 112.8, 84.5}),
-        // 2024 Competition Robot
-        ROBOT_2024_COMPETITION(new double[]{-12.21, -121.29, -133.154, -40.97});
-
-        private double[] moduleAngleOffsets;
-
-        // Special constructor for enumerator -> Helps us easily switch between both chasiss (REDEPLOYING ONLY FOR NOW)
-        private RobotType(double[] offsets) {
-            this.moduleAngleOffsets = offsets;
-        }
-
-        public double[] getOffsets() {
-            return moduleAngleOffsets;
-        }
-    }
+    // THIS IS THE FIRST THING YOU SHOULD THINK ABOUT/SEE!!!
+    public final static RobotType currentRobot = RobotType.ROBOT_2024_COMPETITION;
 
     public static class ShooterConstants {
         public final static int upperShooter = 17;

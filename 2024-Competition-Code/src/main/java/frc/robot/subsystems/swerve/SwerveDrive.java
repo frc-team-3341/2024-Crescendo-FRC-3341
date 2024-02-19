@@ -115,9 +115,6 @@ public class SwerveDrive extends SubsystemBase {
 
       speeds = SwerveUtil.discretize(speeds, -4.0);
 
-      SmartDashboard.putNumber("Magnitude of Driving Vel Setpoint",
-            Math.sqrt(Math.pow(speeds.vxMetersPerSecond, 2) + Math.pow(speeds.vyMetersPerSecond, 2)));
-
       SwerveModuleState[] swerveModuleStates = this.kinematics.toSwerveModuleStates(speeds);
 
       // MUST USE SECOND TYPE OF METHOD
@@ -137,9 +134,6 @@ public class SwerveDrive extends SubsystemBase {
     */
    public void driveRelative(ChassisSpeeds speeds) {
       speeds = SwerveUtil.discretize(speeds, -4.0);
-
-      SmartDashboard.putNumber("Magnitude of Driving Vel Setpoint",
-            Math.sqrt(Math.pow(speeds.vxMetersPerSecond, 2) + Math.pow(speeds.vyMetersPerSecond, 2)));
 
       SwerveModuleState[] swerveModuleStates = this.kinematics.toSwerveModuleStates(speeds);
 

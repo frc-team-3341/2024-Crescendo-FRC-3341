@@ -58,8 +58,6 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
     private int num = 0;
 
-    private Rotation2d keptAngle = new Rotation2d();
-
     /**
      * @param num               Module number
      * @param driveID           CAN ID for drive motor
@@ -186,13 +184,6 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         // Cap setpoints at max speeds for safety
         state.speedMetersPerSecond = MathUtil.clamp(state.speedMetersPerSecond,
                 -Constants.ModuleConstants.maxFreeWheelSpeedMeters, Constants.ModuleConstants.maxFreeWheelSpeedMeters);
-
-        /* 
-        if (state.speedMetersPerSecond < 0.01) {
-            state.angle = keptAngle;
-        } else {
-            keptAngle = state.angle;
-        }*/
 
         // Set reference of drive motor's PIDF internally in SPARK MAX
         // This automagically updates at a 1 KHz rate

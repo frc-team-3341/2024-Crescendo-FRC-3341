@@ -12,7 +12,6 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.swerve.SwerveDrive;
@@ -66,7 +65,7 @@ public class SwerveAuto extends SequentialCommandGroup {
           // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
           var alliance = DriverStation.getAlliance();
-         if (alliance.isPresent()) {
+          if (alliance.isPresent()) {
             return alliance.get() == DriverStation.Alliance.Red;
           }
           return false;
@@ -78,8 +77,7 @@ public class SwerveAuto extends SequentialCommandGroup {
 
     // Setting voltage to 0 is necessary in order to stop robot
     addCommands(swerveAuto.finallyDo(() -> {
-      swerve.setModulesPositions(0,0);})
-      
-      );
+      swerve.setModulesPositions(0, 0);
+    }));
   }
 }
