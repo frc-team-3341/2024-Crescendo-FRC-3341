@@ -143,7 +143,7 @@ public class RobotContainer {
   private Shooter shooter;
   
   // Auto Trajectories
-  // private final SwerveAuto auto;
+  private final SwerveAuto auto;
   private final B1_StartToAmp B1_StartToAmp;
   private final B1_NoteToSpeaker B1_NoteToSpeaker;
   private final B1_SpeakerToNote B1_SpeakerToNote;
@@ -247,7 +247,7 @@ public class RobotContainer {
 
     if (autoOrNot) {
       // driveForward = new SwerveAuto("B1 Note to Amp", this.swerve);
-      // auto = new SwerveAuto("DriveForward", this.swerve);
+      auto = new SwerveAuto("DriveForward (test)", this.swerve);
       B1_StartToAmp = new B1_StartToAmp("B1 Start to Amp", this.swerve);
       B1_NoteToAmp = new B1_NoteToAmp("B1 Note to Amp", this.swerve);
       B1_NoteToSpeaker = new B1_NoteToSpeaker("B1 Note to Speaker", this.swerve);
@@ -308,6 +308,9 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return autoCommandChooser.getSelected();
+    // return B1_StartAmpNoteSpeaker;
+    // return B1_StartToAmp;
+    // return auto;
     
   }
   public static Joystick getIntakeJoy(){
