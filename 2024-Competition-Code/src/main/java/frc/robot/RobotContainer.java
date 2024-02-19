@@ -137,9 +137,8 @@ public class RobotContainer {
       for (int i = 0; i < swerveMods.length; i++) {
         swerveMods[i] = new SwerveModuleIOSparkMax(i, Constants.SwerveConstants.moduleCANIDs[i][0],
             Constants.SwerveConstants.moduleCANIDs[i][1], Constants.SwerveConstants.moduleCANIDs[i][2],
-            Constants.SwerveConstants.moduleAngleOffsets[i], Constants.SwerveConstants.moduleInverts[i]);
+            Constants.selectedRobot.getOffsets()[i], Constants.SwerveConstants.moduleInverts[i]);
       }
-
 
     }
 

@@ -22,10 +22,33 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+    // MODIFY THIS WHEN SWITCHING BETWEEN CHASSIS
+    public final static RobotType selectedRobot = RobotType.ROBOT_2024_COMPETITION;
+
+    public static enum RobotType {
+        // 2023 IAP Robot
+        ROBOT_2023_IAP_SLOTH(new double[]{-50.5, -178.2, 112.8, 84.5}),
+        // 2024 Competition Robot
+        ROBOT_2024_COMPETITION(new double[]{-12.21, -121.29, -133.154, -40.97});
+
+        private double[] moduleAngleOffsets;
+
+        // Special constructor for enumerator -> Helps us easily switch between both chasiss (REDEPLOYING ONLY FOR NOW)
+        private RobotType(double[] offsets) {
+            this.moduleAngleOffsets = offsets;
+        }
+
+        public double[] getOffsets() {
+            return moduleAngleOffsets;
+        }
+    }
+
     public static class ShooterConstants {
         public final static int upperShooter = 17;
         public final static int lowerShooter = 18;
-      }
+    }
+
     public static final class IntakeConstants {
         public static final int beamBreak1 = 1;
         public static final int beamBreak2 = 9;
@@ -33,20 +56,18 @@ public final class Constants {
         public static final int shooter = 4;
         public static final int feederMax = 19;
     }
+
     public static final class PIDShooterConsts {
         public static final double kP = 0.1;
         public static final double kI = 0;
         public static final double kD = 0;
     }
-    public static final class feedForwardConsts {
-        public static final double kS = 0.80824;
-        public static final double kV = 0.12407;
-        public static final double kA = 0.015099;
-    }
 
-    public static final class ButtonMap{
+    public static final class ButtonMap {
         public static final int intakeNote = 2;
     }
+
+
     public static final class SwerveConstants {
         // These can be safely adjusted without adjusting discrete
         // Some fudge factor is needed for safety while translating + rotating
@@ -120,6 +141,8 @@ public final class Constants {
         // Calculating it out: 1/3.709 = 0.26958125317 power per meters/second
         // If we want to go to the max speed of 3.709, then multiply velocity error by this constant
         // I.e. 3.709 * 0.2695 ~= 1.0
+
+        // DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU ARE DOING
         public static final double drivekF = 1.0/maxFreeWheelSpeedMeters;
 
         public static final double turnkP = 0.7; 
