@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -140,6 +141,9 @@ public class RobotContainer {
       }, () -> {
         return -this.actualXbox.getRawAxis(rotationAxis);
       }, () -> {
+        //chaging the variable below:
+        // true = field centric
+        // false = robot centric
         return true;
       }, setAlliance, blueAllianceOrNot);
 
@@ -168,8 +172,8 @@ public class RobotContainer {
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
-    teleopCommandChooser.setDefaultOption("Module Test Command", allFour);
-
+    teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
+   
     if (autoOrNot) {
       auto = new SwerveAuto("Example Path", this.swerve);
     }

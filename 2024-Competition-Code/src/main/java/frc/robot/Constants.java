@@ -39,13 +39,13 @@ public final class Constants {
 
         // Convenient array of module CAN IDs
         // Convention of first array: Front Left, Front Right, Back Left, Back Right
-        public static final int[][] moduleCANIDs = {{1, 2, 9}, {3, 4, 10}, {5, 6, 11}, {7, 8, 12}};
+        public static final int[][] moduleCANIDs = {{1, 2, 10}, {3, 4, 11}, {5, 6, 12}, {7, 8, 13}};
 
         // Initially 0 until we calibrate the modules 12/9
         // As of 1/13-> LAST TESTING DAY -> Only have correct offset of 1 module
         // WRONG OFFSETS: DO NOT USE [0, 360) degrees to measure swerve offsets
         // ONLY USE [-180, 180)
-         public static final double[] moduleAngleOffsets = {-50.5, -178.2, 112.8, 84.5};
+         public static final double[] moduleAngleOffsets = {-12.21, -121.29, -133.154, -40.97};
         //public static final double[] moduleAngleOffsets = {0, 0, 0, 0};
 
         public static final boolean[] moduleInverts = {false, true, false, true};
@@ -92,9 +92,9 @@ public final class Constants {
         // Calculating it out: 1/3.709 = 0.26958125317 power per meters/second
         // If we want to go to the max speed of 3.709, then multiply velocity error by this constant
         // I.e. 3.709 * 0.2695 ~= 1.0
-        public static final double drivekF = 0.3/maxFreeWheelSpeedMeters;
+        public static final double drivekF = 1.0/maxFreeWheelSpeedMeters;
 
-        public static final double turnkP = 0.3; 
+        public static final double turnkP = 0.7; 
         public static final double turnkI = 0.0;
         public static final double turnkD = 0.0;
 
