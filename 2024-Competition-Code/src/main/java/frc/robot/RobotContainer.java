@@ -296,7 +296,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return auto;
+    return null;
     
   }
   public static Joystick getIntakeJoy(){
