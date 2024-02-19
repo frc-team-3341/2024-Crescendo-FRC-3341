@@ -14,6 +14,7 @@ import frc.robot.commands.Shoot;
 
 import frc.robot.commands.auto.BlueAlliance1.B1_StartToAmp;
 import frc.robot.commands.auto.BlueAlliance1.B1_NoteToAmp;
+import frc.robot.commands.auto.BlueAlliance1.B1_AmpToNote;
 import frc.robot.commands.auto.BlueAlliance1.B1_NoteToSpeaker;
 import frc.robot.commands.auto.BlueAlliance1.B1_SpeakerToNote;
 import frc.robot.commands.auto.BlueAlliance2.B2_StartToAmp;
@@ -27,6 +28,9 @@ import frc.robot.commands.auto.BlueAlliance3.B3_NoteToSpeaker;
 import frc.robot.commands.auto.BlueAlliance3.B3_SpeakerToNote;
 import frc.robot.commands.auto.BlueAlliance3.B3_AmpToNote;
 import frc.robot.commands.auto.BlueAlliance3.B3_StartToSpeaker;
+
+import frc.robot.commands.auto.BlueAlliance1.Plays.B1_StartAmpNoteSpeaker;
+
 
 import frc.robot.commands.swerve.CrabDrive;
 import frc.robot.commands.swerve.SwerveAuto;
@@ -144,6 +148,7 @@ public class RobotContainer {
   private final B1_NoteToSpeaker B1_NoteToSpeaker;
   private final B1_SpeakerToNote B1_SpeakerToNote;
   private final B1_NoteToAmp B1_NoteToAmp;
+  private final B1_AmpToNote B1_AmpToNote;
 
   private final B2_StartToAmp B2_StartToAmp;
   private final B2_NoteToSpeaker B2_NoteToSpeaker;
@@ -157,6 +162,8 @@ public class RobotContainer {
   private final B3_SpeakerToNote B3_SpeakerToNote;
   private final B3_AmpToNote B3_AmpToNote;
   private final B3_StartToSpeaker B3_StartToSpeaker;
+
+  private final B1_StartAmpNoteSpeaker B1_StartAmpNoteSpeaker;
 
 
   public RobotContainer() {
@@ -244,6 +251,7 @@ public class RobotContainer {
       B1_StartToAmp = new B1_StartToAmp("B1 Start to Amp", this.swerve);
       B1_NoteToAmp = new B1_NoteToAmp("B1 Note to Amp", this.swerve);
       B1_NoteToSpeaker = new B1_NoteToSpeaker("B1 Note to Speaker", this.swerve);
+      B1_AmpToNote = new B1_AmpToNote("B1 Amp To Note", this.swerve);
       B1_SpeakerToNote = new B1_SpeakerToNote("B1 Speaker to Note", this.swerve);
 
       B2_AmpToNote = new B2_AmpToNote("B2 Amp to Note", this.swerve);
@@ -259,13 +267,16 @@ public class RobotContainer {
       B3_SpeakerToNote = new B3_SpeakerToNote("B3 Speaker to Note", this.swerve);
       B3_StartToSpeaker = new B3_StartToSpeaker("B3 Start to Speaker", this.swerve);
       
+      B1_StartAmpNoteSpeaker = new B1_StartAmpNoteSpeaker("B1 Start to Amp", this.swerve);
     }
 
     // Autonomous command selector
     autoCommandChooser.addOption("B1_StartToAmp", B1_StartToAmp);
     autoCommandChooser.addOption("B1_NoteToAmp", B1_NoteToAmp);
     autoCommandChooser.addOption("B1_NoteToSpeaker", B1_NoteToSpeaker);
+    autoCommandChooser.addOption("B1_AmpToNote", B1_AmpToNote);
     autoCommandChooser.addOption("B1_SpeakerToNote", B1_SpeakerToNote);
+    autoCommandChooser.addOption("B1_StartAmpNoteSpeaker", B1_StartAmpNoteSpeaker);
 
     autoCommandChooser.addOption("B2_AmpToNote", B2_AmpToNote);
     autoCommandChooser.addOption("B2_StartToAmp", B2_StartToAmp);

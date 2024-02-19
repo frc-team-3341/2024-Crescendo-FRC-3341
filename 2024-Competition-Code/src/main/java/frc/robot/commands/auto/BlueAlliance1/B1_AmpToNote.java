@@ -1,8 +1,8 @@
+package frc.robot.commands.auto.BlueAlliance1;
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.swerve;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -15,10 +15,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.commands.auto.BlueAlliance1.B1_AmpToNote;
 import frc.robot.subsystems.swerve.SwerveDrive;
 
-public class SwerveAuto extends SequentialCommandGroup {
+public class B1_AmpToNote extends SequentialCommandGroup {
   SwerveDrive swerve;
 
   /**
@@ -27,14 +26,14 @@ public class SwerveAuto extends SequentialCommandGroup {
    * @param pathName Name of path in RIO's data folder
    * @param swerve   SwerveDrive subsystem
    */
-  public SwerveAuto(String pathName, SwerveDrive swerve) {
+  public B1_AmpToNote(String pathName, SwerveDrive swerve) {
     this.swerve = swerve;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
     // Load path from 2024 PathPlannerLib
     PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
-
+//
     PathPlannerLogging.setLogActivePathCallback((poses) -> {
       // Do whatever you want with the poses here
       // Will automagically re-display the path every time teleop is started
@@ -83,6 +82,7 @@ public class SwerveAuto extends SequentialCommandGroup {
     // Setting voltage to 0 is necessary in order to stop robot
     addCommands(swerveAuto.finallyDo(() -> {
       swerve.setModulesPositions(0,0); swerve.setModuleVoltages(0, 0);})
+      
       );
   }
 }

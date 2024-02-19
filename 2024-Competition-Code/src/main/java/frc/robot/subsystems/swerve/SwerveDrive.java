@@ -284,5 +284,10 @@ public class SwerveDrive extends SubsystemBase {
          setModuleSetpoints(velocity, angle, i);
       }
    }
+
+   public void reset(int x, int y){
+      setModulesPositions(0,0); 
+      setModuleVoltages(0, 0);
+   }
    
 }
