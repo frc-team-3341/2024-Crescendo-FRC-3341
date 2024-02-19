@@ -33,7 +33,7 @@ public class SwerveAuto extends SequentialCommandGroup {
 
     // Load path from 2024 PathPlannerLib
     PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
-
+//
     PathPlannerLogging.setLogActivePathCallback((poses) -> {
       // Do whatever you want with the poses here
       // Will automagically re-display the path every time teleop is started
