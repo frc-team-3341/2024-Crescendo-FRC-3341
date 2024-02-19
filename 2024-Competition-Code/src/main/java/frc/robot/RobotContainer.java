@@ -11,7 +11,23 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeManual;
 import frc.robot.commands.Shoot;
+
 import frc.robot.commands.auto.BlueAlliance1.B1_StartToAmp;
+import frc.robot.commands.auto.BlueAlliance1.B1_NoteToAmp;
+import frc.robot.commands.auto.BlueAlliance1.B1_NoteToSpeaker;
+import frc.robot.commands.auto.BlueAlliance1.B1_SpeakerToNote;
+import frc.robot.commands.auto.BlueAlliance2.B2_StartToAmp;
+import frc.robot.commands.auto.BlueAlliance2.B2_NoteToSpeaker;
+import frc.robot.commands.auto.BlueAlliance2.B2_SpeakerToNote;
+import frc.robot.commands.auto.BlueAlliance2.B2_AmpToNote;
+import frc.robot.commands.auto.BlueAlliance2.B2_StartToSpeaker;
+import frc.robot.commands.auto.BlueAlliance3.B3_StartToAmp;
+import frc.robot.commands.auto.BlueAlliance3.B3_NoteToAmp;
+import frc.robot.commands.auto.BlueAlliance3.B3_NoteToSpeaker;
+import frc.robot.commands.auto.BlueAlliance3.B3_SpeakerToNote;
+import frc.robot.commands.auto.BlueAlliance3.B3_AmpToNote;
+import frc.robot.commands.auto.BlueAlliance3.B3_StartToSpeaker;
+
 import frc.robot.commands.swerve.CrabDrive;
 import frc.robot.commands.swerve.SwerveAuto;
 import frc.robot.commands.swerve.SwerveTeleop;
@@ -123,11 +139,24 @@ public class RobotContainer {
   private Shooter shooter;
   
   // Auto Trajectories
-  private final SwerveAuto auto;
-  private final frc.robot.commands.auto.BlueAlliance1.B1_StartToAmp B1_StartToAmp;
-  private final frc.robot.commands.auto.BlueAlliance1.B1_NoteToSpeaker B1_NoteToSpeaker;
-  private final frc.robot.commands.auto.BlueAlliance1.B1_SpeakerToNote B1_SpeakerToNote;
-  private final frc.robot.commands.auto.BlueAlliance1.B1_NoteToAmp B1_NoteToAmp;
+  // private final SwerveAuto auto;
+  private final B1_StartToAmp B1_StartToAmp;
+  private final B1_NoteToSpeaker B1_NoteToSpeaker;
+  private final B1_SpeakerToNote B1_SpeakerToNote;
+  private final B1_NoteToAmp B1_NoteToAmp;
+
+  private final B2_StartToAmp B2_StartToAmp;
+  private final B2_NoteToSpeaker B2_NoteToSpeaker;
+  private final B2_SpeakerToNote B2_SpeakerToNote;
+  private final B2_AmpToNote B2_AmpToNote;
+  private final B2_StartToSpeaker B2_StartToSpeaker;
+
+  private final B3_StartToAmp B3_StartToAmp;
+  private final B3_NoteToAmp B3_NoteToAmp;
+  private final B3_NoteToSpeaker B3_NoteToSpeaker;
+  private final B3_SpeakerToNote B3_SpeakerToNote;
+  private final B3_AmpToNote B3_AmpToNote;
+  private final B3_StartToSpeaker B3_StartToSpeaker;
 
 
   public RobotContainer() {
@@ -212,11 +241,24 @@ public class RobotContainer {
     if (autoOrNot) {
       // driveForward = new SwerveAuto("B1 Note to Amp", this.swerve);
       // auto = new SwerveAuto("DriveForward", this.swerve);
-      B1_StartToAmp = new frc.robot.commands.auto.BlueAlliance1.B1_StartToAmp("B1 Start to Amp", this.swerve);
-      B1_NoteToAmp = new frc.robot.commands.auto.BlueAlliance1.B1_NoteToAmp("B1 Note to Amp", this.swerve);
-      B1_NoteToSpeaker = new frc.robot.commands.auto.BlueAlliance1.B1_NoteToSpeaker("B1 Note to Speaker", this.swerve);
-      B1_SpeakerToNote = new frc.robot.commands.auto.BlueAlliance1.B1_SpeakerToNote("B1 Speaker to Note", this.swerve);
+      B1_StartToAmp = new B1_StartToAmp("B1 Start to Amp", this.swerve);
+      B1_NoteToAmp = new B1_NoteToAmp("B1 Note to Amp", this.swerve);
+      B1_NoteToSpeaker = new B1_NoteToSpeaker("B1 Note to Speaker", this.swerve);
+      B1_SpeakerToNote = new B1_SpeakerToNote("B1 Speaker to Note", this.swerve);
 
+      B2_AmpToNote = new B2_AmpToNote("B2 Amp to Note", this.swerve);
+      B2_StartToAmp = new B2_StartToAmp("B2 Start to Amp", this.swerve);
+      B2_NoteToSpeaker = new B2_NoteToSpeaker("B2 Note to Speaker", this.swerve);
+      B2_SpeakerToNote = new B2_SpeakerToNote("B2 Speaker to Note", this.swerve);
+      B2_StartToSpeaker = new B2_StartToSpeaker("B2 Start to Speaker", this.swerve);
+
+      B3_AmpToNote = new B3_AmpToNote("B3 Amp to Note", this.swerve);
+      B3_NoteToAmp = new B3_NoteToAmp("B3 Note to Amp", this.swerve);
+      B3_StartToAmp = new B3_StartToAmp("B3 Start to Amp", this.swerve);
+      B3_NoteToSpeaker = new B3_NoteToSpeaker("B3 Note to Speaker", this.swerve);
+      B3_SpeakerToNote = new B3_SpeakerToNote("B3 Speaker to Note", this.swerve);
+      B3_StartToSpeaker = new B3_StartToSpeaker("B3 Start to Speaker", this.swerve);
+      
     }
 
     // Autonomous command selector
@@ -224,6 +266,19 @@ public class RobotContainer {
     autoCommandChooser.addOption("B1_NoteToAmp", B1_NoteToAmp);
     autoCommandChooser.addOption("B1_NoteToSpeaker", B1_NoteToSpeaker);
     autoCommandChooser.addOption("B1_SpeakerToNote", B1_SpeakerToNote);
+
+    autoCommandChooser.addOption("B2_AmpToNote", B2_AmpToNote);
+    autoCommandChooser.addOption("B2_StartToAmp", B2_StartToAmp);
+    autoCommandChooser.addOption("B2_NoteToSpeaker", B2_NoteToSpeaker);
+    autoCommandChooser.addOption("B2_SpeakerToNote", B2_SpeakerToNote);
+    autoCommandChooser.addOption("B2_StartToSpeaker", B2_StartToSpeaker);
+
+    autoCommandChooser.addOption("B3_AmpToNote", B3_AmpToNote);
+    autoCommandChooser.addOption("B3_NoteToAmp", B3_NoteToAmp);
+    autoCommandChooser.addOption("B3_StartToAmp", B3_StartToAmp);
+    autoCommandChooser.addOption("B3_NoteToSpeaker", B3_NoteToSpeaker);
+    autoCommandChooser.addOption("B3_SpeakerToNote", B3_SpeakerToNote);
+    autoCommandChooser.addOption("B3_StartToSpeaker", B3_StartToSpeaker);
 
 
     SmartDashboard.putData(teleopCommandChooser);
