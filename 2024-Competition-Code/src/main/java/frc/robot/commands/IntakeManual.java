@@ -12,7 +12,6 @@ public class IntakeManual extends Command {
   /** Creates a new IntakeManual. */
   private double power;
   private Shooter shooter;
-  private Joystick joy;
   public IntakeManual(double power, Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.power = power;

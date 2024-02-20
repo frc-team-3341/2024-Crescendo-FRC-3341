@@ -4,27 +4,18 @@
 
 package frc.robot.subsystems;
 
-import java.beans.Encoder;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
-import edu.wpi.first.math.controller.BangBangController;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.RobotContainer;
 
@@ -35,17 +26,24 @@ public class Shooter extends SubsystemBase {
   public final CANSparkMax lowerShooter = new CANSparkMax(Constants.ShooterConstants.lowerShooter, MotorType.kBrushless);
 
   public double setPoint;
-  private double power = 0;
-  private double lowerPower = 0;
+  public double upperRPM = 0;
+  public double lowerRPM = 0;
   private double intakePower = 0;
 
   private double upperP = 0.0001;
   private double upperI = 0.000001;
   private double lowerP = 0.0001;
   private double lowerI = 0.000001;
+  private double intakeP = 0.001;
+  private double intakeI = 0.000001;
 
-  public SparkPIDController Controller;
+  private double upperFeedforward = 1.0/6100.0;
+  private double lowerFeedforward = 1.0/6100.0;
+  private double intakeFeedForward = 1.0/6100.0;
+
+  public SparkPIDController upperController;
   public SparkPIDController lowerController;
+  public SparkPIDController intakeController;
   
   private RelativeEncoder intakeEncoder;
   public final CANSparkMax intakeMax = new CANSparkMax(Constants.IntakeConstants.feederMax, MotorType.kBrushless);
@@ -56,6 +54,7 @@ public class Shooter extends SubsystemBase {
   public Shooter() {  
     upperShooter.restoreFactoryDefaults();
     lowerShooter.restoreFactoryDefaults();
+    intakeMax.restoreFactoryDefaults();
     upperShooter.setIdleMode(CANSparkMax.IdleMode.kBrake);
     upperShooter.setSmartCurrentLimit(ModuleConstants.driveCurrentLimit);
     lowerShooter.setIdleMode(CANSparkMax.IdleMode.kBrake);
@@ -64,20 +63,26 @@ public class Shooter extends SubsystemBase {
     relativeEncoder2 = lowerShooter.getEncoder();
     
     
-    Controller = upperShooter.getPIDController();
-    Controller.setP(0.0001);
-    Controller.setI(0.000001);
-    Controller.setD(0);
+    upperController = upperShooter.getPIDController();
+    upperController.setP(upperP);
+    upperController.setI(upperI);
+    upperController.setD(0);
     //Controller.setFF(1.0/5891.0); decently working
-    Controller.setFF(1.0/6100.0);
+    upperController.setFF(upperFeedforward);
 
     lowerController = lowerShooter.getPIDController();
-    lowerController.setP(0.0001);
-    lowerController.setI(0.000001);
+    intakeController = intakeMax.getPIDController();
+    lowerController.setP(lowerP);
+    lowerController.setI(lowerI);
     lowerController.setD(0);
-    lowerController.setFF(1.0/6100.0);
-    Preferences.initDouble("power", power);
-    Preferences.initDouble("Lower Power", lowerPower);
+    lowerController.setFF(lowerFeedforward);
+    intakeController.setP(intakeP);
+    intakeController.setI(intakeI);
+    intakeController.setD(0);
+    intakeController.setFF(intakeFeedForward);
+
+    Preferences.initDouble("power", upperRPM);
+    Preferences.initDouble("Lower Power", lowerRPM);
     Preferences.initDouble("intake Power", intakePower);
 
     Preferences.initDouble("upperPID P", upperP);
@@ -94,8 +99,8 @@ public class Shooter extends SubsystemBase {
     
     
     
-    upperShooter.setInverted(false); // Positive = shooting out the note
-    lowerShooter.setInverted(true); // Positive = shooting out the note
+    upperShooter.setInverted(false); // if upper is negative and lower is positive, the note will be shot out. With these settings, a positive power value needs to be supplied
+    lowerShooter.setInverted(true); 
     intakeMax.setInverted(true); // Positive is intaking to shooter
   }
 
@@ -120,7 +125,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setupperSpeed(double setPoint){
-    Controller.setReference(setPoint, ControlType.kVelocity);
+    upperController.setReference(setPoint, ControlType.kVelocity);
     /*if (setPoint == 0){
       upperShooter.set(setPoint);
 }
@@ -135,6 +140,10 @@ public class Shooter extends SubsystemBase {
    // }
    // else{ 
       //lowerShooter.set(controller.calculate(getLowerRPM(),setPoint));
+    }
+
+  public void setintakeSpeed(double setPoint){
+    intakeController.setReference(setPoint, ControlType.kVelocity);
     }
   
 
@@ -157,6 +166,10 @@ public class Shooter extends SubsystemBase {
     intakeMax.set(setPoint);
   }
   
+  public boolean setpointReached(double currentRPM, double setpoint){
+    return (Math.abs(currentRPM-setpoint) <= 10);
+  }
+
 
   @Override
   public void periodic() {
@@ -170,38 +183,36 @@ public class Shooter extends SubsystemBase {
     lowerP = Preferences.getDouble("lowerPID P", lowerP);
     lowerI = Preferences.getDouble("lowerPID I", lowerI);
 
+
     //Controller.setP(upperP);
     //Controller.setI(upperI);
     //lowerController.setP(lowerP);
     //lowerController.setI(lowerI);
     //setNeoSpeed(power);
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(7)){
-      power = -1500;
-      lowerPower = 1500;
-      intakePower = 0.7;
-    }
+      upperRPM = 1500;
+      lowerRPM = 1500;
+  }
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(5)){
-      power = -3500;
-      lowerPower = 3500;
-      intakePower = 0.7;
+      upperRPM = 3500;
+      lowerRPM = 3500;
     }
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(6)){
-      power = 0;
-      lowerPower = 0;
+      upperRPM = 0;
+      lowerRPM = 0;
       intakePower = 0;
     }
      if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){
-      power = -1000;
-      lowerPower = 2500;
+      upperRPM = 1000;
+      lowerRPM = 2500;
     }
 
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(4)){
-      power = 60;
-      lowerPower = 60;
+      intakePower = 0.7;
     }
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(10)){
-      power = 1000;
-      lowerPower = -1000;
+      upperRPM = 1000;
+      lowerRPM = -1000;
       intakePower = -0.6;
     }
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(12)){
@@ -210,18 +221,18 @@ public class Shooter extends SubsystemBase {
     
 
     if(RobotContainer.getIntakeXbox().getRawButtonPressed(XboxController.Button.kA.value)){
-      power = 0;
-      lowerPower = -1000;
+      upperRPM = 0;
+      lowerRPM = -1000;
     }
     if(RobotContainer.getIntakeXbox().getRawButtonPressed(XboxController.Button.kB.value)){
-      power = 4000;
-      lowerPower = 1000;
+      upperRPM = 4000;
+      lowerRPM = 1000;
     }
     
-    setupperSpeed(power);
-    setlowerSpeed(lowerPower);
+    setupperSpeed(upperRPM);
+    setlowerSpeed(lowerRPM);
+    //setintakeSpeed(intakePower);
     setFeedSimple(intakePower);
-
     
     SmartDashboard.putNumber("upper rpm", (int) getUpperRPM());
     SmartDashboard.putNumber("lower rpm", (int) getLowerRPM());
@@ -229,5 +240,8 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putBoolean("shooterBeamBreak", getShooterBeam());
     SmartDashboard.putBoolean("intakeBeamBreak", getIntakeBeam());
     // This method will be called once per scheduler run
+
+    SmartDashboard.putBoolean("Upper Setpoint Reached", setpointReached(getUpperRPM(), upperRPM));
+    SmartDashboard.putBoolean("Lower Setpoint Reached", setpointReached(getLowerRPM(), lowerRPM));
   }
 }

@@ -7,11 +7,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Shooter;
 
-public class IntakeCommand extends Command {
+public class IntakeBeamBreak extends Command {
   /** Creates a new IntakeCommand. */
   private double power;
   private Shooter shooter;
-  public IntakeCommand(double power, Shooter shooter) {
+  public IntakeBeamBreak(double power, Shooter shooter) {
     this.power = power;
     this.shooter = shooter;
     addRequirements(shooter);
@@ -26,18 +26,19 @@ public class IntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //shooter.setintakeSpeed(power);
     shooter.setFeedSimple(power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.setFeedSimple(0);
+    shooter.setintakeSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return shooter.getSensor();
+    return shooter.getShooterBeam();
   }
 }

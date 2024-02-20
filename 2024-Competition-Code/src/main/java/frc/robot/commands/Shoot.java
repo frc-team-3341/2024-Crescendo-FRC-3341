@@ -30,7 +30,9 @@ public class Shoot extends Command {
   public void execute() {
     shooter.setupperSpeed(power);
     shooter.setlowerSpeed(lowerRPM);
-    shooter.setFeedSimple(0.5);
+    // if (shooter.setpointReached(shooter.getUpperRPM(), shooter.upperRPM) && (shooter.setpointReached(shooter.getLowerRPM(), shooter.lowerRPM))){
+    //   shooter.setintakeSpeed(3000);
+    // }
   }
 
   // Called once the command ends or is interrupted.

@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeBeamBreak;
 import frc.robot.commands.IntakeManual;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.swerve.CrabDrive;
@@ -199,15 +199,16 @@ public class RobotContainer {
 
   private void configureBindings() {
     JoystickButton triggerIntake = new JoystickButton(intakeJoy, 1);
-    triggerIntake.onTrue(new IntakeCommand(0.8, shooter));
+    triggerIntake.onTrue(new IntakeBeamBreak(0.8, shooter));
 
     JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 2);
-    triggerManualIntake.whileTrue(new IntakeManual(-0.4, shooter));
+    triggerManualIntake.whileTrue(new IntakeManual(-0.2, shooter));
     JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 8);
     triggerShooterButton.whileTrue(new Shoot(2500, -2500, shooter));
   }
 
   public Command getAutonomousCommand() {
+
     return driveForward;
     
   }
