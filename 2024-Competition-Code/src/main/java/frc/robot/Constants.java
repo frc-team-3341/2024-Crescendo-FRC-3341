@@ -23,9 +23,9 @@ public final class Constants {
         public final static int upperShooter = 17;
         public final static int lowerShooter = 18;
       }
-    public static final class IntakeConstants {
-        public static final int beamBreak1 = 1;
-        public static final int beamBreak2 = 9;
+    public static final class IntakeConstants { // Not CAN ids, DIO port numbers
+        public static final int shooterBeamBreak = 1;
+        public static final int intakeBeamBreak = 9;
         public static final int feeder = 3;
         public static final int shooter = 4;
         public static final int feederMax = 19;

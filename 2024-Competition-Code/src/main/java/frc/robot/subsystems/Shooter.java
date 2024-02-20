@@ -50,9 +50,10 @@ public class Shooter extends SubsystemBase {
   private RelativeEncoder intakeEncoder;
   public final CANSparkMax intakeMax = new CANSparkMax(Constants.IntakeConstants.feederMax, MotorType.kBrushless);
   //private double power = 0;
-  DigitalInput beamBreak1 = new DigitalInput(Constants.IntakeConstants.beamBreak1);
-  DigitalInput beamBreak2 = new DigitalInput(Constants.IntakeConstants.beamBreak2);  /** Creates a new Shooter. */
-  public Shooter() {
+  DigitalInput shooterBeamBreak = new DigitalInput(Constants.IntakeConstants.shooterBeamBreak);
+  DigitalInput intakeBeamBreak = new DigitalInput(Constants.IntakeConstants.intakeBeamBreak);  
+  // Creates a new Shooter.
+  public Shooter() {  
     upperShooter.restoreFactoryDefaults();
     lowerShooter.restoreFactoryDefaults();
     upperShooter.setIdleMode(CANSparkMax.IdleMode.kBrake);
@@ -93,9 +94,9 @@ public class Shooter extends SubsystemBase {
     
     
     
-    upperShooter.setInverted(true);
-    lowerShooter.setInverted(true);
-    intakeMax.setInverted(true);
+    upperShooter.setInverted(false); // Positive = shooting out the note
+    lowerShooter.setInverted(true); // Positive = shooting out the note
+    intakeMax.setInverted(true); // Positive is intaking to shooter
   }
 
   
@@ -141,11 +142,11 @@ public class Shooter extends SubsystemBase {
     upperShooter.setVoltage(speed*12.0);
   }
 
-  public boolean getSensor(){
-    return !beamBreak1.get();
+  public boolean getShooterBeam(){
+    return !shooterBeamBreak.get();
   }
-   public boolean getSecondSensor(){
-     return !beamBreak2.get();
+   public boolean getIntakeBeam(){
+     return !intakeBeamBreak.get();
   }
 
   public double getIntakeRPM(){
@@ -159,6 +160,7 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
+    
     //power = Preferences.getDouble("power", power);
     //lowerPower = Preferences.getDouble("lower power", lowerPower);
     //intakePower = Preferences.getDouble("Intake Power", intakePower);
@@ -194,8 +196,8 @@ public class Shooter extends SubsystemBase {
     }
 
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(4)){
-      power = -2000;
-      lowerPower = 1000;
+      power = 60;
+      lowerPower = 60;
     }
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(10)){
       power = 1000;
@@ -221,11 +223,11 @@ public class Shooter extends SubsystemBase {
     setFeedSimple(intakePower);
 
     
-    SmartDashboard.putNumber("upper rpm", getUpperRPM());
-    SmartDashboard.putNumber("lower rpm", getLowerRPM());
-    SmartDashboard.putNumber("intake RPM", getIntakeRPM());
-    SmartDashboard.putBoolean("beamBreak1", getSensor());
-    SmartDashboard.putBoolean("beamBreak2", getSecondSensor());
+    SmartDashboard.putNumber("upper rpm", (int) getUpperRPM());
+    SmartDashboard.putNumber("lower rpm", (int) getLowerRPM());
+    SmartDashboard.putNumber("intake RPM", (int) getIntakeRPM());
+    SmartDashboard.putBoolean("shooterBeamBreak", getShooterBeam());
+    SmartDashboard.putBoolean("intakeBeamBreak", getIntakeBeam());
     // This method will be called once per scheduler run
   }
 }

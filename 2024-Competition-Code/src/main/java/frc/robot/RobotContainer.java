@@ -181,11 +181,12 @@ public class RobotContainer {
     });
 
     allFour = new TestFourModules(swerve, actualXbox);
+    shooter = new Shooter();
+
 
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
-    shooter = new Shooter();
     teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
 
     if (autoOrNot) {
@@ -198,15 +199,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     JoystickButton triggerIntake = new JoystickButton(intakeJoy, 1);
-    triggerIntake.onTrue(new IntakeCommand(1.0, shooter));
-    JoystickButton triggerIntake2 = new JoystickButton(intakeJoy, 11);
-    triggerIntake2.onTrue(new IntakeCommand(0.4, shooter));
-    JoystickButton triggerIntake3 = new JoystickButton(intakeJoy, 9);
-    triggerIntake3.onTrue(new IntakeCommand(0.8, shooter));
-    JoystickButton triggerIntake4 = new JoystickButton(intakeJoy, 13);
-    triggerIntake4.onTrue(new IntakeCommand(0.7, shooter));
-    JoystickButton triggerIntake5 = new JoystickButton(intakeJoy, 13);
-    triggerIntake5.onTrue(new IntakeCommand(0.5, shooter)); 
+    triggerIntake.onTrue(new IntakeCommand(0.8, shooter));
 
     JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 2);
     triggerManualIntake.whileTrue(new IntakeManual(-0.4, shooter));
