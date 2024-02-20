@@ -9,28 +9,19 @@
       "prevControl": null,
       "nextControl": {
         "x": 1.9,
-        "y": 6.4
+        "y": 7.5
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-<<<<<<< Updated upstream
-        "x": 2.5425760951410923,
-        "y": 6.986846382127837
-      },
-      "prevControl": {
-        "x": 1.5425760951410923,
-        "y": 6.986846382127837
-=======
         "x": 2.55,
         "y": 7.0
       },
       "prevControl": {
-        "x": 2.4499999999999997,
+        "x": 2.0262795124420014,
         "y": 7.0
->>>>>>> Stashed changes
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.9548412538722195,
+    "rotation": -0.525718533162225,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 89.99350670930721,
     "velocity": 0
   },
   "useDefaultConstraints": true

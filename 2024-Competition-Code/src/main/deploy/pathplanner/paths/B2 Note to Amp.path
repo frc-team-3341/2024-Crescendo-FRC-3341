@@ -20,13 +20,8 @@
         "y": 7.4
       },
       "prevControl": {
-<<<<<<< Updated upstream
-        "x": 1.8922369777199302,
-        "y": 7.4
-=======
         "x": 1.9,
         "y": 6.4
->>>>>>> Stashed changes
       },
       "nextControl": null,
       "isLocked": false,
@@ -44,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 89.99425609174448,
+    "rotation": 89.99036369281798,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 179.37768990229964,
+    "rotation": -0.733443822693161,
     "velocity": 0
   },
   "useDefaultConstraints": true
