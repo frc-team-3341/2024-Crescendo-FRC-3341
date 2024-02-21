@@ -189,45 +189,61 @@ public class Shooter extends SubsystemBase {
     //lowerController.setP(lowerP);
     //lowerController.setI(lowerI);
     //setNeoSpeed(power);
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(7)){
-      upperRPM = 1500;
-      lowerRPM = 1500;
-  }
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(5)){
-      upperRPM = 3500;
-      lowerRPM = 3500;
-    }
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(6)){
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(2)){ //Stop all motors
       upperRPM = 0;
       lowerRPM = 0;
       intakePower = 0;
     }
-     if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){
-      upperRPM = 1000;
-      lowerRPM = 2500;
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){ //Shooter wheels speaker speed (untested)
+      intakePower = 1.0;
     }
-
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(4)){
-      intakePower = 0.7;
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(4)){ //Shooter wheels speaker speed (untested)
+      upperRPM = 3500;
+      lowerRPM = 3500;
     }
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(10)){
-      upperRPM = 1000;
-      lowerRPM = -1000;
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(5)){ //Shooter wheels speaker speed (untested)
+      upperRPM = -1500;
+      lowerRPM = -1500;
       intakePower = -0.6;
     }
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(12)){
-      intakePower += 0.05;
+
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(6)){ //Shooter wheels amp speed (tested but could be improved)
+      upperRPM = 300;
+      lowerRPM = 700;
     }
     
 
-    if(RobotContainer.getIntakeXbox().getRawButtonPressed(XboxController.Button.kA.value)){
+    /*if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){
+      intakePower = 1.0;
+    }*/
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(7)){
+      intakePower += 0.1;
+    }
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(8)){
+      intakePower -= 0.1;
+    }
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(9)){
+      upperRPM += 100;
+    }
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(10)){
+      upperRPM -= 100;
+    }
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(11)){
+      lowerRPM += 100;
+    }
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(12)){
+      lowerRPM -= 100;
+    }
+    
+
+    /*if(RobotContainer.getIntakeXbox().getRawButtonPressed(XboxController.Button.kA.value)){
       upperRPM = 0;
       lowerRPM = -1000;
     }
     if(RobotContainer.getIntakeXbox().getRawButtonPressed(XboxController.Button.kB.value)){
       upperRPM = 4000;
       lowerRPM = 1000;
-    }
+    }*/
     
     setupperSpeed(upperRPM);
     setlowerSpeed(lowerRPM);

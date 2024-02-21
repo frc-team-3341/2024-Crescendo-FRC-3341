@@ -6,18 +6,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.CrabDrive;
 import frc.robot.commands.IntakeBeamBreak;
 import frc.robot.commands.IntakeManual;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.swerve.CrabDrive;
-import frc.robot.commands.swerve.SwerveAuto;
-import frc.robot.commands.swerve.SwerveTeleop;
-import frc.robot.commands.swerve.TestFourModules;
+import frc.robot.commands.SwerveAuto;
+import frc.robot.commands.SwerveTeleop;
+import frc.robot.commands.TestFourModules;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
 import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
+import frc.robot.subsystems.swerve.SwerveModuleIOCANCoder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -51,7 +52,7 @@ public class RobotContainer {
   // THIS IS A SECOND WARNING!!! THIS IS VERY DANGEROUS.
   // To do trajectory driving or not
   // TREAT THIS LIKE A RED BUTTON
-  private final boolean autoOrNot = true;
+  private final boolean autoOrNot = false;
 
   // Whether to set alliance for teleop driving or not
   private final boolean setAlliance = true;
@@ -82,13 +83,11 @@ public class RobotContainer {
   // Checks if robot is real or not
   private static boolean isSim = Robot.isSimulation();
 
-
   // Xbox + an additional one for PC use
   private final Joystick actualXbox = new Joystick(0);
   private final Joystick additionalJoy = new Joystick(1);
   private final static Joystick intakeJoy = new Joystick(2);
   private final static Joystick intakeXbox = new Joystick(3);
-  
   // Chooser for testing teleop commands
   private final SendableChooser<Command> teleopCommandChooser = new SendableChooser<>();
 
@@ -104,16 +103,14 @@ public class RobotContainer {
   private SwerveDrive swerve;
   // Empty testing commands (not used if not needed)
   private TestFourModules allFour;
+  // Empty Auto object
+  private SwerveAuto auto;
   // Empty SwerveTeleop object
   private SwerveTeleop teleop;
   // Empty CrabDrive object
   private CrabDrive crabDrive;
-  
-  // Empty Shooter object
+
   private Shooter shooter;
-  
-  // Auto Trajectories
-  private final SwerveAuto driveForward;
 
   public RobotContainer() {
 
@@ -140,10 +137,10 @@ public class RobotContainer {
             Constants.SwerveConstants.moduleAngleOffsets[i], Constants.SwerveConstants.moduleInverts[i]);
       }
 
-
     }
 
     this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
+
     if (isXbox) {
       // Supply teleop command with joystick methods - USES LAMBDAS
       teleop = new SwerveTeleop(this.swerve, () -> {
@@ -153,8 +150,9 @@ public class RobotContainer {
       }, () -> {
         return -this.actualXbox.getRawAxis(rotationAxis);
       }, () -> {
-        return this.actualXbox.getRawAxis(XboxController.Axis.kRightTrigger.value);
-      }, () -> {
+        //chaging the variable below:
+        // true = field centric
+        // false = robot centric
         return true;
       }, setAlliance, blueAllianceOrNot);
 
@@ -166,8 +164,6 @@ public class RobotContainer {
         return -this.actualXbox.getY();
       }, () -> {
         return -this.additionalJoy.getRawAxis(0);
-      }, () -> {
-        return 1.0;
       }, () -> {
         return true;
       }, setAlliance, blueAllianceOrNot);
@@ -182,15 +178,13 @@ public class RobotContainer {
 
     allFour = new TestFourModules(swerve, actualXbox);
     shooter = new Shooter();
-
-
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
     teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
-
+   
     if (autoOrNot) {
-      driveForward = new SwerveAuto("DriveForward", this.swerve);
+      auto = new SwerveAuto("Example Path", this.swerve);
     }
 
     SmartDashboard.putData(teleopCommandChooser);
@@ -198,29 +192,31 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    JoystickButton triggerIntake = new JoystickButton(intakeJoy, 1);
+        JoystickButton triggerIntake = new JoystickButton(intakeJoy, 1);
     triggerIntake.onTrue(new IntakeBeamBreak(0.8, shooter));
 
-    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 2);
-    triggerManualIntake.whileTrue(new IntakeManual(-0.2, shooter));
-    JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 8);
+    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 13);
+    triggerManualIntake.whileTrue(new IntakeManual(1.0, shooter));
+    JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 13);
     triggerShooterButton.whileTrue(new Shoot(2500, -2500, shooter));
   }
 
   public Command getAutonomousCommand() {
+    if (autoOrNot) {
+      return auto;
+    } else {
+      return null;
+    }
+  }
 
-    return driveForward;
-    
+  public void initCommandInTeleop() {
+    swerve.setDefaultCommand(teleopCommandChooser.getSelected());
   }
   public static Joystick getIntakeJoy(){
     return intakeJoy;
   }
   public static Joystick getIntakeXbox(){
     return intakeXbox;
-  }
-
-  public void initCommandInTeleop() {
-    swerve.setDefaultCommand(teleopCommandChooser.getSelected());
   }
 
   /**
@@ -231,6 +227,5 @@ public class RobotContainer {
   public static boolean getSimOrNot() {
     return isSim;
   }
-  
 
 }
