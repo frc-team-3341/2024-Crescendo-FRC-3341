@@ -170,6 +170,18 @@ public class Shooter extends SubsystemBase {
     return (Math.abs(currentRPM-setpoint) <= 10);
   }
 
+  public void setUpperRPM(int val){
+    this.upperRPM = val;
+  }
+
+  public void setLowerRPM(int val){
+    this.lowerRPM = val;
+  }
+
+  public void setIntakePower(int val){
+    this.intakePower = val;
+  }
+
 
   @Override
   public void periodic() {
@@ -191,11 +203,11 @@ public class Shooter extends SubsystemBase {
     //setNeoSpeed(power);
 
     //Stop all motors
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(2)){ 
-      upperRPM = 0;
-      lowerRPM = 0;
-      intakePower = 0;
-    }
+    // if(RobotContainer.getIntakeJoy().getRawButtonPressed(2)){ 
+    //   upperRPM = 0;
+    //   lowerRPM = 0;
+    //   intakePower = 0;
+    // }
 
     // Shoots 
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){ 
@@ -275,6 +287,11 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("upper rpm", (int) getUpperRPM());
     SmartDashboard.putNumber("lower rpm", (int) getLowerRPM());
     SmartDashboard.putNumber("intake RPM", (int) getIntakeRPM());
+
+    SmartDashboard.putNumber("Desired upper rpm", this.upperRPM);
+    SmartDashboard.putNumber("Desired lower rpm", this.lowerRPM);
+    SmartDashboard.putNumber("Desired intake RPM", this.intakePower);
+
     SmartDashboard.putBoolean("shooterBeamBreak", getShooterBeam());
     SmartDashboard.putBoolean("intakeBeamBreak", getIntakeBeam());
     // This method will be called once per scheduler run

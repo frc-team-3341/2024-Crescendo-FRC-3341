@@ -10,6 +10,7 @@ import frc.robot.commands.CrabDrive;
 import frc.robot.commands.IntakeBeamBreak;
 import frc.robot.commands.IntakeManual;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.StopIntake;
 import frc.robot.commands.SwerveAuto;
 import frc.robot.commands.SwerveTeleop;
 import frc.robot.commands.TestFourModules;
@@ -192,8 +193,10 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-        JoystickButton triggerIntake = new JoystickButton(intakeJoy, 1);
+    JoystickButton triggerIntake = new JoystickButton(intakeJoy, 1);
     triggerIntake.onTrue(new IntakeBeamBreak(0.8, shooter));
+    JoystickButton stopIntake = new JoystickButton(intakeJoy, 2);
+    stopIntake.onTrue(new StopIntake(shooter));
 
     JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 13);
     triggerManualIntake.whileTrue(new IntakeManual(1.0, shooter));
