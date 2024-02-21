@@ -189,25 +189,35 @@ public class Shooter extends SubsystemBase {
     //lowerController.setP(lowerP);
     //lowerController.setI(lowerI);
     //setNeoSpeed(power);
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(2)){ //Stop all motors
+
+    //Stop all motors
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(2)){ 
       upperRPM = 0;
       lowerRPM = 0;
       intakePower = 0;
     }
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){ //Shooter wheels speaker speed (untested)
+
+    // Shoots 
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){ 
       intakePower = 1.0;
     }
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(4)){ //Shooter wheels speaker speed (untested)
+
+    // Gets shooter wheels up to speed for speaker (untested)
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(4)){ 
       upperRPM = 3500;
       lowerRPM = 3500;
     }
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(5)){ //Shooter wheels speaker speed (untested)
+
+    // Intakes note from source (untested)
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(5)){ 
       upperRPM = -1500;
       lowerRPM = -1500;
       intakePower = -0.6;
     }
 
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(6)){ //Shooter wheels amp speed (tested but could be improved)
+    // Gets shooter wheels up to speed for amp (tested but could be improved)
+    // Works when the robot is aligned right in front of amp
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(6)){ 
       upperRPM = 300;
       lowerRPM = 700;
     }
@@ -216,21 +226,33 @@ public class Shooter extends SubsystemBase {
     /*if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){
       intakePower = 1.0;
     }*/
+
+    // Increment intake speed
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(7)){
       intakePower += 0.1;
     }
+
+    // Decrement intake speed
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(8)){
       intakePower -= 0.1;
     }
+
+    // Incremenet upper shooter RPM
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(9)){
       upperRPM += 100;
     }
+
+    // Decrement upper shooter RPM
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(10)){
       upperRPM -= 100;
     }
+
+    // Incremenet lower shooter RPM
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(11)){
       lowerRPM += 100;
     }
+
+    // Decrement lower shooter RPM
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(12)){
       lowerRPM -= 100;
     }
