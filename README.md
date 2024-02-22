@@ -1,4 +1,4 @@
-#Team 3341'a Working Competition Code
+# Team 3341's Working Competition Code:
 The code currently contains the newest versions of the:
 - Tele-op Swerve Code
 - ~Auto Swerve Code~ (Still needs to be debugged in swerve.zak.morgan.shawn.zhu)
