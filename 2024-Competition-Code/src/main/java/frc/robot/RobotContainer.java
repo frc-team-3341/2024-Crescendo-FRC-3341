@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.CrabDrive;
 import frc.robot.commands.IntakeBeamBreak;
 import frc.robot.commands.IntakeManual;
@@ -193,10 +194,15 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    // Triggers intake rollers and stops at beambreaks at the middle of the note mechanism
     JoystickButton triggerIntake = new JoystickButton(intakeJoy, 1);
     triggerIntake.onTrue(new IntakeBeamBreak(0.8, shooter));
+    // Stops rollers
     JoystickButton stopIntake = new JoystickButton(intakeJoy, 2);
     stopIntake.onTrue(new StopIntake(shooter));
+    // Manually activates intake rollers when you go up on the POV 
+    POVButton triggerIntakeManual = new POVButton(intakeJoy, 0); 
+    triggerIntakeManual.whileTrue(new IntakeManual(0.8, shooter));
 
     JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 13);
     triggerManualIntake.whileTrue(new IntakeManual(1.0, shooter));

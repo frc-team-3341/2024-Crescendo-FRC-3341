@@ -230,8 +230,8 @@ public class Shooter extends SubsystemBase {
     // Gets shooter wheels up to speed for amp (tested but could be improved)
     // Works when the robot is aligned right in front of amp
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(6)){ 
-      upperRPM = 300;
-      lowerRPM = 700;
+      upperRPM = 700;
+      lowerRPM = 50;
     }
     
 
