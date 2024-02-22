@@ -1,8 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.photonvision.*;
 import frc.robot.subsystems.swerve.SwerveDrive;
@@ -11,7 +9,6 @@ import frc.robot.subsystems.swerve.SwerveDrive;
 public class TargetAprilTag extends Command {
     private photonvision photonVision;
     private SwerveDrive swerveDrive;
-    public Joystick controller;
 
     public double[] threshold = {1.0,0.05};
     // {rotation threshold (Degrees), centering threshold (meters)}
@@ -25,10 +22,9 @@ public class TargetAprilTag extends Command {
     public boolean rotationAligned = false;
 
 
-    public TargetAprilTag(photonvision photonVision, SwerveDrive swerveDrive, Joystick joy) {
+    public TargetAprilTag(photonvision photonVision, SwerveDrive swerveDrive) {
         this.photonVision = photonVision;
         this.swerveDrive = swerveDrive;
-        this.controller = joy;
 
         // each subsystem used by the command must be passed into the
         // addRequirements() method (which takes a vararg of Subsystem)
@@ -44,7 +40,7 @@ public class TargetAprilTag extends Command {
     public void execute() {
         //TESTING Procedure #1 Test to see if this code works and infinitely moves the robot to the left
         //TESTING Procedure: Test the centering and rotation independently, then test them together, then add swerve manual control
-        if (photonVision.targetExists() && controller.getRawButtonPressed(XboxController.Button.kLeftBumper.value)) {
+        if (photonVision.targetExists()) {
 
             while (!rotationAligned){
                 ZAngle = photonVision.getZAngle();

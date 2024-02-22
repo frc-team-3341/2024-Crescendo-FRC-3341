@@ -187,11 +187,6 @@ public class RobotContainer {
 
     allFour = new TestFourModules(swerve, actualXbox);
 
-    PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
-    photonvision photonVision = new photonvision(camera);
-    targetAprilTag = new TargetAprilTag(photonVision, swerve, actualXbox);
-
-    teleopCommandChooser.addOption("AprilTagTargetingTEST", targetAprilTag);
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
@@ -213,6 +208,12 @@ public class RobotContainer {
     triggerManualIntake.whileTrue(new IntakeManual(0.8, shooter));
     JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 8);
     triggerShooterButton.whileTrue(new Shoot(2500, shooter));
+
+    PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+    photonvision photonVision = new photonvision(camera);
+
+    JoystickButton alignButton = new JoystickButton(actualXbox, XboxController.Button.kLeftBumper.value);
+    alignButton.onTrue(new TargetAprilTag(photonVision, swerve));
   }
 
   public Command getAutonomousCommand() {
