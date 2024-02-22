@@ -5,12 +5,26 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.*;
-import frc.robot.subsystems.PhotonVision.PhotonVision;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.swerve.CrabDrive;
+import frc.robot.commands.IntakeBeamBreak;
 import frc.robot.commands.IntakeManual;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.StopIntake;
+import frc.robot.commands.swerve.SwerveAuto;
+import frc.robot.commands.swerve.SwerveTeleop;
+import frc.robot.commands.swerve.TestFourModules;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.swerve.SwerveDrive;
+import frc.robot.subsystems.swerve.SwerveModuleIO;
+import frc.robot.subsystems.swerve.SwerveModuleIOSim;
+import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
+import frc.robot.subsystems.swerve.SwerveModuleIOCANCoder;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 
 import frc.robot.commands.auto.BlueAlliance1.B1_StartToAmp;
 import frc.robot.commands.auto.BlueAlliance1.B1_NoteToAmp;
@@ -30,23 +44,6 @@ import frc.robot.commands.auto.BlueAlliance3.B3_AmpToNote;
 import frc.robot.commands.auto.BlueAlliance3.B3_StartToSpeaker;
 
 import frc.robot.commands.auto.BlueAlliance1.Plays.B1_StartAmpNoteSpeaker;
-
-
-import frc.robot.commands.swerve.CrabDrive;
-import frc.robot.commands.swerve.SwerveAuto;
-import frc.robot.commands.swerve.SwerveTeleop;
-import frc.robot.commands.swerve.TestFourModules;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.swerve.SwerveDrive;
-import frc.robot.subsystems.swerve.SwerveModuleIO;
-import frc.robot.subsystems.swerve.SwerveModuleIOSim;
-import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.DriverStation;
-import org.photonvision.PhotonCamera;
 
 public class RobotContainer {
 
@@ -72,7 +69,7 @@ public class RobotContainer {
 
   // WARNING: TRAJECTORY DRIVING NOT TESTED IN REAL LIFE (IRL)
   // DO NOT USE UNTIL DRIVING IN SAFE SPACE
-  // THIS IS A SECOND WARNING!!! Tx`HIS IS VERY DANGEROUS.
+  // THIS IS A SECOND WARNING!!! THIS IS VERY DANGEROUS.
   // To do trajectory driving or not
   // TREAT THIS LIKE A RED BUTTON
   private final boolean autoOrNot = true;
@@ -98,26 +95,24 @@ public class RobotContainer {
 
   // Defines starting pose of robot
   // TODO - Please remove this in future if developing for AprilTags
-  
   public final Pose2d startpose = new Pose2d(new Translation2d(0, 0), new Rotation2d());
+
   
   // ---------------------- END OF CONFIG SECTION --------------------------
 
   // Checks if robot is real or not
   private static boolean isSim = Robot.isSimulation();
 
-
   // Xbox + an additional one for PC use
   private final Joystick actualXbox = new Joystick(0);
   private final Joystick additionalJoy = new Joystick(1);
   private final static Joystick intakeJoy = new Joystick(2);
-  
+  private final static Joystick intakeXbox = new Joystick(3);
   // Chooser for testing teleop commands
   private final SendableChooser<Command> teleopCommandChooser = new SendableChooser<>();
 
-  // Autonomous selector
   private final SendableChooser<Command> autoCommandChooser = new SendableChooser<>();
-
+  
 
   // Define axises for using joystick
   private final int translationAxis = 1;
@@ -131,17 +126,14 @@ public class RobotContainer {
   private SwerveDrive swerve;
   // Empty testing commands (not used if not needed)
   private TestFourModules allFour;
+  // Empty Auto object
   // Empty SwerveTeleop object
   private SwerveTeleop teleop;
   // Empty CrabDrive object
   private CrabDrive crabDrive;
-  
-  // Empty AprilTag command object
-  private TargetAprilTag targetAprilTag;
-  
-  // Empty Shooter object
+
   private Shooter shooter;
-  
+
   // Auto Trajectories
   private final SwerveAuto auto;
   private final B1_StartToAmp B1_StartToAmp;
@@ -149,22 +141,21 @@ public class RobotContainer {
   private final B1_SpeakerToNote B1_SpeakerToNote;
   private final B1_NoteToAmp B1_NoteToAmp;
   private final B1_AmpToNote B1_AmpToNote;
-
+  
   private final B2_StartToAmp B2_StartToAmp;
   private final B2_NoteToSpeaker B2_NoteToSpeaker;
   private final B2_SpeakerToNote B2_SpeakerToNote;
   private final B2_AmpToNote B2_AmpToNote;
   private final B2_StartToSpeaker B2_StartToSpeaker;
-
+  
   private final B3_StartToAmp B3_StartToAmp;
   private final B3_NoteToAmp B3_NoteToAmp;
   private final B3_NoteToSpeaker B3_NoteToSpeaker;
   private final B3_SpeakerToNote B3_SpeakerToNote;
   private final B3_AmpToNote B3_AmpToNote;
   private final B3_StartToSpeaker B3_StartToSpeaker;
-
+  
   private final B1_StartAmpNoteSpeaker B1_StartAmpNoteSpeaker;
-
 
   public RobotContainer() {
 
@@ -191,7 +182,6 @@ public class RobotContainer {
             Constants.SwerveConstants.moduleAngleOffsets[i], Constants.SwerveConstants.moduleInverts[i]);
       }
 
-
     }
 
     this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
@@ -205,8 +195,9 @@ public class RobotContainer {
       }, () -> {
         return -this.actualXbox.getRawAxis(rotationAxis);
       }, () -> {
-        return this.actualXbox.getRawAxis(XboxController.Axis.kRightTrigger.value);
-      }, () -> {
+        //chaging the variable below:
+        // true = field centric
+        // false = robot centric
         return true;
       }, setAlliance, blueAllianceOrNot);
 
@@ -218,8 +209,6 @@ public class RobotContainer {
         return -this.actualXbox.getY();
       }, () -> {
         return -this.additionalJoy.getRawAxis(0);
-      }, () -> {
-        return 1.0;
       }, () -> {
         return true;
       }, setAlliance, blueAllianceOrNot);
@@ -233,18 +222,12 @@ public class RobotContainer {
     });
 
     allFour = new TestFourModules(swerve, actualXbox);
-
-    PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
-    PhotonVision photonVision = new PhotonVision(camera);
-    targetAprilTag = new TargetAprilTag(photonVision, swerve);
-
-    teleopCommandChooser.addOption("AprilTagTargetingTEST", targetAprilTag);
+    shooter = new Shooter();
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
-    shooter = new Shooter();
     teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
-
+   
     if (autoOrNot) {
       // driveForward = new SwerveAuto("B1 Note to Amp", this.swerve);
       auto = new SwerveAuto("DriveForward (test)", this.swerve);
@@ -253,13 +236,13 @@ public class RobotContainer {
       B1_NoteToSpeaker = new B1_NoteToSpeaker("B1 Note to Speaker", this.swerve);
       B1_AmpToNote = new B1_AmpToNote("B1 Amp To Note", this.swerve);
       B1_SpeakerToNote = new B1_SpeakerToNote("B1 Speaker to Note", this.swerve);
-
+  
       B2_AmpToNote = new B2_AmpToNote("B2 Amp to Note", this.swerve);
       B2_StartToAmp = new B2_StartToAmp("B2 Start to Amp", this.swerve);
       B2_NoteToSpeaker = new B2_NoteToSpeaker("B2 Note to Speaker", this.swerve);
       B2_SpeakerToNote = new B2_SpeakerToNote("B2 Speaker to Note", this.swerve);
       B2_StartToSpeaker = new B2_StartToSpeaker("B2 Start to Speaker", this.swerve);
-
+  
       B3_AmpToNote = new B3_AmpToNote("B3 Amp to Note", this.swerve);
       B3_NoteToAmp = new B3_NoteToAmp("B3 Note to Amp", this.swerve);
       B3_StartToAmp = new B3_StartToAmp("B3 Start to Amp", this.swerve);
@@ -271,39 +254,42 @@ public class RobotContainer {
     }
 
     // Autonomous command selector
-    autoCommandChooser.addOption("B1_StartToAmp", B1_StartToAmp);
-    autoCommandChooser.addOption("B1_NoteToAmp", B1_NoteToAmp);
-    autoCommandChooser.addOption("B1_NoteToSpeaker", B1_NoteToSpeaker);
-    autoCommandChooser.addOption("B1_AmpToNote", B1_AmpToNote);
-    autoCommandChooser.addOption("B1_SpeakerToNote", B1_SpeakerToNote);
-    autoCommandChooser.addOption("B1_StartAmpNoteSpeaker", B1_StartAmpNoteSpeaker);
+  autoCommandChooser.addOption("B1_StartToAmp", B1_StartToAmp);
+  autoCommandChooser.addOption("B1_NoteToAmp", B1_NoteToAmp);
+  autoCommandChooser.addOption("B1_NoteToSpeaker", B1_NoteToSpeaker);
+  autoCommandChooser.addOption("B1_AmpToNote", B1_AmpToNote);
+  autoCommandChooser.addOption("B1_SpeakerToNote", B1_SpeakerToNote);
+  autoCommandChooser.addOption("B1_StartAmpNoteSpeaker", B1_StartAmpNoteSpeaker);
 
-    autoCommandChooser.addOption("B2_AmpToNote", B2_AmpToNote);
-    autoCommandChooser.addOption("B2_StartToAmp", B2_StartToAmp);
-    autoCommandChooser.addOption("B2_NoteToSpeaker", B2_NoteToSpeaker);
-    autoCommandChooser.addOption("B2_SpeakerToNote", B2_SpeakerToNote);
-    autoCommandChooser.addOption("B2_StartToSpeaker", B2_StartToSpeaker);
+  autoCommandChooser.addOption("B2_AmpToNote", B2_AmpToNote);
+  autoCommandChooser.addOption("B2_StartToAmp", B2_StartToAmp);
+  autoCommandChooser.addOption("B2_NoteToSpeaker", B2_NoteToSpeaker);
+  autoCommandChooser.addOption("B2_SpeakerToNote", B2_SpeakerToNote);
+  autoCommandChooser.addOption("B2_StartToSpeaker", B2_StartToSpeaker);
 
-    autoCommandChooser.addOption("B3_AmpToNote", B3_AmpToNote);
-    autoCommandChooser.addOption("B3_NoteToAmp", B3_NoteToAmp);
-    autoCommandChooser.addOption("B3_StartToAmp", B3_StartToAmp);
-    autoCommandChooser.addOption("B3_NoteToSpeaker", B3_NoteToSpeaker);
-    autoCommandChooser.addOption("B3_SpeakerToNote", B3_SpeakerToNote);
-    autoCommandChooser.addOption("B3_StartToSpeaker", B3_StartToSpeaker);
+  autoCommandChooser.addOption("B3_AmpToNote", B3_AmpToNote);
+  autoCommandChooser.addOption("B3_NoteToAmp", B3_NoteToAmp);
+  autoCommandChooser.addOption("B3_StartToAmp", B3_StartToAmp);
+  autoCommandChooser.addOption("B3_NoteToSpeaker", B3_NoteToSpeaker);
+  autoCommandChooser.addOption("B3_SpeakerToNote", B3_SpeakerToNote);
+  autoCommandChooser.addOption("B3_StartToSpeaker", B3_StartToSpeaker);
 
 
-    SmartDashboard.putData(teleopCommandChooser);
-    SmartDashboard.putData(autoCommandChooser);
-    this.configureBindings();
+  SmartDashboard.putData(teleopCommandChooser);
+  SmartDashboard.putData(autoCommandChooser);
+  this.configureBindings();
   }
 
   private void configureBindings() {
-    JoystickButton triggerIntake = new JoystickButton(intakeJoy, Constants.ButtonMap.intakeNote);
-    triggerIntake.onTrue(new IntakeCommand(0.6, shooter));
-    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 1);
-    triggerManualIntake.whileTrue(new IntakeManual(0.8, shooter));
-    JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 8);
-    triggerShooterButton.whileTrue(new Shoot(2500, shooter));
+    JoystickButton triggerIntake = new JoystickButton(intakeJoy, 1);
+    triggerIntake.onTrue(new IntakeBeamBreak(0.8, shooter));
+    JoystickButton stopIntake = new JoystickButton(intakeJoy, 2);
+    stopIntake.onTrue(new StopIntake(shooter));
+
+    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 13);
+    triggerManualIntake.whileTrue(new IntakeManual(1.0, shooter));
+    JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 13);
+    triggerShooterButton.whileTrue(new Shoot(2500, -2500, shooter));
   }
 
   public Command getAutonomousCommand() {
@@ -313,12 +299,15 @@ public class RobotContainer {
     // return auto;
     
   }
-  public static Joystick getIntakeJoy(){
-    return intakeJoy;
-  }
 
   public void initCommandInTeleop() {
     swerve.setDefaultCommand(teleopCommandChooser.getSelected());
+  }
+  public static Joystick getIntakeJoy(){
+    return intakeJoy;
+  }
+  public static Joystick getIntakeXbox(){
+    return intakeXbox;
   }
 
   /**
@@ -329,6 +318,4 @@ public class RobotContainer {
   public static boolean getSimOrNot() {
     return isSim;
   }
-  
-
 }

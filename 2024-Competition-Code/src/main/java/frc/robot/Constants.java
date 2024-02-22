@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -26,9 +23,9 @@ public final class Constants {
         public final static int upperShooter = 17;
         public final static int lowerShooter = 18;
       }
-    public static final class IntakeConstants {
-        public static final int beamBreak1 = 1;
-        public static final int beamBreak2 = 9;
+    public static final class IntakeConstants { // Not CAN ids, DIO port numbers
+        public static final int shooterBeamBreak = 1;
+        public static final int intakeBeamBreak = 9;
         public static final int feeder = 3;
         public static final int shooter = 4;
         public static final int feederMax = 19;
@@ -50,15 +47,12 @@ public final class Constants {
     public static final class SwerveConstants {
         // These can be safely adjusted without adjusting discrete
         // Some fudge factor is needed for safety while translating + rotating
-      
         // Max speed is 3.4 m/s
         public static final double maxChassisTranslationalSpeed = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
         public static final double maxWheelLinearVelocityMeters = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
-      
-        // public static final double maxChassisTranslationalSpeed = 0.5;
-        // public static final double maxWheelLinearVelocityMeters = 0.5;
-      
-        public static final double maxChassisAngularVelocity = Math.PI * 1.0; // A decent number but not fast enough
+       // public static final double maxChassisTranslationalSpeed = 0.5;
+       // public static final double maxWheelLinearVelocityMeters = 0.5;
+        public static final double maxChassisAngularVelocity = Math.PI * 2.0; // A decent number but not fast enough
 
         public static final double trackWidthX = Units.inchesToMeters(27.5); // 27.5 inch
         public static final double trackWidthY = Units.inchesToMeters(27.5); // 27.5 inch
@@ -69,13 +63,14 @@ public final class Constants {
 
         // Convenient array of module CAN IDs
         // Convention of first array: Front Left, Front Right, Back Left, Back Right
-        public static final int[][] moduleCANIDs = {{1, 2, 9}, {3, 4, 10}, {5, 6, 11}, {7, 8, 12}};
+        public static final int[][] moduleCANIDs = {{1, 2, 10}, {3, 4, 11}, {5, 6, 12}, {7, 8, 13}};
 
         // Initially 0 until we calibrate the modules 12/9
         // As of 1/13-> LAST TESTING DAY -> Only have correct offset of 1 module
         // WRONG OFFSETS: DO NOT USE [0, 360) degrees to measure swerve offsets
         // ONLY USE [-180, 180)
-        public static final double[] moduleAngleOffsets = {-50.5, -178.2, 112.8, 84.5};
+         public static final double[] moduleAngleOffsets = {-12.21, -121.29, -133.154, -40.97};
+        //public static final double[] moduleAngleOffsets = {0, 0, 0, 0};
 
         public static final boolean[] moduleInverts = {false, true, false, true};
     }
@@ -99,7 +94,8 @@ public final class Constants {
         public static final double turningEncoderVelocityFactor = (2 * Math.PI) / turnGearRatio / 60.0; // radians per second
 
         // Confirmed working kP!!
-        public static final double drivekP = 0.1;
+        public static final double drivekP = 0.1; // This is good!
+        //public static final double drivekP = 0.0;
         public static final double drivekI = 0.0;
         public static final double drivekD = 0.0;
 
@@ -146,9 +142,7 @@ public final class Constants {
 
     }
   
-    public static final class PhotonVisionConstants {
-        // the position of the camera from the center of the robot
-        public static final Transform3d robotToCamera = new Transform3d(new Translation3d(0,0,0), new Rotation3d(0,0,0));
+    public static final class PhotonVisionConstants{
         public static double cameraHeightMeters = 0;
         public static double targetHeightMeters = 0;
         public static double cameraPitchRadians = 0;

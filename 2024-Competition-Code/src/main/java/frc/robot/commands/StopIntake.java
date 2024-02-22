@@ -7,37 +7,39 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Shooter;
 
-public class IntakeCommand extends Command {
+public class StopIntake extends Command {
   /** Creates a new IntakeCommand. */
-  private double power;
   private Shooter shooter;
-  public IntakeCommand(double power, Shooter shooter) {
-    this.power = power;
+
+  public StopIntake(Shooter shooter) {
     this.shooter = shooter;
     addRequirements(shooter);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    shooter.setUpperRPM(0);
+    shooter.setLowerRPM(0);
+    shooter.setIntakePower(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setFeedSimple(power);
+    //shooter.setintakeSpeed(power);
+    shooter.setFeedSimple(0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.setFeedSimple(0);
+    shooter.setintakeSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return shooter.getSensor();
+    return true;
   }
 }
