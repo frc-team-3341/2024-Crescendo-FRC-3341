@@ -24,7 +24,7 @@ The code currently contains the newest versions of the:
   + Tuned Speaker RPM (shooter)
       + 3500 for the upper and lower roller
   + Tuned Intake RPM
-      + ~4100 RPM or 0.8 speed for the intake rollers
+      + ~4150 RPM or 0.8 speed for the intake rollers
 ### Code from `swerve.photonvision`:
 - +Photonvision tracking and data collection from 3D objects
 - +TargetAprilTag Command to adjust with Swerve using the x offset and the z angle
