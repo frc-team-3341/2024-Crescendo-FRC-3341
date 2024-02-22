@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.*;
+import frc.robot.subsystems.photonvision.photonvision;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.CrabDrive;
@@ -26,6 +28,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import org.photonvision.PhotonCamera;
 
 public class RobotContainer {
 
@@ -112,6 +115,10 @@ public class RobotContainer {
   // Empty CrabDrive object
   private CrabDrive crabDrive;
 
+  // Empty AprilTag command object
+  private TargetAprilTag targetAprilTag;
+  
+  // Empty Shooter object
   private Shooter shooter;
 
   public RobotContainer() {
@@ -208,6 +215,12 @@ public class RobotContainer {
     triggerManualIntake.whileTrue(new IntakeManual(1.0, shooter));
     JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 13);
     triggerShooterButton.whileTrue(new Shoot(2500, -2500, shooter));
+
+    PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+    photonvision photonVision = new photonvision(camera);
+
+    JoystickButton alignButton = new JoystickButton(actualXbox, XboxController.Button.kLeftBumper.value);
+    alignButton.onTrue(new TargetAprilTag(photonVision, swerve));
   }
 
   public Command getAutonomousCommand() {
