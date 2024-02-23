@@ -27,13 +27,13 @@ public class IntakeBeamBreak extends Command {
   @Override
   public void execute() {
     //shooter.setintakeSpeed(power);
-    shooter.setFeedSimple(power);
+    shooter.setIntakePower(power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.setintakeSpeed(0);
+    shooter.setIntakePower(0);
   }
 
   // Returns true when the command should end.

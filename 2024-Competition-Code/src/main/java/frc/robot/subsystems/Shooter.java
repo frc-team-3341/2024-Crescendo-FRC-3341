@@ -178,7 +178,7 @@ public class Shooter extends SubsystemBase {
     this.lowerRPM = val;
   }
 
-  public void setIntakePower(int val){
+  public void setIntakePower(double val){
     this.intakePower = val;
   }
 
@@ -210,28 +210,28 @@ public class Shooter extends SubsystemBase {
     // }
 
     // Shoots 
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){ 
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(1)){ //shoot
       intakePower = 1.0;
     }
 
     // Gets shooter wheels up to speed for speaker (untested)
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(4)){ 
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){ //prep flywheels for speaker
       upperRPM = 3500;
       lowerRPM = 3500;
     }
 
     // Intakes note from source (untested)
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(5)){ 
+    /*if(RobotContainer.getIntakeJoy().getRawButtonPressed(6)){ //intake from source
       upperRPM = -1500;
       lowerRPM = -1500;
       intakePower = -0.6;
-    }
+    }*/
 
     // Gets shooter wheels up to speed for amp (tested but could be improved)
     // Works when the robot is aligned right in front of amp
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(6)){ 
-      upperRPM = 700;
-      lowerRPM = 50;
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(4)){ //prep flywheels for shooting into amp
+      upperRPM = 750;
+      lowerRPM = 700;
     }
     
 
