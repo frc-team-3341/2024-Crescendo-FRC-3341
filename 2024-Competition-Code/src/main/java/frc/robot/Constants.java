@@ -22,6 +22,7 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    
     public static class ShooterConstants {
         public final static int upperShooter = 17;
         public final static int lowerShooter = 18;
@@ -66,13 +67,19 @@ public final class Constants {
 
         // Convenient array of module CAN IDs
         // Convention of first array: Front Left, Front Right, Back Left, Back Right
+        // IAP can ids:
+        //public static final int[][] moduleCANIDs = {{1, 2, 9}, {3, 4, 10}, {5, 6, 11}, {7, 8, 12}};
+
         public static final int[][] moduleCANIDs = {{1, 2, 10}, {3, 4, 11}, {5, 6, 12}, {7, 8, 13}};
 
         // Initially 0 until we calibrate the modules 12/9
         // As of 1/13-> LAST TESTING DAY -> Only have correct offset of 1 module
         // WRONG OFFSETS: DO NOT USE [0, 360) degrees to measure swerve offsets
         // ONLY USE [-180, 180)
-         public static final double[] moduleAngleOffsets = {-12.21, -121.29, -133.154, -40.97};
+        // angle offsets for IAP:
+        //public static final double[] moduleAngleOffsets = {-50.5, -178.2, 112.8, 84.5};
+        // angle offsets for comp:
+        public static final double[] moduleAngleOffsets = {-12.21, -121.29, -133.154, -40.97};
         //public static final double[] moduleAngleOffsets = {0, 0, 0, 0};
 
         public static final boolean[] moduleInverts = {false, true, false, true};
@@ -129,8 +136,8 @@ public final class Constants {
         public static final int turnCurrentLimit = 20;
 
     }
-
-    public static class ClimberConstants {
+    
+     public static class ClimberConstants {
       public static final int extPort = 0;
 
       public static final double climberConversionFactor = (1/3.0) * Units.inchesToMeters(0.2);
@@ -153,5 +160,5 @@ public final class Constants {
         public static double cameraPitchRadians = 0;
         public static double targetPitchRadians = 0;
     }
-
+   
 }
