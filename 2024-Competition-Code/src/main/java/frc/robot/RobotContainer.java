@@ -12,11 +12,13 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.CrabDrive;
 import frc.robot.commands.IntakeBeamBreak;
 import frc.robot.commands.IntakeManual;
+import frc.robot.commands.IntakeSource;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.StopIntake;
 import frc.robot.commands.SwerveAuto;
 import frc.robot.commands.SwerveTeleop;
 import frc.robot.commands.TestFourModules;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
@@ -121,6 +123,8 @@ public class RobotContainer {
   // Empty Shooter object
   private Shooter shooter;
 
+  private Climber climber;
+
   public RobotContainer() {
 
     if (isDataLog) {
@@ -187,6 +191,7 @@ public class RobotContainer {
 
     allFour = new TestFourModules(swerve, actualXbox);
     shooter = new Shooter();
+    climber = new Climber();
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
@@ -202,10 +207,12 @@ public class RobotContainer {
 
   private void configureBindings() {
     // Triggers intake rollers and stops at beambreaks at the middle of the note mechanism
-    JoystickButton triggerIntake = new JoystickButton(intakeJoy, 1);
-    triggerIntake.onTrue(new IntakeBeamBreak(0.8, shooter));
+    JoystickButton triggerIntake = new JoystickButton(intakeJoy, 2); 
+    triggerIntake.onTrue(new IntakeBeamBreak(0.6, shooter));
+    JoystickButton triggerIntakeSource = new JoystickButton(intakeJoy, 6); 
+    triggerIntakeSource.onTrue(new IntakeSource(-1500, -1500,   0.8, shooter));
     // Stops rollers
-    JoystickButton stopIntake = new JoystickButton(intakeJoy, 2);
+    JoystickButton stopIntake = new JoystickButton(intakeJoy, 5);
     stopIntake.onTrue(new StopIntake(shooter));
     // Manually activates intake rollers when you go up on the POV 
     POVButton triggerIntakeManual = new POVButton(intakeJoy, 0); 

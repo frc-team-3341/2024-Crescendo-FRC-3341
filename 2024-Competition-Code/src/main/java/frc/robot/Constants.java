@@ -136,17 +136,16 @@ public final class Constants {
         public static final int turnCurrentLimit = 20;
 
     }
-    
-     public static class ClimberConstants {
-      public static final int extPort = 0;
 
+    public static class ClimberConstants {
+      public static final int extPort = 20;
       public static final double climberConversionFactor = (1/3.0) * Units.inchesToMeters(0.2);
       public static final double velocityConversionFactor = (1/3.0)/60.0 * Units.inchesToMeters(0.2);
       public static final double maxExtensionLimit = Units.inchesToMeters(26.55);
 
       public static final double maxExtensionVelocity = 0.1;
 
-      public static final double climbkP = 0.0;
+      public static final double climbkP = 0.01;
       public static final double climbkI = 0.0;
       public static final double climbkD = 0.0;
 
