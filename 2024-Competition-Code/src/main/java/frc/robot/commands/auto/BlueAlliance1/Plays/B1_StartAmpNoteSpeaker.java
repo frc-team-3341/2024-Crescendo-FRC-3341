@@ -20,6 +20,7 @@ import frc.robot.commands.auto.BlueAlliance1.B1_AmpToNote;
 import frc.robot.commands.auto.BlueAlliance1.B1_NoteToSpeaker;
 import frc.robot.subsystems.swerve.SwerveDrive;
 
+
 public class B1_StartAmpNoteSpeaker extends SequentialCommandGroup {
   SwerveDrive swerve;
 
@@ -84,11 +85,12 @@ public class B1_StartAmpNoteSpeaker extends SequentialCommandGroup {
 
     // Setting voltage to 0 is necessary in order to stop robot
     addCommands(swerveAuto.finallyDo(() -> {
-      swerve.resetToZero();
+      swerve.setModuleVoltages(0, 0);
       CommandScheduler.getInstance().schedule(new B1_AmpToNote("B1 Amp To Note", this.swerve));
-      swerve.resetToZero();
+    
+      swerve.setModuleVoltages(0, 0);
       CommandScheduler.getInstance().schedule(new B1_NoteToSpeaker("B1 Note to Speaker", this.swerve));
-      swerve.resetToZero();
+      swerve.setModuleVoltages(0, 0);
     }));
   }
 }
