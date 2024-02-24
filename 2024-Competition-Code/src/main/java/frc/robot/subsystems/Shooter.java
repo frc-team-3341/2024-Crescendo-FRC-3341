@@ -230,8 +230,8 @@ public class Shooter extends SubsystemBase {
     // Gets shooter wheels up to speed for amp (tested but could be improved)
     // Works when the robot is aligned right in front of amp
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(4)){ //prep flywheels for shooting into amp
-      upperRPM = 750;
-      lowerRPM = 700;
+      upperRPM = 120;
+      lowerRPM = 80;
     }
     
 
