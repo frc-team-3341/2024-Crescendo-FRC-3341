@@ -7,7 +7,7 @@ import frc.robot.subsystems.swerve.SwerveDrive;
 
 
 public class TargetAprilTag extends Command {
-    private photonvision photonVision;
+    private PhotonVision photonVision;
     private SwerveDrive swerveDrive;
 
     public double[] threshold = {1.0,0.05};
@@ -22,7 +22,7 @@ public class TargetAprilTag extends Command {
     public boolean rotationAligned = false;
 
 
-    public TargetAprilTag(photonvision photonVision, SwerveDrive swerveDrive) {
+    public TargetAprilTag(PhotonVision photonVision, SwerveDrive swerveDrive) {
         this.photonVision = photonVision;
         this.swerveDrive = swerveDrive;
 

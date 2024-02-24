@@ -56,7 +56,7 @@ public class RobotContainer {
 
   // WARNING: TRAJECTORY DRIVING NOT TESTED IN REAL LIFE (IRL)
   // DO NOT USE UNTIL DRIVING IN SAFE SPACE
-  // THIS IS A SECOND WARNING!!! THIS IS VERY DANGEROUS.
+  // THIS IS A SECOND WARNING!!! Tx`HIS IS VERY DANGEROUS.
   // To do trajectory driving or not
   // TREAT THIS LIKE A RED BUTTON
   private final boolean autoOrNot = false;
