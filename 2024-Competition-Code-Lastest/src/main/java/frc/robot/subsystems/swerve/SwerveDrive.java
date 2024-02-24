@@ -297,5 +297,10 @@ public class SwerveDrive extends SubsystemBase {
          navx.reset();
       });
    }
+
+   public void resetToZero(){
+      setModulesPositions(0,0); 
+      setModuleVoltages(0, 0);
+   }
    
 }
