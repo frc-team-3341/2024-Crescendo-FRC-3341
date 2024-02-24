@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.auto.BlueAlliance1.B1_AmpToNote;
 import frc.robot.commands.auto.BlueAlliance1.B1_NoteToSpeaker;
+import frc.robot.commands.auto.BlueAlliance1.B1_StartToAmp;
 import frc.robot.subsystems.swerve.SwerveDrive;
 
 
@@ -85,9 +86,10 @@ public class B1_StartAmpNoteSpeaker extends SequentialCommandGroup {
 
     // Setting voltage to 0 is necessary in order to stop robot
     addCommands(swerveAuto.finallyDo(() -> {
+      CommandScheduler.getInstance().schedule(new B1_StartToAmp("B1 Start To Amp", this.swerve));
       swerve.setModuleVoltages(0, 0);
       CommandScheduler.getInstance().schedule(new B1_AmpToNote("B1 Amp To Note", this.swerve));
-    
+      
       swerve.setModuleVoltages(0, 0);
       CommandScheduler.getInstance().schedule(new B1_NoteToSpeaker("B1 Note to Speaker", this.swerve));
       swerve.setModuleVoltages(0, 0);
