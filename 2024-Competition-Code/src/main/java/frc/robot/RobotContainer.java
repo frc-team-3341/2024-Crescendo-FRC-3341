@@ -218,10 +218,10 @@ public class RobotContainer {
     POVButton triggerIntakeManual = new POVButton(intakeJoy, 0); 
     triggerIntakeManual.whileTrue(new IntakeManual(0.8, shooter));
 
-    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 13);
-    triggerManualIntake.whileTrue(new IntakeManual(1.0, shooter));
-    JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 13);
-    triggerShooterButton.whileTrue(new Shoot(2500, -2500, shooter));
+    // JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 13);
+    // triggerManualIntake.whileTrue(new IntakeManual(1.0, shooter));
+    // JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 13);
+    // triggerShooterButton.whileTrue(new Shoot(2500, -2500, shooter));
 
     PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
     photonvision photonVision = new photonvision(camera);
