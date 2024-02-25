@@ -22,11 +22,19 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    
+
+    // Checks if robot is real or not
+    public static boolean isSim = Robot.isSimulation();
+
+    // MODIFY THIS WHEN SWITCHING BETWEEN CHASSIS
+    // THIS IS THE FIRST THING YOU SHOULD THINK ABOUT/SEE!!!
+    public final static RobotType currentRobot = RobotType.ROBOT_2024_COMPETITION;
+
     public static class ShooterConstants {
         public final static int upperShooter = 17;
         public final static int lowerShooter = 18;
-      }
+    }
+
     public static final class IntakeConstants { // Not CAN ids, DIO port numbers
         public static final int shooterBeamBreak = 1;
         public static final int intakeBeamBreak = 9;
@@ -34,28 +42,23 @@ public final class Constants {
         public static final int shooter = 4;
         public static final int feederMax = 19;
     }
+
     public static final class PIDShooterConsts {
         public static final double kP = 0.1;
         public static final double kI = 0;
         public static final double kD = 0;
     }
-    public static final class feedForwardConsts {
-        public static final double kS = 0.80824;
-        public static final double kV = 0.12407;
-        public static final double kA = 0.015099;
-    }
 
-    public static final class ButtonMap{
+    public static final class ButtonMap {
         public static final int intakeNote = 2;
     }
+
     public static final class SwerveConstants {
         // These can be safely adjusted without adjusting discrete
         // Some fudge factor is needed for safety while translating + rotating
         // Max speed is 3.4 m/s
         public static final double maxChassisTranslationalSpeed = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
         public static final double maxWheelLinearVelocityMeters = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
-       // public static final double maxChassisTranslationalSpeed = 0.5;
-       // public static final double maxWheelLinearVelocityMeters = 0.5;
         public static final double maxChassisAngularVelocity = Math.PI * 2.0; // A decent number but not fast enough
 
         public static final double trackWidthX = Units.inchesToMeters(27.5); // 27.5 inch
@@ -64,23 +67,6 @@ public final class Constants {
 
         // Joystick deadband for no accidental movement
         public static final double deadBand = 0.05;
-
-        // Convenient array of module CAN IDs
-        // Convention of first array: Front Left, Front Right, Back Left, Back Right
-        // IAP can ids:
-        //public static final int[][] moduleCANIDs = {{1, 2, 9}, {3, 4, 10}, {5, 6, 11}, {7, 8, 12}};
-
-        public static final int[][] moduleCANIDs = {{1, 2, 10}, {3, 4, 11}, {5, 6, 12}, {7, 8, 13}};
-
-        // Initially 0 until we calibrate the modules 12/9
-        // As of 1/13-> LAST TESTING DAY -> Only have correct offset of 1 module
-        // WRONG OFFSETS: DO NOT USE [0, 360) degrees to measure swerve offsets
-        // ONLY USE [-180, 180)
-        // angle offsets for IAP:
-        //public static final double[] moduleAngleOffsets = {-50.5, -178.2, 112.8, 84.5};
-        // angle offsets for comp:
-        public static final double[] moduleAngleOffsets = {-12.21, -121.29, -133.154, -40.97};
-        //public static final double[] moduleAngleOffsets = {0, 0, 0, 0};
 
         public static final boolean[] moduleInverts = {false, true, false, true};
     }
@@ -126,6 +112,8 @@ public final class Constants {
         // Calculating it out: 1/3.709 = 0.26958125317 power per meters/second
         // If we want to go to the max speed of 3.709, then multiply velocity error by this constant
         // I.e. 3.709 * 0.2695 ~= 1.0
+
+        // DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU ARE DOING
         public static final double drivekF = 1.0/maxFreeWheelSpeedMeters;
 
         public static final double turnkP = 0.7; 
@@ -159,5 +147,5 @@ public final class Constants {
         public static double cameraPitchRadians = 0;
         public static double targetPitchRadians = 0;
     }
-   
+
 }

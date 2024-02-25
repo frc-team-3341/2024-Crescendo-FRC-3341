@@ -76,8 +76,7 @@ public class SwerveAuto extends SequentialCommandGroup {
     var swerveAuto = AutoBuilder.followPath(path);
 
     // Setting voltage to 0 is necessary in order to stop robot
-    addCommands(swerveAuto.finallyDo(() -> {
-      swerve.stopMotors();
-    }));
+    // Lambda can be replaced with reference :)
+    addCommands(swerveAuto.finallyDo(swerve::stopMotors));
   }
 }

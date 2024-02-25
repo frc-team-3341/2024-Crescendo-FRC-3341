@@ -22,9 +22,8 @@ public class photonvision extends SubsystemBase {
     public boolean hasTarget;
     //Shouldn't be static bc two photonvision subsystems will be used for each camera
     public PhotonPoseEstimator poseEstimator;
+    public Constants.PhotonVisionConstants c;
 
-    public boolean aligned;
-    public boolean robotAligning;
 
     public photonvision(PhotonCamera camera) {
         this.camera = camera;
@@ -62,7 +61,6 @@ public class photonvision extends SubsystemBase {
     public void setPose(Pose3d initPose){
         //Only use this during initialization
         poseEstimator.setLastPose(initPose);
-
     }
 
     @Override
@@ -70,14 +68,10 @@ public class photonvision extends SubsystemBase {
         if (this.targetExists()){
             target = result.getBestTarget();
             targetPos = target.getBestCameraToTarget();
-//            SmartDashboard.putNumber("z-angle", Math.toDegrees(targetPos.getRotation().getAngle()));
-//            SmartDashboard.putNumber("x-val", targetPos.getX());
-//            SmartDashboard.putNumber("y-val", targetPos.getY());
+            SmartDashboard.putNumber("z-angle", Math.toDegrees(targetPos.getRotation().getAngle()));
+            SmartDashboard.putNumber("x-val", targetPos.getX());
+            SmartDashboard.putNumber("y-val", targetPos.getY());
         }
-
-        // v could be implemented in swerve subsystem
-        SmartDashboard.putBoolean("RobotAligning", robotAligning);
-        SmartDashboard.putBoolean("Aligned", aligned);
-        SmartDashboard.putBoolean("TargetExists", this.targetExists());
+        SmartDashboard.putBoolean("Target", this.targetExists());
     }
 }
