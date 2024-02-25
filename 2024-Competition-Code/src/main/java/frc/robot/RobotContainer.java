@@ -203,7 +203,7 @@ public class RobotContainer {
   private final R3_StartToSpeaker R3_StartToSpeaker;
   
   private final B1_StartAmpNoteSpeaker B1_StartAmpNoteSpeaker;
-  private final B1_StartSpeakerNoteSpeaker B1_StartSpeakerNoteSpeaker;
+private final B1_StartSpeakerNoteSpeaker B1_StartSpeakerNoteSpeaker;
 
   public RobotContainer() {
 
@@ -325,7 +325,7 @@ public class RobotContainer {
       // PLAYS:
       B1_StartAmpNoteSpeaker = new B1_StartAmpNoteSpeaker(this.swerve, this.shooter);
       B1_StartSpeakerNoteSpeaker = new B1_StartSpeakerNoteSpeaker(this.swerve, this.shooter);
-
+      
     }
 
     // Autonomous command selector
@@ -373,7 +373,7 @@ public class RobotContainer {
   autoCommandChooser.addOption("R3_StartToSpeaker", R3_StartToSpeaker);
 
   autoCommandChooser.addOption("B1_StartAmpNoteSpeaker", B1_StartAmpNoteSpeaker);
-  autoCommandChooser.addOption("B1_StartSpeakerNoteSpeaker", B1_StartSpeakerNoteSpeaker);
+autoCommandChooser.addOption("B1_StartSpeakerNoteSpeaker", B1_StartSpeakerNoteSpeaker);
 
   
   SmartDashboard.putData(teleopCommandChooser);
