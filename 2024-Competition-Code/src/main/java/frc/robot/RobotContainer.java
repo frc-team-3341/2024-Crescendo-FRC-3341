@@ -297,8 +297,6 @@ public class RobotContainer {
       B3_NoteToSpeaker = new B3_NoteToSpeaker("B3 Note to Speaker", this.swerve);
       B3_SpeakerToNote = new B3_SpeakerToNote("B3 Speaker to Note", this.swerve);
       B3_StartToSpeaker = new B3_StartToSpeaker("B3 Start to Speaker", this.swerve);
-      
-      B1_StartAmpNoteSpeaker = new B1_StartAmpNoteSpeaker("B1 Start to Amp", this.swerve);
 
       R1_AmpToNote = new R1_AmpToNote("R1 Amp to Note", this.swerve);
       R1_NoteToAmp = new R1_NoteToAmp("R1 Note to Amp", this.swerve);
@@ -320,6 +318,9 @@ public class RobotContainer {
       R3_NoteToSpeaker = new R3_NoteToSpeaker("R3 Note to Speaker", this.swerve);
       R3_SpeakerToNote = new R3_SpeakerToNote("R3 Speaker to Note", this.swerve);
       R3_StartToSpeaker = new R3_StartToSpeaker("R3 Start to Speaker", this.swerve);
+
+      // PLAYS:
+      B1_StartAmpNoteSpeaker = new B1_StartAmpNoteSpeaker(this.swerve, this.shooter);
     }
 
     // Autonomous command selector
@@ -330,7 +331,6 @@ public class RobotContainer {
   autoCommandChooser.addOption("B1_SpeakerToNote", B1_SpeakerToNote);
   autoCommandChooser.addOption("B1_StartToSpeaker", B1_StartToSpeaker);
 
-  autoCommandChooser.addOption("B1_StartAmpNoteSpeaker", B1_StartAmpNoteSpeaker);
 
   autoCommandChooser.addOption("B2_AmpToNote", B2_AmpToNote);
   autoCommandChooser.addOption("B2_NoteToAmp", B2_NoteToAmp);
@@ -366,6 +366,9 @@ public class RobotContainer {
   autoCommandChooser.addOption("R3_NoteToSpeaker", R3_NoteToSpeaker);
   autoCommandChooser.addOption("R3_SpeakerToNote", R3_SpeakerToNote);
   autoCommandChooser.addOption("R3_StartToSpeaker", R3_StartToSpeaker);
+
+  autoCommandChooser.addOption("B1_StartAmpNoteSpeaker", B1_StartAmpNoteSpeaker);
+
   
   SmartDashboard.putData(teleopCommandChooser);
   SmartDashboard.putData(autoCommandChooser);
