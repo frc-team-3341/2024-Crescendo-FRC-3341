@@ -18,7 +18,7 @@ import frc.robot.commands.StopIntake;
 import frc.robot.commands.SwerveAuto;
 import frc.robot.commands.SwerveTeleop;
 import frc.robot.commands.TestFourModules;
-import frc.robot.subsystems.Climber;
+//import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
@@ -123,7 +123,7 @@ public class RobotContainer {
   // Empty Shooter object
   private Shooter shooter;
 
-  private Climber climber;
+  //private Climber climber;
 
   public RobotContainer() {
 
@@ -191,7 +191,7 @@ public class RobotContainer {
 
     allFour = new TestFourModules(swerve, actualXbox);
     shooter = new Shooter();
-    climber = new Climber();
+    //climber = new Climber();
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
@@ -212,16 +212,11 @@ public class RobotContainer {
     JoystickButton triggerIntakeSource = new JoystickButton(intakeJoy, 6); 
     triggerIntakeSource.onTrue(new IntakeSource(-1500, -1500,   0.8, shooter));
     // Stops rollers
-    JoystickButton stopIntake = new JoystickButton(intakeJoy, 5);
-    stopIntake.onTrue(new StopIntake(shooter));
+    //JoystickButton stopIntake = new JoystickButton(intakeJoy, 5);
+    //stopIntake.onTrue(new StopIntake(shooter));
     // Manually activates intake rollers when you go up on the POV 
     POVButton triggerIntakeManual = new POVButton(intakeJoy, 0); 
     triggerIntakeManual.whileTrue(new IntakeManual(0.8, shooter));
-
-    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 13);
-    triggerManualIntake.whileTrue(new IntakeManual(1.0, shooter));
-    JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 13);
-    triggerShooterButton.whileTrue(new Shoot(2500, -2500, shooter));
 
     PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
     photonvision photonVision = new photonvision(camera);

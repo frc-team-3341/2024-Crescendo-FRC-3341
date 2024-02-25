@@ -32,9 +32,11 @@ public class Shooter extends SubsystemBase {
 
   private double upperP = 0.0001;
   private double upperI = 0.000001;
+  private double upperD = 0.01;
   private double lowerP = 0.0001;
   private double lowerI = 0.000001;
-  private double intakeP = 0.001;
+  private double lowerD = 0.01;
+  private double intakeP = 0.0007;
   private double intakeI = 0.000001;
 
   private double upperFeedforward = 1.0/6100.0;
@@ -81,14 +83,14 @@ public class Shooter extends SubsystemBase {
     intakeController.setD(0);
     intakeController.setFF(intakeFeedForward);
 
-    Preferences.initDouble("power", upperRPM);
+    /*Preferences.initDouble("power", upperRPM);
     Preferences.initDouble("Lower Power", lowerRPM);
     Preferences.initDouble("intake Power", intakePower);
 
     Preferences.initDouble("upperPID P", upperP);
     Preferences.initDouble("upperPID I", upperI);
     Preferences.initDouble("lowerPID P", lowerP);
-    Preferences.initDouble("lowerPID I", lowerI);
+    Preferences.initDouble("lowerPID I", lowerI); */
 
     intakeMax.restoreFactoryDefaults();
     //resetIntakeEncoder();
@@ -190,10 +192,10 @@ public class Shooter extends SubsystemBase {
     //lowerPower = Preferences.getDouble("lower power", lowerPower);
     //intakePower = Preferences.getDouble("Intake Power", intakePower);
 
-    upperP = Preferences.getDouble("upperPID P", upperP);
+    /*upperP = Preferences.getDouble("upperPID P", upperP);
     upperI = Preferences.getDouble("upperPID I", upperI);
     lowerP = Preferences.getDouble("lowerPID P", lowerP);
-    lowerI = Preferences.getDouble("lowerPID I", lowerI);
+    lowerI = Preferences.getDouble("lowerPID I", lowerI); */
 
 
     //Controller.setP(upperP);
