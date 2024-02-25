@@ -367,8 +367,6 @@ public class RobotContainer {
   autoCommandChooser.addOption("R3_SpeakerToNote", R3_SpeakerToNote);
   autoCommandChooser.addOption("R3_StartToSpeaker", R3_StartToSpeaker);
   
-
-
   SmartDashboard.putData(teleopCommandChooser);
   SmartDashboard.putData(autoCommandChooser);
   this.configureBindings();
