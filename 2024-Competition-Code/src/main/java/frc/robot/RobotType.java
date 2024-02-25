@@ -25,7 +25,7 @@ public enum RobotType {
             true, // Drive according to FMS Alliance
             true // Invert speed controls for Right Trigger
     ),
-    ROBOT_SIMULATION(
+    ROBOT_2024_SIMULATION(
             // These arguments are here if accidentally used
             new double[] { -12.21, -121.29, -133.154, -40.97 }, // Offsets for Competition Bot - NOT USED FOR SIM
             // CAN IDs are slightly different - REV PDH is at CAN ID 9
