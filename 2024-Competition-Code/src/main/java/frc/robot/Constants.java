@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -19,7 +22,32 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    
+    public static class ShooterConstants {
+        public final static int upperShooter = 17;
+        public final static int lowerShooter = 18;
+      }
+    public static final class IntakeConstants { // Not CAN ids, DIO port numbers
+        public static final int shooterBeamBreak = 1;
+        public static final int intakeBeamBreak = 9;
+        public static final int feeder = 3;
+        public static final int shooter = 4;
+        public static final int feederMax = 19;
+    }
+    public static final class PIDShooterConsts {
+        public static final double kP = 0.1;
+        public static final double kI = 0;
+        public static final double kD = 0;
+    }
+    public static final class feedForwardConsts {
+        public static final double kS = 0.80824;
+        public static final double kV = 0.12407;
+        public static final double kA = 0.015099;
+    }
 
+    public static final class ButtonMap{
+        public static final int intakeNote = 2;
+    }
     public static final class SwerveConstants {
         // These can be safely adjusted without adjusting discrete
         // Some fudge factor is needed for safety while translating + rotating
@@ -39,13 +67,19 @@ public final class Constants {
 
         // Convenient array of module CAN IDs
         // Convention of first array: Front Left, Front Right, Back Left, Back Right
+        // IAP can ids:
+        //public static final int[][] moduleCANIDs = {{1, 2, 9}, {3, 4, 10}, {5, 6, 11}, {7, 8, 12}};
+
         public static final int[][] moduleCANIDs = {{1, 2, 10}, {3, 4, 11}, {5, 6, 12}, {7, 8, 13}};
 
         // Initially 0 until we calibrate the modules 12/9
         // As of 1/13-> LAST TESTING DAY -> Only have correct offset of 1 module
         // WRONG OFFSETS: DO NOT USE [0, 360) degrees to measure swerve offsets
         // ONLY USE [-180, 180)
-         public static final double[] moduleAngleOffsets = {-12.21, -121.29, -133.154, -40.97};
+        // angle offsets for IAP:
+        //public static final double[] moduleAngleOffsets = {-50.5, -178.2, 112.8, 84.5};
+        // angle offsets for comp:
+        public static final double[] moduleAngleOffsets = {-12.21, -121.29, -133.154, -40.97};
         //public static final double[] moduleAngleOffsets = {0, 0, 0, 0};
 
         public static final boolean[] moduleInverts = {false, true, false, true};
@@ -103,4 +137,27 @@ public final class Constants {
 
     }
 
+    public static class ClimberConstants {
+      public static final int extPort = 20;
+      public static final double climberConversionFactor = (1/3.0) * Units.inchesToMeters(0.2);
+      public static final double velocityConversionFactor = (1/3.0)/60.0 * Units.inchesToMeters(0.2);
+      public static final double maxExtensionLimit = Units.inchesToMeters(26.55);
+
+      public static final double maxExtensionVelocity = 0.1;
+
+      public static final double climbkP = 0.01;
+      public static final double climbkI = 0.0;
+      public static final double climbkD = 0.0;
+
+    }
+  
+    public static final class PhotonVisionConstants {
+        // the position of the camera from the center of the robot
+        public static final Transform3d robotToCamera = new Transform3d(new Translation3d(0,0,0), new Rotation3d(0,0,0));
+        public static double cameraHeightMeters = 0;
+        public static double targetHeightMeters = 0;
+        public static double cameraPitchRadians = 0;
+        public static double targetPitchRadians = 0;
+    }
+   
 }

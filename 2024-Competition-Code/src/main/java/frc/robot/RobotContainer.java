@@ -5,10 +5,21 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.*;
+import frc.robot.subsystems.photonvision.photonvision;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.CrabDrive;
+import frc.robot.commands.IntakeBeamBreak;
+import frc.robot.commands.IntakeManual;
+import frc.robot.commands.IntakeSource;
+import frc.robot.commands.Shoot;
+import frc.robot.commands.StopIntake;
 import frc.robot.commands.SwerveAuto;
 import frc.robot.commands.SwerveTeleop;
 import frc.robot.commands.TestFourModules;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
@@ -19,6 +30,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import org.photonvision.PhotonCamera;
 
 public class RobotContainer {
 
@@ -81,6 +93,8 @@ public class RobotContainer {
   // Xbox + an additional one for PC use
   private final Joystick actualXbox = new Joystick(0);
   private final Joystick additionalJoy = new Joystick(1);
+  private final static Joystick intakeJoy = new Joystick(2);
+  private final static Joystick intakeXbox = new Joystick(3);
   // Chooser for testing teleop commands
   private final SendableChooser<Command> teleopCommandChooser = new SendableChooser<>();
 
@@ -102,6 +116,14 @@ public class RobotContainer {
   private SwerveTeleop teleop;
   // Empty CrabDrive object
   private CrabDrive crabDrive;
+
+  // Empty AprilTag command object
+  private TargetAprilTag targetAprilTag;
+  
+  // Empty Shooter object
+  private Shooter shooter;
+
+  private Climber climber;
 
   public RobotContainer() {
 
@@ -168,7 +190,8 @@ public class RobotContainer {
     });
 
     allFour = new TestFourModules(swerve, actualXbox);
-
+    shooter = new Shooter();
+    climber = new Climber();
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
@@ -183,6 +206,28 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    // Triggers intake rollers and stops at beambreaks at the middle of the note mechanism
+    JoystickButton triggerIntake = new JoystickButton(intakeJoy, 2); 
+    triggerIntake.onTrue(new IntakeBeamBreak(0.6, shooter));
+    JoystickButton triggerIntakeSource = new JoystickButton(intakeJoy, 6); 
+    triggerIntakeSource.onTrue(new IntakeSource(-1500, -1500,   0.8, shooter));
+    // Stops rollers
+    JoystickButton stopIntake = new JoystickButton(intakeJoy, 5);
+    stopIntake.onTrue(new StopIntake(shooter));
+    // Manually activates intake rollers when you go up on the POV 
+    POVButton triggerIntakeManual = new POVButton(intakeJoy, 0); 
+    triggerIntakeManual.whileTrue(new IntakeManual(0.8, shooter));
+
+    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 13);
+    triggerManualIntake.whileTrue(new IntakeManual(1.0, shooter));
+    JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 13);
+    triggerShooterButton.whileTrue(new Shoot(2500, -2500, shooter));
+
+    PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+    photonvision photonVision = new photonvision(camera);
+
+    JoystickButton alignButton = new JoystickButton(actualXbox, XboxController.Button.kLeftBumper.value);
+    alignButton.onTrue(new TargetAprilTag(photonVision, swerve));
   }
 
   public Command getAutonomousCommand() {
@@ -195,6 +240,12 @@ public class RobotContainer {
 
   public void initCommandInTeleop() {
     swerve.setDefaultCommand(teleopCommandChooser.getSelected());
+  }
+  public static Joystick getIntakeJoy(){
+    return intakeJoy;
+  }
+  public static Joystick getIntakeXbox(){
+    return intakeXbox;
   }
 
   /**
