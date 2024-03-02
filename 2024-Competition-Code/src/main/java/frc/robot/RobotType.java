@@ -8,14 +8,16 @@ package frc.robot;
 public enum RobotType {
     // 2023 IAP Robot
     ROBOT_2023_IAP_SLOTH(
-            new double[] { -62.51, -179.82, 108.11, 82.62}, // Offsets for IAP chassis
+            new double[] { -62.51, -179.82, 108.11, 82.62}, // Offsets for IAP chassis - updated on 3/1 after CANCoder swap
             new int[][] { { 1, 2, 9 }, { 3, 4, 10 }, { 5, 6, 11 }, { 7, 8, 12 } }, // CAN IDs for IAP chassis
             true, // Enable data log or not
             true, // Enable XBox driving or not
             true, // Drive according to FMS Alliance
             false, // Invert speed controls for Right Trigger
             false, // Disable climber
-            false // Disable shooter
+            false, // Disable shooter
+            true, // Enable PhotonVision
+            true // Enable additional motor telemetry
     ),
     // 2024 Competition Robot
     ROBOT_2024_COMPETITION(
@@ -27,7 +29,9 @@ public enum RobotType {
             true, // Drive according to FMS Alliance
             true, // Invert speed controls for Right Trigger
             true, // Enable climber
-            true // Enable shooter
+            true, // Enable shooter
+            true, // Enable PhotonVision
+            false // Disable additional motor telemetry
     ),
     ROBOT_2024_SIMULATION(
             // These arguments are here if accidentally used
@@ -39,7 +43,9 @@ public enum RobotType {
             false, // Drive according to FMS Alliance
             true, // Invert speed controls for Right Trigger
             false, // Disable climber
-            false // Disable shooter
+            false, // Disable shooter
+            false, // Disable PhotonVision
+            false // Enable additional motor telemetry
     );
 
     /**
@@ -75,14 +81,21 @@ public enum RobotType {
     * True: Robot is default fast, Right Trigger slows down robot  */
     public boolean invertSpeedControl;
 
-    /** Enables Climber motors, subsystem, and command. */
+    /** Enables Climber motors, subsystem, and commands. */
     public boolean enableClimber;
 
-    /** Enables Shooter motors, subsystem, and command. */
+    /** Enables Shooter motors, subsystem, and commands. */
     public boolean enableShooter;
 
+    
+    /** Enables PhotonVision subsystem and commands */
+    public boolean enablePhotonVision;
+
+    /** Enables non-essential swerve motor telemetry */
+    public boolean enableSwerveMotorTelemetry;
+
     /** Special constructor for enumerator -> Helps us easily switch between both chassis (REDEPLOYING ONLY FOR NOW) */
-    private RobotType(double[] offsets, int[][] ids, boolean dataLogEnabled, boolean xboxEnabled, boolean allianceEnabled, boolean invertSpeedControl, boolean enableClimber, boolean enableShooter) {
+    private RobotType(double[] offsets, int[][] ids, boolean dataLogEnabled, boolean xboxEnabled, boolean allianceEnabled, boolean invertSpeedControl, boolean enableClimber, boolean enableShooter, boolean enablePhotonVision, boolean enableSwerveMotorTelemetry) {
         this.moduleAngleOffsets = offsets;
         this.moduleCANIDs = ids;
         this.dataLogEnabled = dataLogEnabled;
@@ -91,6 +104,8 @@ public enum RobotType {
         this.invertSpeedControl = invertSpeedControl;
         this.enableClimber = enableClimber;
         this.enableShooter = enableShooter;
+        this.enableSwerveMotorTelemetry = enableSwerveMotorTelemetry;
+        this.enablePhotonVision = enablePhotonVision;
     }
 
 }

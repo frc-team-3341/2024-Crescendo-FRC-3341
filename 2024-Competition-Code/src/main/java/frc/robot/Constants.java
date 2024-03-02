@@ -28,7 +28,7 @@ public final class Constants {
 
     // MODIFY THIS WHEN SWITCHING BETWEEN CHASSIS
     // THIS IS THE FIRST THING YOU SHOULD THINK ABOUT/SEE!!!
-    public final static RobotType currentRobot = RobotType.ROBOT_2024_COMPETITION;
+    public final static RobotType currentRobot = RobotType.ROBOT_2024_SIMULATION;
 
     public static class ShooterConstants {
         public final static int upperShooter = 17;
@@ -59,7 +59,7 @@ public final class Constants {
         // Max speed is 3.4 m/s
         public static final double maxChassisTranslationalSpeed = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
         public static final double maxWheelLinearVelocityMeters = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
-        public static final double maxChassisAngularVelocity = Math.PI * 1.0; // A decent number but not fast enough
+        public static final double maxChassisAngularVelocity = Math.PI * 1.0;
 
         public static final double trackWidthX = Units.inchesToMeters(27.5); // 27.5 inch
         public static final double trackWidthY = Units.inchesToMeters(27.5); // 27.5 inch
@@ -68,6 +68,7 @@ public final class Constants {
         // Joystick deadband for no accidental movement
         public static final double deadBand = 0.05;
 
+        // Wheels/gears should be facing inwards when calibrating the chassis
         public static final boolean[] moduleInverts = {false, true, false, true};
     }
 

@@ -247,30 +247,39 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     }
 
     public void updateTelemetry() {
-        
-        SmartDashboard.putNumber("Max Free Speed", ModuleConstants.maxFreeWheelSpeedMeters);
-        SmartDashboard.putNumber("Wheel Displacement #" + this.num, getPosition().distanceMeters);
 
+        // ESSENTIAL TELEMETRY
         // Show turning position and setpoints
         SmartDashboard.putNumber("Turn Pos Deg #" + this.num, Units.radiansToDegrees(getTurnPositionInRad()));
-        SmartDashboard.putNumber("Radian Turn Pos #" + num, getTurnPositionInRad());
-        SmartDashboard.putNumber("Rad Setpoint Turn Pos #" + this.num, state.angle.getRadians());
-        SmartDashboard.putNumber("Setpoint Turn Pos Deg #" + this.num, Units.radiansToDegrees(state.angle.getRadians()));
-
-        // Show driving velocity and setpoints
+        // Show driving velocity
         SmartDashboard.putNumber("Drive Vel #" + this.num, driveEncoder.getVelocity());
-        SmartDashboard.putNumber("Setpoint Drive Vel #" + this.num, state.speedMetersPerSecond);
 
-        // Output of driving
-        SmartDashboard.putNumber("Turn Volts #" + this.num, this.turnVolts);
-        SmartDashboard.putNumber("Drive Volts #" + this.num, this.driveVolts);
+        // NON-ESSENTIAL TELEMETRY
+        if (Constants.currentRobot.enableSwerveMotorTelemetry) {
 
-        // Get RPMs
-        SmartDashboard.putNumber("Turn RPM #" + this.num, (turnEncoder.getVelocity() / 360.0) * 60.0);
-        SmartDashboard.putNumber("Drive RPS #" + this.num,
-                driveEncoder.getVelocity() / Constants.ModuleConstants.drivingEncoderPositionFactor);
-        SmartDashboard.putNumber("CANCoder #" + this.num, canCoder.getAbsolutePosition());
-        SmartDashboard.putNumber("Drive Motor Voltage #" + this.num, driveSparkMax.getAppliedOutput());
+            // Show driving velocity setpoints
+            SmartDashboard.putNumber("Setpoint Drive Vel #" + this.num, state.speedMetersPerSecond);
+
+            // Show turning position and setpoints
+            SmartDashboard.putNumber("Radian Turn Pos #" + num, getTurnPositionInRad());
+            SmartDashboard.putNumber("Rad Setpoint Turn Pos #" + this.num, state.angle.getRadians());
+            SmartDashboard.putNumber("Setpoint Turn Pos Deg #" + this.num, Units.radiansToDegrees(state.angle.getRadians()));
+
+            // Get RPMs
+            SmartDashboard.putNumber("Turn RPM #" + this.num, (turnEncoder.getVelocity() / 360.0) * 60.0);
+            SmartDashboard.putNumber("Drive RPS #" + this.num,
+                    driveEncoder.getVelocity() / Constants.ModuleConstants.drivingEncoderPositionFactor);
+            SmartDashboard.putNumber("CANCoder #" + this.num, canCoder.getAbsolutePosition());
+            SmartDashboard.putNumber("Drive Motor Voltage #" + this.num, driveSparkMax.getAppliedOutput());
+
+            // Output of driving
+            SmartDashboard.putNumber("Turn Volts #" + this.num, this.turnVolts);
+            SmartDashboard.putNumber("Drive Volts #" + this.num, this.driveVolts);
+
+            // Get Wheel Displacement
+            SmartDashboard.putNumber("Wheel Displacement #" + this.num, getPosition().distanceMeters);
+        
+        }
     
 
           

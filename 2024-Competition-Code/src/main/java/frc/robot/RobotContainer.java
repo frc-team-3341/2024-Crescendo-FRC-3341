@@ -107,6 +107,10 @@ public class RobotContainer {
       this.configureShooter();
     }
 
+    if (Constants.currentRobot.enablePhotonVision) {
+      this.configurePhotonVision();
+    }
+    
     // Construct all other things
     this.configureBindings();
   }
@@ -231,12 +235,15 @@ public class RobotContainer {
     //Throttle switching the power hasn't been updated yet. Should test code before implementing
   }
 
-  private void configureBindings() {
+  public void configurePhotonVision() {
     PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
     photonvision photonVision = new photonvision(camera);
 
     JoystickButton alignButton = new JoystickButton(drivingXbox, XboxController.Button.kLeftBumper.value);
     alignButton.onTrue(new TargetAprilTag(photonVision, swerve));
+  }
+
+  private void configureBindings() {
   }
 
   public Command getAutonomousCommand() {
