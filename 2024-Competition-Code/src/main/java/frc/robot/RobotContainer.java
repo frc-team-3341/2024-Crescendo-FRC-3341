@@ -206,19 +206,19 @@ public class RobotContainer {
   private void configureShooter() {
     shooter = new Shooter();
     // Triggers intake rollers and stops at beambreaks at the middle of the note mechanism
-    JoystickButton triggerIntake = new JoystickButton(intakeJoy, 16); 
+    JoystickButton triggerIntake = new JoystickButton(mechanismJoy, 16); 
     triggerIntake.onTrue(new IntakeBeamBreak(0.6, shooter));
-    JoystickButton triggerIntakeSource = new JoystickButton(intakeJoy, 3); 
+    JoystickButton triggerIntakeSource = new JoystickButton(mechanismJoy, 3); 
     triggerIntakeSource.onTrue(new IntakeSource(-1500, -1500,  0.8, shooter));
     // Stops rollers
-    JoystickButton stopIntake = new JoystickButton(intakeJoy, 4);
+    JoystickButton stopIntake = new JoystickButton(mechanismJoy, 4);
     stopIntake.onTrue(new StopIntake(shooter));
 
-    /*JoystickButton manualIntake = new JoystickButton(intakeJoy, 16);
+    /*JoystickButton manualIntake = new JoystickButton(mechanismJoy, 16);
     manualIntake.whileTrue(new IntakeManual(0.6, shooter));
     /* */
     // Manually activates intake rollers when you go up on the POV 
-    POVButton triggerIntakeManual = new POVButton(intakeJoy, 0); 
+    POVButton triggerIntakeManual = new POVButton(mechanismJoy, 0); 
     triggerIntakeManual.whileTrue(new IntakeManual(0.8, shooter));
 
   }
