@@ -12,7 +12,6 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.swerve.SwerveDrive;
@@ -53,7 +52,7 @@ public class SwerveAuto extends SequentialCommandGroup {
         this.swerve::driveRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
             new PIDConstants(1.0, 0.0, 0.0), // Translation PID constants -> path independent
-            new PIDConstants(0.5, 0.0, 0.0), // Rotation PID constants -> more or less path dependent
+            new PIDConstants(0.55, 0.0, 0.0), // Rotation PID constants -> more or less path dependent
             Constants.SwerveConstants.maxChassisTranslationalSpeed, // Max module speed, in m/s
             Constants.SwerveConstants.trackWidthHypotenuse, // Drive base radius in meters. Distance from robot center
                                                             // to furthest module.
@@ -66,7 +65,7 @@ public class SwerveAuto extends SequentialCommandGroup {
           // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
           var alliance = DriverStation.getAlliance();
-         if (alliance.isPresent()) {
+          if (alliance.isPresent()) {
             return alliance.get() == DriverStation.Alliance.Red;
           }
           return false;
@@ -77,9 +76,7 @@ public class SwerveAuto extends SequentialCommandGroup {
     var swerveAuto = AutoBuilder.followPath(path);
 
     // Setting voltage to 0 is necessary in order to stop robot
-    addCommands(swerveAuto.finallyDo(() -> {
-      swerve.setModulesPositions(0,0);})
-      
-      );
+    // Lambda can be replaced with reference :)
+    addCommands(swerveAuto.finallyDo(swerve::stopMotors));
   }
 }

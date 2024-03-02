@@ -23,35 +23,21 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
+    // Checks if robot is real or not
+    public static boolean isSim = Robot.isSimulation();
+
     // MODIFY THIS WHEN SWITCHING BETWEEN CHASSIS
-    public final static RobotType selectedRobot = RobotType.ROBOT_2024_COMPETITION;
-
-    public static enum RobotType {
-        // 2023 IAP Robot
-        ROBOT_2023_IAP_SLOTH(new double[]{-50.5, -178.2, 112.8, 84.5}),
-        // 2024 Competition Robot
-        ROBOT_2024_COMPETITION(new double[]{-12.21, -121.29, -133.154, -40.97});
-
-        private double[] moduleAngleOffsets;
-
-        // Special constructor for enumerator -> Helps us easily switch between both chasiss (REDEPLOYING ONLY FOR NOW)
-        private RobotType(double[] offsets) {
-            this.moduleAngleOffsets = offsets;
-        }
-
-        public double[] getOffsets() {
-            return moduleAngleOffsets;
-        }
-    }
+    // THIS IS THE FIRST THING YOU SHOULD THINK ABOUT/SEE!!!
+    public final static RobotType currentRobot = RobotType.ROBOT_2024_COMPETITION;
 
     public static class ShooterConstants {
         public final static int upperShooter = 17;
         public final static int lowerShooter = 18;
     }
 
-    public static final class IntakeConstants {
-        public static final int beamBreak1 = 1;
-        public static final int beamBreak2 = 9;
+    public static final class IntakeConstants { // Not CAN ids, DIO port numbers
+        public static final int shooterBeamBreak = 1;
+        public static final int intakeBeamBreak = 9;
         public static final int feeder = 3;
         public static final int shooter = 4;
         public static final int feederMax = 19;
@@ -67,18 +53,12 @@ public final class Constants {
         public static final int intakeNote = 2;
     }
 
-
     public static final class SwerveConstants {
         // These can be safely adjusted without adjusting discrete
         // Some fudge factor is needed for safety while translating + rotating
-      
         // Max speed is 3.4 m/s
         public static final double maxChassisTranslationalSpeed = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
         public static final double maxWheelLinearVelocityMeters = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
-      
-        // public static final double maxChassisTranslationalSpeed = 0.5;
-        // public static final double maxWheelLinearVelocityMeters = 0.5;
-      
         public static final double maxChassisAngularVelocity = Math.PI * 1.0; // A decent number but not fast enough
 
         public static final double trackWidthX = Units.inchesToMeters(27.5); // 27.5 inch
@@ -87,16 +67,6 @@ public final class Constants {
 
         // Joystick deadband for no accidental movement
         public static final double deadBand = 0.05;
-
-        // Convenient array of module CAN IDs
-        // Convention of first array: Front Left, Front Right, Back Left, Back Right
-        public static final int[][] moduleCANIDs = {{1, 2, 9}, {3, 4, 10}, {5, 6, 11}, {7, 8, 12}};
-
-        // Initially 0 until we calibrate the modules 12/9
-        // As of 1/13-> LAST TESTING DAY -> Only have correct offset of 1 module
-        // WRONG OFFSETS: DO NOT USE [0, 360) degrees to measure swerve offsets
-        // ONLY USE [-180, 180)
-        public static final double[] moduleAngleOffsets = {-50.5, -178.2, 112.8, 84.5};
 
         public static final boolean[] moduleInverts = {false, true, false, true};
     }
@@ -120,7 +90,8 @@ public final class Constants {
         public static final double turningEncoderVelocityFactor = (2 * Math.PI) / turnGearRatio / 60.0; // radians per second
 
         // Confirmed working kP!!
-        public static final double drivekP = 0.1;
+        public static final double drivekP = 0.1; // This is good!
+        //public static final double drivekP = 0.0;
         public static final double drivekI = 0.0;
         public static final double drivekD = 0.0;
 
@@ -155,15 +126,14 @@ public final class Constants {
     }
 
     public static class ClimberConstants {
-      public static final int extPort = 0;
-
+      public static final int extPort = 20;
       public static final double climberConversionFactor = (1/3.0) * Units.inchesToMeters(0.2);
       public static final double velocityConversionFactor = (1/3.0)/60.0 * Units.inchesToMeters(0.2);
       public static final double maxExtensionLimit = Units.inchesToMeters(26.55);
 
       public static final double maxExtensionVelocity = 0.1;
 
-      public static final double climbkP = 0.0;
+      public static final double climbkP = 0.01;
       public static final double climbkI = 0.0;
       public static final double climbkD = 0.0;
 

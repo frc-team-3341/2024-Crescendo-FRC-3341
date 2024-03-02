@@ -99,335 +99,243 @@
   ],
   "tabPane": [
     {
-      "autoPopulate": true,
-      "autoPopulatePrefix": "SmartDashboard/",
-      "title": "SmartDashboard",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "title": "",
       "widgetPane": {
-        "gridSize": 100.0,
-        "hgap": 16.0,
-        "showGrid": true,
+        "gridSize": 0.0,
+        "hgap": 0.0,
+        "showGrid": false,
         "tiles": {
           "0,0": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/SendableChooser[0]",
-              "_title": "SendableChooser[0]",
-              "_type": "ComboBox Chooser"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "0,1": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Turn Volts #0",
-              "_title": "Turn Volts #0",
-              "_type": "Text View"
-            },
-            "size": [
-              1,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "0,2": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Drive Vel #0",
-              "_title": "Drive Vel #0",
-              "_type": "Text View"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "0,3": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Wheel Displacement #1",
-              "_title": "Wheel Displacement #1",
-              "_type": "Text View"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "1,1": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Drive Volts #0",
-              "_title": "Drive Volts #0",
-              "_type": "Text View"
-            },
-            "size": [
-              1,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "2,0": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Max Free Speed",
-              "_title": "Max Free Speed",
-              "_type": "Text View"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "2,1": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/CANCoder #0",
-              "_title": "CANCoder #0",
-              "_type": "Text View"
-            },
-            "size": [
-              1,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "2,2": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Setpoint Drive Vel #0",
-              "_title": "Setpoint Drive Vel #0",
-              "_type": "Text View"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "2,3": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Turn Pos Deg #1",
-              "_title": "Turn Pos Deg #1",
-              "_type": "Text View"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "3,1": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Drive RPS #0",
-              "_title": "Drive RPS #0",
-              "_type": "Text View"
-            },
-            "size": [
-              1,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "4,0": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Radian Turn Pos #0",
-              "_title": "Radian Turn Pos #0",
-              "_type": "Text View"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "4,1": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Rad Setpoint Turn Pos #0",
-              "_title": "Rad Setpoint Turn Pos #0",
-              "_type": "Text View"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "4,2": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Wheel Displacement #0",
-              "_title": "Wheel Displacement #0",
-              "_type": "Text View"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "4,3": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Radian Turn Pos #1",
-              "_title": "Radian Turn Pos #1",
-              "_type": "Text View"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "6,0": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Turn Pos Deg #0",
-              "_title": "Turn Pos Deg #0",
-              "_type": "Text View"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "6,1": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Setpoint Turn Pos Deg #0",
-              "_title": "Setpoint Turn Pos Deg #0",
-              "_type": "Text View"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "6,2": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Drive Motor Voltage #0",
-              "_title": "Drive Motor Voltage #0",
-              "_type": "Text View"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "6,3": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Turn RPM #0",
-              "_title": "Turn RPM #0",
-              "_type": "Text View"
-            },
-            "size": [
-              1,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "7,3": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Setpoint Drive Vel #1",
-              "_title": "Setpoint Drive Vel #1",
-              "_type": "Text View"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "8,0": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Setpoint Turn Pos Deg #1",
-              "_title": "Setpoint Turn Pos Deg #1",
-              "_type": "Text View"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "8,1": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Rad Setpoint Turn Pos #1",
-              "_title": "Rad Setpoint Turn Pos #1",
-              "_type": "Text View"
-            },
-            "size": [
-              2,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "8,2": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Drive Vel #1",
-              "_title": "Drive Vel #1",
-              "_type": "Text View"
-            },
-            "size": [
-              1,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           },
           "9,3": {
             "content": {
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
-              "_source0": "network_table:///SmartDashboard/Turn Volts #1",
-              "_title": "Turn Volts #1",
-              "_type": "Text View"
-            },
-            "size": [
-              1,
-              1
-            ]
+              "_source0": "",
+              "_title": "",
+              "_type": ""
+            }
           }
         },
         "titleType": 0,
-        "vgap": 16.0
+        "vgap": 0.0
       }
     },
     {
-      "autoPopulate": true,
-      "autoPopulatePrefix": "LiveWindow/",
-      "title": "LiveWindow",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "title": "",
       "widgetPane": {
-        "gridSize": 100.0,
-        "hgap": 16.0,
-        "showGrid": true,
+        "gridSize": 0.0,
+        "hgap": 0.0,
+        "showGrid": false,
         "titleType": 0,
-        "vgap": 16.0
+        "vgap": 0.0
       }
     }
   ],
   "windowGeometry": {
-    "height": 766.6666870117188,
-    "width": 1294.6666259765625,
-    "x": -7.333333492279053,
-    "y": -7.333333492279053
+    "height": 0.0,
+    "width": 0.0,
+    "x": 0.0,
+    "y": 0.0
   }
 }

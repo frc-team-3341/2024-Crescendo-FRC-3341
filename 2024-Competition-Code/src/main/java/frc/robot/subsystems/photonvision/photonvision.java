@@ -1,4 +1,4 @@
-package frc.robot.subsystems.PhotonVision;
+package frc.robot.subsystems.photonvision;
 
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -14,7 +14,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 
-public class PhotonVision extends SubsystemBase {
+public class photonvision extends SubsystemBase {
     public PhotonCamera camera;
     public PhotonPipelineResult result;
     public PhotonTrackedTarget target;
@@ -22,10 +22,11 @@ public class PhotonVision extends SubsystemBase {
     public boolean hasTarget;
     //Shouldn't be static bc two photonvision subsystems will be used for each camera
     public PhotonPoseEstimator poseEstimator;
-    public Constants.PhotonVisionConstants c;
 
+    public boolean aligned;
+    public boolean robotAligning;
 
-    public PhotonVision(PhotonCamera camera) {
+    public photonvision(PhotonCamera camera) {
         this.camera = camera;
         PortForwarder.add(5800, "photonvision", 5800);
         this.camera.setPipelineIndex(0);
@@ -61,6 +62,7 @@ public class PhotonVision extends SubsystemBase {
     public void setPose(Pose3d initPose){
         //Only use this during initialization
         poseEstimator.setLastPose(initPose);
+
     }
 
     @Override
@@ -68,10 +70,14 @@ public class PhotonVision extends SubsystemBase {
         if (this.targetExists()){
             target = result.getBestTarget();
             targetPos = target.getBestCameraToTarget();
-            SmartDashboard.putNumber("z-angle", Math.toDegrees(targetPos.getRotation().getAngle()));
-            SmartDashboard.putNumber("x-val", targetPos.getX());
-            SmartDashboard.putNumber("y-val", targetPos.getY());
+//            SmartDashboard.putNumber("z-angle", Math.toDegrees(targetPos.getRotation().getAngle()));
+//            SmartDashboard.putNumber("x-val", targetPos.getX());
+//            SmartDashboard.putNumber("y-val", targetPos.getY());
         }
-        SmartDashboard.putBoolean("Target", this.targetExists());
+
+        // v could be implemented in swerve subsystem
+        SmartDashboard.putBoolean("RobotAligning", robotAligning);
+        SmartDashboard.putBoolean("Aligned", aligned);
+        SmartDashboard.putBoolean("TargetExists", this.targetExists());
     }
 }

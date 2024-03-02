@@ -22,5 +22,37 @@
     "properties": {
       "persistent": true
     }
+  },
+  {
+    "name": "/Preferences/upperPID P",
+    "type": "double",
+    "value": 0.0001,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/upperPID I",
+    "type": "double",
+    "value": 1e-06,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/lowerPID P",
+    "type": "double",
+    "value": 0.0001,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/lowerPID I",
+    "type": "double",
+    "value": 1e-06,
+    "properties": {
+      "persistent": true
+    }
   }
 ]
