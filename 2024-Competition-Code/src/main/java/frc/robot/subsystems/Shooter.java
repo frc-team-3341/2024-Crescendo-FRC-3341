@@ -81,7 +81,7 @@ public class Shooter extends SubsystemBase {
     intakeController.setD(0);
     intakeController.setFF(intakeFeedForward);
 
-    Preferences.initDouble("power", upperRPM);
+    /*Preferences.initDouble("power", upperRPM);
     Preferences.initDouble("Lower Power", lowerRPM);
     Preferences.initDouble("intake Power", intakePower);
 
@@ -89,7 +89,7 @@ public class Shooter extends SubsystemBase {
     Preferences.initDouble("upperPID I", upperI);
     Preferences.initDouble("lowerPID P", lowerP);
     Preferences.initDouble("lowerPID I", lowerI);
-
+*/
     intakeMax.restoreFactoryDefaults();
     //resetIntakeEncoder();
     intakeMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
