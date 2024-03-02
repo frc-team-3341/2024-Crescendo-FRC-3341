@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "BlueAlliance",
   "previewStartingState": {
     "rotation": -0.35169850661820123,
     "velocity": 0

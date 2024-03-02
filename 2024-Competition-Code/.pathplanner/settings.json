@@ -3,7 +3,9 @@
   "robotLength": 0.69,
   "holonomicMode": true,
   "pathFolders": [
-    "BlueAlliance"
+    "BlueAlliance",
+    "New Folder",
+    "Red Alliance"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,

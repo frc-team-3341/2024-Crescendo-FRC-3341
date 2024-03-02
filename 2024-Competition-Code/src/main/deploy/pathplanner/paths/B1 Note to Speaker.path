@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.6,
+        "x": 2.55,
         "y": 6.996025357200549
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5999999999999996,
+        "x": 1.5499999999999994,
         "y": 6.996025357200549
       },
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "BlueAlliance",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
