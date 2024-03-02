@@ -39,11 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -179.44351780588386,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "BlueAlliance",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

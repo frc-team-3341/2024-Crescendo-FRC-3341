@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Red Alliance",
+  "folder": null,
   "previewStartingState": {
     "rotation": 179.84632452948009,
     "velocity": 0

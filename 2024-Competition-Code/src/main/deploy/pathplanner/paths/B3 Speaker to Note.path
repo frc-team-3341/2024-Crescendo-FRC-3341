@@ -8,7 +8,7 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.45,
+        "x": 2.4,
         "y": 5.55
       },
       "isLocked": false,
@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.7,
-        "y": 4.5
+        "x": 2.55,
+        "y": 4.1
       },
       "prevControl": {
-        "x": 2.7,
-        "y": 4.4
+        "x": 2.55,
+        "y": 4.0
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,11 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -63.9966541554885,
+    "rotation": 179.66370618890352,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "BlueAlliance",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
