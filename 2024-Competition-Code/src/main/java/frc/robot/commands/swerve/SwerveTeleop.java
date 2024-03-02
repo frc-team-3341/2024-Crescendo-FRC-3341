@@ -113,7 +113,7 @@ public class SwerveTeleop extends Command {
 
       double[] output = new double[2];
       if (Constants.currentRobot.xboxEnabled) {
-         output = joyUtil.regularGamePadControls(xVal, yVal, 
+         output = joyUtil.regularGamePadControls(-xVal, yVal, 
          Constants.SwerveConstants.maxChassisTranslationalSpeed);
       } else {
          // Function to map joystick output to scaled polar coordinates

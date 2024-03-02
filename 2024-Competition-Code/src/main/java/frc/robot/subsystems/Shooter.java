@@ -22,9 +22,8 @@ import frc.robot.RobotContainer;
 public class Shooter extends SubsystemBase {
   private RelativeEncoder relativeEncoder;
   private RelativeEncoder relativeEncoder2;
-  public final CANSparkMax upperShooter = new CANSparkMax(Constants.ShooterConstants.upperShooter, MotorType.kBrushless);
-  public final CANSparkMax lowerShooter = new CANSparkMax(Constants.ShooterConstants.lowerShooter, MotorType.kBrushless);
-
+  public final CANSparkMax upperShooter;
+  public final CANSparkMax lowerShooter;
   public double setPoint;
   public double upperRPM = 0;
   public double lowerRPM = 0;
@@ -46,12 +45,20 @@ public class Shooter extends SubsystemBase {
   public SparkPIDController intakeController;
   
   private RelativeEncoder intakeEncoder;
-  public final CANSparkMax intakeMax = new CANSparkMax(Constants.IntakeConstants.feederMax, MotorType.kBrushless);
+  public final CANSparkMax intakeMax;
   //private double power = 0;
-  DigitalInput shooterBeamBreak = new DigitalInput(Constants.IntakeConstants.shooterBeamBreak);
-  DigitalInput intakeBeamBreak = new DigitalInput(Constants.IntakeConstants.intakeBeamBreak);  
+  DigitalInput shooterBeamBreak;
+  DigitalInput intakeBeamBreak;
+  
   // Creates a new Shooter.
-  public Shooter() {  
+  public Shooter() {
+    shooterBeamBreak = new DigitalInput(Constants.IntakeConstants.shooterBeamBreak);
+    intakeBeamBreak = new DigitalInput(Constants.IntakeConstants.intakeBeamBreak);  
+
+    upperShooter = new CANSparkMax(Constants.ShooterConstants.upperShooter, MotorType.kBrushless);
+    lowerShooter = new CANSparkMax(Constants.ShooterConstants.lowerShooter, MotorType.kBrushless);
+    intakeMax = new CANSparkMax(Constants.IntakeConstants.feederMax, MotorType.kBrushless);
+
     upperShooter.restoreFactoryDefaults();
     lowerShooter.restoreFactoryDefaults();
     intakeMax.restoreFactoryDefaults();

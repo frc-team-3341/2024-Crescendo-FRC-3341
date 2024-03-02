@@ -8,12 +8,14 @@ package frc.robot;
 public enum RobotType {
     // 2023 IAP Robot
     ROBOT_2023_IAP_SLOTH(
-            new double[] { -50.5, -178.2, 112.8, 84.5 }, // Offsets for IAP chassis
+            new double[] { -62.51, -179.82, 108.11, 82.62}, // Offsets for IAP chassis
             new int[][] { { 1, 2, 9 }, { 3, 4, 10 }, { 5, 6, 11 }, { 7, 8, 12 } }, // CAN IDs for IAP chassis
             true, // Enable data log or not
             true, // Enable XBox driving or not
             true, // Drive according to FMS Alliance
-            true // Invert speed controls for Right Trigger
+            false, // Invert speed controls for Right Trigger
+            false, // Disable climber
+            false // Disable shooter
     ),
     // 2024 Competition Robot
     ROBOT_2024_COMPETITION(
@@ -23,7 +25,9 @@ public enum RobotType {
             true, // Enable data log or not
             true, // Enable XBox driving or not
             true, // Drive according to FMS Alliance
-            true // Invert speed controls for Right Trigger
+            true, // Invert speed controls for Right Trigger
+            true, // Enable climber
+            true // Enable shooter
     ),
     ROBOT_2024_SIMULATION(
             // These arguments are here if accidentally used
@@ -33,7 +37,9 @@ public enum RobotType {
             false, // Enable data log or not
             false, // Enable XBox driving or not
             false, // Drive according to FMS Alliance
-            true // Invert speed controls for Right Trigger
+            true, // Invert speed controls for Right Trigger
+            false, // Disable climber
+            false // Disable shooter
     );
 
     /**
@@ -69,14 +75,20 @@ public enum RobotType {
     * True: Robot is default fast, Right Trigger slows down robot  */
     public boolean invertSpeedControl;
 
+    public boolean enableClimber;
+
+    public boolean enableShooter;
+
     /** Special constructor for enumerator -> Helps us easily switch between both chassis (REDEPLOYING ONLY FOR NOW) */
-    private RobotType(double[] offsets, int[][] ids, boolean dataLogEnabled, boolean xboxEnabled, boolean allianceEnabled, boolean invertSpeedControl) {
+    private RobotType(double[] offsets, int[][] ids, boolean dataLogEnabled, boolean xboxEnabled, boolean allianceEnabled, boolean invertSpeedControl, boolean enableClimber, boolean enableShooter) {
         this.moduleAngleOffsets = offsets;
         this.moduleCANIDs = ids;
         this.dataLogEnabled = dataLogEnabled;
         this.xboxEnabled = xboxEnabled;
         this.allianceEnabled = allianceEnabled;
         this.invertSpeedControl = invertSpeedControl;
+        this.enableClimber = enableClimber;
+        this.enableShooter = enableShooter;
     }
 
 }

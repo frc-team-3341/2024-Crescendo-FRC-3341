@@ -88,6 +88,7 @@ public class RobotContainer {
   // Field centric toggle - true for field centric, false for robot centric
   private boolean fieldCentricToggle = true;
 
+  // Empty Climber object
   private Climber climber;
 
   public RobotContainer() {
@@ -97,6 +98,14 @@ public class RobotContainer {
 
     // Create swerve commands - DO NOT REMOVE THIS
     this.createSwerveCommands();
+
+    if (Constants.currentRobot.enableClimber) {
+      this.configureClimber();
+    }
+
+    if (Constants.currentRobot.enableShooter) {
+      this.configureShooter();
+    }
 
     // Construct all other things
     this.configureBindings();
@@ -185,8 +194,7 @@ public class RobotContainer {
     });
 
     allFour = new TestFourModules(swerve, drivingXbox);
-    shooter = new Shooter();
-    climber = new Climber();
+    
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
@@ -195,7 +203,8 @@ public class RobotContainer {
     SmartDashboard.putData(teleopCommandChooser);
   }
 
-  private void configureBindings() {
+  private void configureShooter() {
+    shooter = new Shooter();
     // Triggers intake rollers and stops at beambreaks at the middle of the note mechanism
     JoystickButton triggerIntake = new JoystickButton(mechanismJoy, 2);
     triggerIntake.onTrue(new IntakeBeamBreak(0.6, shooter));
@@ -208,11 +217,18 @@ public class RobotContainer {
     POVButton triggerIntakeManual = new POVButton(mechanismJoy, 0);
     triggerIntakeManual.whileTrue(new IntakeManual(0.8, shooter));
 
-    // JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 13);
-    // triggerManualIntake.whileTrue(new IntakeManual(1.0, shooter));
-    // JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 13);
-    // triggerShooterButton.whileTrue(new Shoot(2500, -2500, shooter));
+    //JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 13);
+    //triggerManualIntake.whileTrue(new IntakeManual(1.0, shooter));
+    //JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 13);
+    //triggerShooterButton.whileTrue(new Shoot(2500, -2500, shooter));
 
+  }
+
+  public void configureClimber() {
+    climber = new Climber(); // Climber CAN ID was inactive, causing a timeout
+  }
+
+  private void configureBindings() {
     PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
     photonvision photonVision = new photonvision(camera);
 

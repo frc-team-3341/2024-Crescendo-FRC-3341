@@ -59,7 +59,7 @@ public final class Constants {
         // Max speed is 3.4 m/s
         public static final double maxChassisTranslationalSpeed = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
         public static final double maxWheelLinearVelocityMeters = ModuleConstants.maxFreeWheelSpeedMeters; // Assuming L1 swerve
-        public static final double maxChassisAngularVelocity = Math.PI * 2.0; // A decent number but not fast enough
+        public static final double maxChassisAngularVelocity = Math.PI * 1.0; // A decent number but not fast enough
 
         public static final double trackWidthX = Units.inchesToMeters(27.5); // 27.5 inch
         public static final double trackWidthY = Units.inchesToMeters(27.5); // 27.5 inch
