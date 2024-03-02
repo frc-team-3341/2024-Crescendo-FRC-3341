@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,53 +18,11 @@ import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
 import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
-import frc.robot.subsystems.swerve.SwerveModuleIOCANCoder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
-
-import frc.robot.commands.auto.BlueAlliance1.B1_StartToAmp;
-import frc.robot.commands.auto.BlueAlliance1.B1_NoteToAmp;
-import frc.robot.commands.auto.BlueAlliance1.B1_AmpToNote;
-import frc.robot.commands.auto.BlueAlliance1.B1_NoteToSpeaker;
-import frc.robot.commands.auto.BlueAlliance1.B1_SpeakerToNote;
-import frc.robot.commands.auto.BlueAlliance1.B1_StartToSpeaker;
-import frc.robot.commands.auto.BlueAlliance2.B2_StartToAmp;
-import frc.robot.commands.auto.BlueAlliance2.B2_NoteToSpeaker;
-import frc.robot.commands.auto.BlueAlliance2.B2_SpeakerToNote;
-import frc.robot.commands.auto.BlueAlliance2.B2_NoteToAmp;
-import frc.robot.commands.auto.BlueAlliance2.B2_AmpToNote;
-import frc.robot.commands.auto.BlueAlliance2.B2_StartToSpeaker;
-import frc.robot.commands.auto.BlueAlliance3.B3_StartToAmp;
-import frc.robot.commands.auto.BlueAlliance3.B3_NoteToAmp;
-import frc.robot.commands.auto.BlueAlliance3.B3_NoteToSpeaker;
-import frc.robot.commands.auto.BlueAlliance3.B3_SpeakerToNote;
-import frc.robot.commands.auto.BlueAlliance3.B3_AmpToNote;
-import frc.robot.commands.auto.BlueAlliance3.B3_StartToSpeaker;
-
-import frc.robot.commands.auto.RedAlliance1.R1_StartToAmp;
-import frc.robot.commands.auto.RedAlliance1.R1_NoteToAmp;
-import frc.robot.commands.auto.RedAlliance1.R1_AmpToNote;
-import frc.robot.commands.auto.RedAlliance1.R1_NoteToSpeaker;
-import frc.robot.commands.auto.RedAlliance1.R1_SpeakerToNote;
-import frc.robot.commands.auto.RedAlliance1.R1_StartToSpeaker;
-import frc.robot.commands.auto.RedAlliance2.R2_StartToAmp;
-import frc.robot.commands.auto.RedAlliance2.R2_NoteToAmp;
-import frc.robot.commands.auto.RedAlliance2.R2_NoteToSpeaker;
-import frc.robot.commands.auto.RedAlliance2.R2_SpeakerToNote;
-import frc.robot.commands.auto.RedAlliance2.R2_AmpToNote;
-import frc.robot.commands.auto.RedAlliance2.R2_StartToSpeaker;
-import frc.robot.commands.auto.RedAlliance3.R3_StartToAmp;
-import frc.robot.commands.auto.RedAlliance3.R3_NoteToAmp;
-import frc.robot.commands.auto.RedAlliance3.R3_NoteToSpeaker;
-import frc.robot.commands.auto.RedAlliance3.R3_SpeakerToNote;
-import frc.robot.commands.auto.RedAlliance3.R3_AmpToNote;
-import frc.robot.commands.auto.RedAlliance3.R3_StartToSpeaker;
-
-import frc.robot.commands.auto.BlueAlliance1.Plays.B1_StartAmpNoteSpeaker;
-import frc.robot.commands.auto.BlueAlliance1.Plays.B1_StartSpeakerNoteSpeaker;
 
 
 public class RobotContainer {
@@ -133,8 +90,6 @@ public class RobotContainer {
   private final static Joystick intakeXbox = new Joystick(3);
   // Chooser for testing teleop commands
   private final SendableChooser<Command> teleopCommandChooser = new SendableChooser<>();
-
-  private final SendableChooser<Command> autoCommandChooser = new SendableChooser<>();
   
 
   // Define axises for using joystick
@@ -158,52 +113,7 @@ public class RobotContainer {
   private Shooter shooter;
 
   // Auto Trajectories
-  private final SwerveAuto auto;
-
-  private final B1_StartToAmp B1_StartToAmp;
-  private final B1_NoteToSpeaker B1_NoteToSpeaker;
-  private final B1_SpeakerToNote B1_SpeakerToNote;
-  private final B1_NoteToAmp B1_NoteToAmp;
-  private final B1_AmpToNote B1_AmpToNote;
-  private final B1_StartToSpeaker B1_StartToSpeaker;
-  
-  private final B2_StartToAmp B2_StartToAmp;
-  private final B2_NoteToSpeaker B2_NoteToSpeaker;
-  private final B2_SpeakerToNote B2_SpeakerToNote;
-  private final B2_NoteToAmp B2_NoteToAmp;
-  private final B2_AmpToNote B2_AmpToNote;
-  private final B2_StartToSpeaker B2_StartToSpeaker;
-  
-  private final B3_StartToAmp B3_StartToAmp;
-  private final B3_NoteToAmp B3_NoteToAmp;
-  private final B3_NoteToSpeaker B3_NoteToSpeaker;
-  private final B3_SpeakerToNote B3_SpeakerToNote;
-  private final B3_AmpToNote B3_AmpToNote;
-  private final B3_StartToSpeaker B3_StartToSpeaker;
-
-  private final R1_StartToAmp R1_StartToAmp;
-  private final R1_NoteToSpeaker R1_NoteToSpeaker;
-  private final R1_SpeakerToNote R1_SpeakerToNote;
-  private final R1_NoteToAmp R1_NoteToAmp;
-  private final R1_AmpToNote R1_AmpToNote;
-  private final R1_StartToSpeaker R1_StartToSpeaker;
-  
-  private final R2_StartToAmp R2_StartToAmp;
-  private final R2_NoteToSpeaker R2_NoteToSpeaker;
-  private final R2_SpeakerToNote R2_SpeakerToNote;
-  private final R2_NoteToAmp R2_NoteToAmp;
-  private final R2_AmpToNote R2_AmpToNote;
-  private final R2_StartToSpeaker R2_StartToSpeaker;
-  
-  private final R3_StartToAmp R3_StartToAmp;
-  private final R3_NoteToAmp R3_NoteToAmp;
-  private final R3_NoteToSpeaker R3_NoteToSpeaker;
-  private final R3_SpeakerToNote R3_SpeakerToNote;
-  private final R3_AmpToNote R3_AmpToNote;
-  private final R3_StartToSpeaker R3_StartToSpeaker;
-  
-  private final B1_StartAmpNoteSpeaker B1_StartAmpNoteSpeaker;
-private final B1_StartSpeakerNoteSpeaker B1_StartSpeakerNoteSpeaker;
+  private final InitializeAutoPaths autoPaths;
 
   public RobotContainer() {
 
@@ -276,109 +186,10 @@ private final B1_StartSpeakerNoteSpeaker B1_StartSpeakerNoteSpeaker;
     teleopCommandChooser.addOption("Module Test Command", allFour);
     teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
    
-    if (autoOrNot) {
-      // driveForward = new SwerveAuto("B1 Note to Amp", this.swerve);
-      auto = new SwerveAuto("DriveForward (test)", this.swerve);
-
-      B1_StartToAmp = new B1_StartToAmp("B1 Start to Amp", this.swerve);
-      B1_NoteToAmp = new B1_NoteToAmp("B1 Note to Amp", this.swerve);
-      B1_NoteToSpeaker = new B1_NoteToSpeaker("B1 Note to Speaker", this.swerve);
-      B1_AmpToNote = new B1_AmpToNote("B1 Amp to Note", this.swerve); //Has to be the same name as the path name in the paths folder
-      B1_SpeakerToNote = new B1_SpeakerToNote("B1 Speaker to Note", this.swerve);
-      B1_StartToSpeaker = new B1_StartToSpeaker("B1 Start to Speaker", this.swerve);
+    autoPaths = new InitializeAutoPaths(swerve, shooter);
   
-      B2_AmpToNote = new B2_AmpToNote("B2 Amp to Note", this.swerve);
-      B2_NoteToAmp = new B2_NoteToAmp("B2 Note to Amp", this.swerve);
-      B2_StartToAmp = new B2_StartToAmp("B2 Start to Amp", this.swerve);
-      B2_NoteToSpeaker = new B2_NoteToSpeaker("B2 Note to Speaker", this.swerve);
-      B2_SpeakerToNote = new B2_SpeakerToNote("B2 Speaker to Note", this.swerve);
-      B2_StartToSpeaker = new B2_StartToSpeaker("B2 Start to Speaker", this.swerve);
-  
-      B3_AmpToNote = new B3_AmpToNote("B3 Amp to Note", this.swerve);
-      B3_NoteToAmp = new B3_NoteToAmp("B3 Note to Amp", this.swerve);
-      B3_StartToAmp = new B3_StartToAmp("B3 Start to Amp", this.swerve);
-      B3_NoteToSpeaker = new B3_NoteToSpeaker("B3 Note to Speaker", this.swerve);
-      B3_SpeakerToNote = new B3_SpeakerToNote("B3 Speaker to Note", this.swerve);
-      B3_StartToSpeaker = new B3_StartToSpeaker("B3 Start to Speaker", this.swerve);
-
-      R1_AmpToNote = new R1_AmpToNote("R1 Amp to Note", this.swerve);
-      R1_NoteToAmp = new R1_NoteToAmp("R1 Note to Amp", this.swerve);
-      R1_StartToAmp = new R1_StartToAmp("R1 Start to Amp", this.swerve);
-      R1_NoteToSpeaker = new R1_NoteToSpeaker("R1 Note to Speaker", this.swerve);
-      R1_SpeakerToNote = new R1_SpeakerToNote("R1 Speaker to Note", this.swerve);
-      R1_StartToSpeaker = new R1_StartToSpeaker("R1 Start to Speaker", this.swerve);
-
-      R2_AmpToNote = new R2_AmpToNote("R2 Amp to Note", this.swerve);
-      R2_NoteToAmp = new R2_NoteToAmp("R2 Note to Amp", this.swerve);
-      R2_StartToAmp = new R2_StartToAmp("R2 Start to Amp", this.swerve);
-      R2_NoteToSpeaker = new R2_NoteToSpeaker("R2 Note to Speaker", this.swerve);
-      R2_SpeakerToNote = new R2_SpeakerToNote("R2 Speaker to Note", this.swerve);
-      R2_StartToSpeaker = new R2_StartToSpeaker("R2 Start to Speaker", this.swerve);
-
-      R3_AmpToNote = new R3_AmpToNote("R3 Amp to Note", this.swerve);
-      R3_NoteToAmp = new R3_NoteToAmp("R3 Note to Amp", this.swerve);
-      R3_StartToAmp = new R3_StartToAmp("R3 Start to Amp", this.swerve);
-      R3_NoteToSpeaker = new R3_NoteToSpeaker("R3 Note to Speaker", this.swerve);
-      R3_SpeakerToNote = new R3_SpeakerToNote("R3 Speaker to Note", this.swerve);
-      R3_StartToSpeaker = new R3_StartToSpeaker("R3 Start to Speaker", this.swerve);
-
-      // PLAYS:
-      B1_StartAmpNoteSpeaker = new B1_StartAmpNoteSpeaker(this.swerve, this.shooter);
-      B1_StartSpeakerNoteSpeaker = new B1_StartSpeakerNoteSpeaker(this.swerve, this.shooter);
-      
-    }
-
-    // Autonomous command selector
-  autoCommandChooser.addOption("B1_StartToAmp", B1_StartToAmp);
-  autoCommandChooser.addOption("B1_NoteToAmp", B1_NoteToAmp);
-  autoCommandChooser.addOption("B1_NoteToSpeaker", B1_NoteToSpeaker);
-  autoCommandChooser.addOption("B1_AmpToNote", B1_AmpToNote);
-  autoCommandChooser.addOption("B1_SpeakerToNote", B1_SpeakerToNote);
-  autoCommandChooser.addOption("B1_StartToSpeaker", B1_StartToSpeaker);
-
-
-  autoCommandChooser.addOption("B2_AmpToNote", B2_AmpToNote);
-  autoCommandChooser.addOption("B2_NoteToAmp", B2_NoteToAmp);
-  autoCommandChooser.addOption("B2_StartToAmp", B2_StartToAmp);
-  autoCommandChooser.addOption("B2_NoteToSpeaker", B2_NoteToSpeaker);
-  autoCommandChooser.addOption("B2_SpeakerToNote", B2_SpeakerToNote);
-  autoCommandChooser.addOption("B2_StartToSpeaker", B2_StartToSpeaker);
-
-  autoCommandChooser.addOption("B3_AmpToNote", B3_AmpToNote);
-  autoCommandChooser.addOption("B3_NoteToAmp", B3_NoteToAmp);
-  autoCommandChooser.addOption("B3_StartToAmp", B3_StartToAmp);
-  autoCommandChooser.addOption("B3_NoteToSpeaker", B3_NoteToSpeaker);
-  autoCommandChooser.addOption("B3_SpeakerToNote", B3_SpeakerToNote);
-  autoCommandChooser.addOption("B3_StartToSpeaker", B3_StartToSpeaker);
-
-  autoCommandChooser.addOption("R1_AmpToNote", R1_AmpToNote);
-  autoCommandChooser.addOption("R1_NoteToAmp", R1_NoteToAmp);
-  autoCommandChooser.addOption("R1_StartToAmp", R1_StartToAmp);
-  autoCommandChooser.addOption("R1_NoteToSpeaker", R1_NoteToSpeaker);
-  autoCommandChooser.addOption("R1_SpeakerToNote", R1_SpeakerToNote);
-  autoCommandChooser.addOption("R1_StartToSpeaker", R1_StartToSpeaker);
-
-  autoCommandChooser.addOption("R2_AmpToNote", R2_AmpToNote);
-  autoCommandChooser.addOption("R2_NoteToAmp", R2_NoteToAmp);
-  autoCommandChooser.addOption("R2_StartToAmp", R2_StartToAmp);
-  autoCommandChooser.addOption("R2_NoteToSpeaker", R2_NoteToSpeaker);
-  autoCommandChooser.addOption("R2_SpeakerToNote", R2_SpeakerToNote);
-  autoCommandChooser.addOption("R2_StartToSpeaker", R2_StartToSpeaker);
-
-  autoCommandChooser.addOption("R3_AmpToNote", R3_AmpToNote);
-  autoCommandChooser.addOption("R3_NoteToAmp", R3_NoteToAmp);
-  autoCommandChooser.addOption("R3_StartToAmp", R3_StartToAmp);
-  autoCommandChooser.addOption("R3_NoteToSpeaker", R3_NoteToSpeaker);
-  autoCommandChooser.addOption("R3_SpeakerToNote", R3_SpeakerToNote);
-  autoCommandChooser.addOption("R3_StartToSpeaker", R3_StartToSpeaker);
-
-  autoCommandChooser.addOption("B1_StartAmpNoteSpeaker", B1_StartAmpNoteSpeaker);
-autoCommandChooser.addOption("B1_StartSpeakerNoteSpeaker", B1_StartSpeakerNoteSpeaker);
-
-  
-  SmartDashboard.putData(teleopCommandChooser);
-  SmartDashboard.putData(autoCommandChooser);
-  this.configureBindings();
+    SmartDashboard.putData(teleopCommandChooser);
+    this.configureBindings();
   }
 
   private void configureBindings() {
@@ -394,10 +205,7 @@ autoCommandChooser.addOption("B1_StartSpeakerNoteSpeaker", B1_StartSpeakerNoteSp
   }
 
   public Command getAutonomousCommand() {
-    return autoCommandChooser.getSelected();
-    // return B1_StartAmpNoteSpeaker;
-    // return B1_StartToAmp;
-    // return auto;
+    return autoPaths.getAutonomousCommand();
     
   }
 

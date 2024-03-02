@@ -12,7 +12,6 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.swerve.SwerveDrive;
@@ -25,7 +24,7 @@ public class AutoPath extends SequentialCommandGroup {
    * @param pathName Name of path in RIO's data folder
    * @param swerve   SwerveDrive subsystem
    */
-  public AutoPath(String pathName, SwerveDrive swerve) {
+  public AutoPath(String pathName, SwerveDrive swerve, PIDConstants translational, PIDConstants rotational) {
     this.swerve = swerve;
     // Load path from 2024 PathPlannerLib
     PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
@@ -47,8 +46,8 @@ public class AutoPath extends SequentialCommandGroup {
         this.swerve::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         this.swerve::driveRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            new PIDConstants(1, 0.0, 0.0), // Translation PID constants -> path independent
-            new PIDConstants(1, 0.0, 0.0), // Rotation PID constants -> more or less path dependent
+            translational, // Translation PID constants -> path independent
+            rotational, // Rotation PID constants -> more or less path dependent
             Constants.SwerveConstants.maxChassisTranslationalSpeed, // Max module speed, in m/s
             Constants.SwerveConstants.trackWidthHypotenuse, // Drive base radius in meters. Distance from robot center
                                                             // to furthest module.
@@ -77,7 +76,6 @@ public class AutoPath extends SequentialCommandGroup {
     // Setting voltage to 0 is necessary in order to stop robot
     addCommands(swerveAuto.finallyDo(() -> {
       swerve.setModulesPositions(0,0); swerve.setModuleVoltages(0, 0);})
-      
       );
   }
 }
