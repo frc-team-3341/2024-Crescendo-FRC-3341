@@ -18,7 +18,7 @@ import frc.robot.RobotContainer;
 
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
-  CANSparkMax climbSparkMax = new CANSparkMax(Constants.ClimberConstants.extPort, MotorType.kBrushless);
+  CANSparkMax climbSparkMax;
   public SparkLimitSwitch forwardLimit;
   public SparkLimitSwitch reverseLimit;
 
@@ -28,6 +28,9 @@ public class Climber extends SubsystemBase {
   public boolean override = true;
 
   public Climber() {
+
+    climbSparkMax = new CANSparkMax(Constants.ClimberConstants.extPort, MotorType.kBrushless);
+    
     forwardLimit = climbSparkMax.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyClosed);
     forwardLimit.enableLimitSwitch(true);
 
