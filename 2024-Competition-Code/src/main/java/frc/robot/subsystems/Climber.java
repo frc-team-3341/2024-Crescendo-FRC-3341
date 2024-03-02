@@ -10,7 +10,7 @@ import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -19,11 +19,11 @@ import frc.robot.RobotContainer;
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   CANSparkMax climbSparkMax = new CANSparkMax(Constants.ClimberConstants.extPort, MotorType.kBrushless);
-  SparkLimitSwitch forwardLimit;
-  SparkLimitSwitch reverseLimit;
+  public SparkLimitSwitch forwardLimit;
+  public SparkLimitSwitch reverseLimit;
 
   SparkPIDController pid;
-  RelativeEncoder encoder;
+  public RelativeEncoder encoder;
 
   public boolean override = true;
 
@@ -58,12 +58,17 @@ public class Climber extends SubsystemBase {
   }
 
   public void extendArmWithVelocity(double velocity) {
-    if (forwardLimit.isPressed() | reverseLimit.isPressed()) {
-      pid.setReference(0.0, ControlType.kVelocity);
-    } else {
-      pid.setReference(velocity, ControlType.kVelocity);
-    }
+    pid.setReference(velocity, ControlType.kVelocity);
+  }
+  public void resetEncoder(){
+    encoder.setPosition(0);
+  }
 
+  public double getEncoderInches(){
+    //0.2 inches of lead which means that for every rotation of the lead screw, the hook moves up by 0.2 inches
+    //3 motor rotations of the motor is 1 lead screw rotation
+    //Accounted for in the conversion factor
+    return Units.Inches.convertFrom(getArmPositionInMeters(), Units.Meters);
   }
 
   public double getArmPositionInMeters() {
