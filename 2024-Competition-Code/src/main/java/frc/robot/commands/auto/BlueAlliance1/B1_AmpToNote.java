@@ -82,8 +82,7 @@ public class B1_AmpToNote extends SequentialCommandGroup {
     // Setting voltage to 0 is necessary in order to stop robot
     addCommands(swerveAuto.finallyDo(() -> {
       swerve.setModulesPositions(0,0); 
-      swerve.setModuleVoltages(0, 0);})
-      
+      swerve.setModuleVoltages(0, 0);})     
       );
   }
 }

@@ -283,7 +283,7 @@ private final B1_StartSpeakerNoteSpeaker B1_StartSpeakerNoteSpeaker;
       B1_StartToAmp = new B1_StartToAmp("B1 Start to Amp", this.swerve);
       B1_NoteToAmp = new B1_NoteToAmp("B1 Note to Amp", this.swerve);
       B1_NoteToSpeaker = new B1_NoteToSpeaker("B1 Note to Speaker", this.swerve);
-      B1_AmpToNote = new B1_AmpToNote("B1 Amp To Note", this.swerve);
+      B1_AmpToNote = new B1_AmpToNote("B1 Amp to Note", this.swerve); //Has to be the same name as the path name in the paths folder
       B1_SpeakerToNote = new B1_SpeakerToNote("B1 Speaker to Note", this.swerve);
       B1_StartToSpeaker = new B1_StartToSpeaker("B1 Start to Speaker", this.swerve);
   

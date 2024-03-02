@@ -190,10 +190,10 @@ public class Shooter extends SubsystemBase {
     //lowerPower = Preferences.getDouble("lower power", lowerPower);
     //intakePower = Preferences.getDouble("Intake Power", intakePower);
 
-    upperP = Preferences.getDouble("upperPID P", upperP);
+    /*upperP = Preferences.getDouble("upperPID P", upperP);
     upperI = Preferences.getDouble("upperPID I", upperI);
     lowerP = Preferences.getDouble("lowerPID P", lowerP);
-    lowerI = Preferences.getDouble("lowerPID I", lowerI);
+    lowerI = Preferences.getDouble("lowerPID I", lowerI); */
 
 
     //Controller.setP(upperP);
@@ -240,7 +240,7 @@ public class Shooter extends SubsystemBase {
     }*/
 
     // Increment intake speed
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(7)){
+    /*if(RobotContainer.getIntakeJoy().getRawButtonPressed(7)){
       intakePower += 0.1;
     }
 
@@ -267,7 +267,7 @@ public class Shooter extends SubsystemBase {
     // Decrement lower shooter RPM
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(12)){
       lowerRPM -= 100;
-    }
+    } */
     
 
     /*if(RobotContainer.getIntakeXbox().getRawButtonPressed(XboxController.Button.kA.value)){

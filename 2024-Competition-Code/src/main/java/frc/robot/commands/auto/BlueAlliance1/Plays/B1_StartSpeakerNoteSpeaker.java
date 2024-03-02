@@ -31,11 +31,11 @@ public class B1_StartSpeakerNoteSpeaker extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new B1_StartToSpeaker("B1 Start To Speaker", this.swerve),
+      new B1_StartToSpeaker("B1 Start to Speaker", this.swerve),
       // new Shoot(2500, 2500, this.shooter),
-      new B1_AmpToNote("B1 Amp To Note", this.swerve),
+      new B1_AmpToNote("B1 Amp to Note", this.swerve),
       // new IntakeBeamBreak(1.0, this.shooter),
-      new B1_NoteToSpeaker("B1 Note To Speaker", this.swerve)
+      new B1_NoteToSpeaker("B1 Note to Speaker", this.swerve)
       // new Shoot(2500, 2500, this.shooter),
     );
   }
