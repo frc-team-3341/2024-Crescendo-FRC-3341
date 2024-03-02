@@ -75,8 +75,10 @@ public enum RobotType {
     * True: Robot is default fast, Right Trigger slows down robot  */
     public boolean invertSpeedControl;
 
+    /** Enables Climber motors, subsystem, and command. */
     public boolean enableClimber;
 
+    /** Enables Shooter motors, subsystem, and command. */
     public boolean enableShooter;
 
     /** Special constructor for enumerator -> Helps us easily switch between both chassis (REDEPLOYING ONLY FOR NOW) */
