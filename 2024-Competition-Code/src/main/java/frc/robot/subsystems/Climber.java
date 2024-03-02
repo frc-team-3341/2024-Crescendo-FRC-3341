@@ -10,8 +10,12 @@ import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
@@ -82,8 +86,13 @@ public class Climber extends SubsystemBase {
       encoder.setPosition(Constants.ClimberConstants.maxExtensionLimit);
     }
 
+    extendArmWithPower(RobotContainer.getIntakeJoy().getY());
+
     forwardLimit.enableLimitSwitch(!override);
     reverseLimit.enableLimitSwitch(!override);
 
+    SmartDashboard.putBoolean("forward Limit", forwardLimit.isPressed());
+    SmartDashboard.putBoolean("reverse Limit", reverseLimit.isPressed());
+    SmartDashboard.putNumber("climber position", encoder.getPosition());
   }
 }

@@ -33,10 +33,11 @@ public class B1_StartAmpNoteSpeaker extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new B1_StartToAmp("B1 Start To Amp", this.swerve),
-      // new Shoot(2500, 2500, this.shooter),
+      new Shoot(120, 80, this.shooter).withTimeout(3.0),
       new B1_AmpToNote("B1 Amp To Note", this.swerve),
-      // new IntakeBeamBreak(1.0, this.shooter),
-      new B1_NoteToSpeaker("B1 Note To Speaker", this.swerve)
+      new IntakeBeamBreak(1.0, this.shooter).withTimeout(3.0), //Automatically stops
+      new B1_NoteToSpeaker("B1 Note To Speaker", this.swerve),
+      new Shoot(3500, 3500, this.shooter).withTimeout(3.0)
     );
   }
 }

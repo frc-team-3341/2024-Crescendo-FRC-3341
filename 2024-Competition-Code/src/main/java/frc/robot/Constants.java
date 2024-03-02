@@ -136,7 +136,7 @@ public final class Constants {
 
       public static final double maxExtensionVelocity = 0.1;
 
-      public static final double climbkP = 0.0;
+      public static final double climbkP = 0.01;
       public static final double climbkI = 0.0;
       public static final double climbkD = 0.0;
 

@@ -24,8 +24,6 @@ import frc.robot.subsystems.swerve.SwerveDrive;
 public class B1_StartSpeakerNoteSpeaker extends SequentialCommandGroup {
   SwerveDrive swerve;
   Shooter shooter;
-  // Command c;
-  Timer timer = new Timer();
   /** Creates a new B1_StartAmpNoteSpeaker. */
   public B1_StartSpeakerNoteSpeaker(SwerveDrive swerve, Shooter shooter) {
     this.swerve = swerve;
@@ -38,6 +36,7 @@ public class B1_StartSpeakerNoteSpeaker extends SequentialCommandGroup {
       new B1_AmpToNote("B1 Amp To Note", this.swerve),
       // new IntakeBeamBreak(1.0, this.shooter),
       new B1_NoteToSpeaker("B1 Note To Speaker", this.swerve)
+      // new Shoot(2500, 2500, this.shooter),
     );
   }
 }

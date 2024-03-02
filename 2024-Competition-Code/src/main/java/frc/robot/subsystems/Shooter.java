@@ -178,7 +178,7 @@ public class Shooter extends SubsystemBase {
     this.lowerRPM = val;
   }
 
-  public void setIntakePower(int val){
+  public void setIntakePower(double val){
     this.intakePower = val;
   }
 
