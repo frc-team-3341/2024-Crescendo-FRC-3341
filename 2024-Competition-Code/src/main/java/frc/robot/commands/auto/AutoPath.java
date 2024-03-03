@@ -1,8 +1,8 @@
 package frc.robot.commands.auto;
 // Copyright (c) FIRST and other WPILib contributors.
+
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -30,14 +30,16 @@ public class AutoPath extends SequentialCommandGroup {
   SwerveDrive swerve;
 
   Pose2d initialPose;
+
   /**
    * Creates a new SwerveAuto.
    * 
    * @param pathName Name of path in RIO's data folder
    * @param swerve   SwerveDrive subsystem
    */
-  public AutoPath(String pathName, SwerveDrive swerve, PIDConstants translational, PIDConstants rotational, Pose2d initialPose) {
-    
+  public AutoPath(String pathName, SwerveDrive swerve, PIDConstants translational, PIDConstants rotational,
+      Pose2d initialPose) {
+
     this.swerve = swerve;
 
     this.initialPose = initialPose;
@@ -75,7 +77,7 @@ public class AutoPath extends SequentialCommandGroup {
           // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
           var alliance = DriverStation.getAlliance();
-         if (alliance.isPresent()) {
+          if (alliance.isPresent()) {
             return alliance.get() == DriverStation.Alliance.Red;
           }
           return false;
@@ -83,18 +85,19 @@ public class AutoPath extends SequentialCommandGroup {
         this.swerve // Reference to this subsystem to set requirements
     );
 
+    // swerve.resetPose(new Pose2d(new Translation2d(0.71, 6.71),
+    // swerve.getRotation()));
+    // path.getPreviewStartingHolonomicPose();
 
-    // Set at initial pose of auto
-    swerve.resetPose(initialPose);
-    // swerve.resetPose(new Pose2d(new Translation2d(0.71, 6.71), swerve.getRotation()));
-    //path.getPreviewStartingHolonomicPose();
-
-  
     var swerveAuto = AutoBuilder.followPath(path);
 
     // Setting voltage to 0 is necessary in order to stop robot
-    addCommands(swerveAuto.finallyDo(() -> {
-      swerve.setModulesPositions(0,0); swerve.setModuleVoltages(0, 0);})
-      );
+    addCommands(swerveAuto.beforeStarting(() -> {
+      //Need to initialize the starting pose in here
+      swerve.resetPose(path.getPreviewStartingHolonomicPose());
+    }).finallyDo(() -> {
+      swerve.setModulesPositions(0, 0);
+      swerve.setModuleVoltages(0, 0);
+    }));
   }
 }
