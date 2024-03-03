@@ -78,6 +78,11 @@
         "window": {
           "visible": true
         }
+      },
+      "/SmartDashboard/SendableChooser[2]": {
+        "window": {
+          "visible": true
+        }
       }
     }
   },

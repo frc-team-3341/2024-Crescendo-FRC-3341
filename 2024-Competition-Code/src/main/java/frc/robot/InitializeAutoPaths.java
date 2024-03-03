@@ -6,8 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.util.PIDConstants;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -45,56 +43,56 @@ public class InitializeAutoPaths {
         this.swerve = swerve;
         this.shooter = shooter;
         B1_StartToAmp = new AutoPath("B1 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(0.71, 6.71), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         B1_NoteToAmp = new AutoPath("B1 Note to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(2.55, 7.0), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         B1_NoteToSpeaker = new AutoPath("B1 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(2.55, 7.0), swerve.getRotation()));;
+                new PIDConstants(1.0, 0, 0));;
         B1_AmpToNote = new AutoPath("B1 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(1.9, 7.4), swerve.getRotation()));; // Has to be the same name as the path name in the paths folder
+                new PIDConstants(1.0, 0, 0));; // Has to be the same name as the path name in the paths folder
         B1_SpeakerToNote = new AutoPath("B1 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(1.4, 5.55), swerve.getRotation()));;
+                new PIDConstants(1.0, 0, 0));;
         B1_StartToSpeaker = new AutoPath("B1 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(0.71, 6.71), swerve.getRotation()));;
+                new PIDConstants(1.0, 0, 0));;
 
         B2_AmpToNote = new AutoPath("B2 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(1.9, 7.4), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         B2_NoteToAmp = new AutoPath("B2 Note to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(2.55, 5.55), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         B2_StartToAmp = new AutoPath("B2 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(1.4, 5.55), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         B2_NoteToSpeaker = new AutoPath("B2 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(2.55, 5.55), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         B2_SpeakerToNote = new AutoPath("B2 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(1.4, 5.55), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         B2_StartToSpeaker = new AutoPath("B2 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(1.4, 5.55), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
 
         B3_AmpToNote = new AutoPath("B3 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(1.9, 7.4), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         B3_NoteToAmp = new AutoPath("B3 Note to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(2.55, 4.1), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         B3_StartToAmp = new AutoPath("B3 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(0.75, 4.4), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         B3_NoteToSpeaker = new AutoPath("B3 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(2.55, 4.1), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         B3_SpeakerToNote = new AutoPath("B3 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(1.4, 5.55), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         B3_StartToSpeaker = new AutoPath("B3 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(0.75, 4.4), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
 //manually add in the initial pose for the paths down from here:
         R1_AmpToNote = new AutoPath("R1 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(0.71, 6.71), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         R1_NoteToAmp = new AutoPath("R1 Note to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(0.71, 6.71), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         R1_StartToAmp = new AutoPath("R1 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(0.71, 6.71), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         R1_NoteToSpeaker = new AutoPath("R1 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(0.71, 6.71), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         R1_SpeakerToNote = new AutoPath("R1 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(0.71, 6.71), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         R1_StartToSpeaker = new AutoPath("R1 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(0.71, 6.71), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
 
         R2_AmpToNote = new AutoPath("R2 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0));

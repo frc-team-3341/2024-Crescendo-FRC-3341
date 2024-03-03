@@ -4,10 +4,6 @@ package frc.robot.commands.auto;
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -37,12 +33,9 @@ public class AutoPath extends SequentialCommandGroup {
    * @param pathName Name of path in RIO's data folder
    * @param swerve   SwerveDrive subsystem
    */
-  public AutoPath(String pathName, SwerveDrive swerve, PIDConstants translational, PIDConstants rotational,
-      Pose2d initialPose) {
-
+  public AutoPath(String pathName, SwerveDrive swerve, PIDConstants translational, PIDConstants rotational) {
     this.swerve = swerve;
-
-    this.initialPose = initialPose;
+    
     // Load path from 2024 PathPlannerLib
     PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
     PathPlannerLogging.setLogActivePathCallback((poses) -> {
