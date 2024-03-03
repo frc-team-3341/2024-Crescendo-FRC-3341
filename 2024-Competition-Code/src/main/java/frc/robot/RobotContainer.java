@@ -147,7 +147,7 @@ public class RobotContainer {
   }
 
   private void createSwerveCommands() {
-    autoPath = new SwerveAuto("DriveForward (test)", this.swerve);
+    autoPath = new SwerveAuto("B3 Start to Speaker", this.swerve);
 
     if (Constants.currentRobot.xboxEnabled) {
       // Supply teleop command with joystick methods - USES LAMBDAS
