@@ -434,6 +434,19 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "1,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Data Log Folder: ",
+              "_title": "Data Log Folder: ",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
