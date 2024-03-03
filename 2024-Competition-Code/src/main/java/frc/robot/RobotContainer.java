@@ -18,6 +18,7 @@ import org.photonvision.PhotonCamera;
 import frc.robot.commands.*;
 import frc.robot.commands.notemechanism.*;
 import frc.robot.commands.swerve.*;
+import frc.robot.commands.swerve.BackingUpIntoAmp.MoveBackIntoAmp;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.swerve.*;
 import frc.robot.subsystems.photonvision.*;
@@ -75,6 +76,8 @@ public class RobotContainer {
   private SwerveTeleop teleop;
   // Empty CrabDrive object
   private CrabDrive crabDrive;
+  // Empty MoveBackIntoAmp object
+  private MoveBackIntoAmp moveBackIntoAmp;
 
   // Empty AprilTag command object
   private TargetAprilTag targetAprilTag;
@@ -199,6 +202,10 @@ public class RobotContainer {
     });
 
     allFour = new TestFourModules(swerve, drivingXbox);
+
+    moveBackIntoAmp = new MoveBackIntoAmp(swerve);
+    JoystickButton moveButton = new JoystickButton(drivingXbox, XboxController.Button.kY.value);
+    moveButton.onTrue(moveBackIntoAmp);
     
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);

@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.commands.swerve.BackingUpIntoAmp.BackingDirection;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -147,6 +148,19 @@ public final class Constants {
         public static double targetHeightMeters = 0;
         public static double cameraPitchRadians = 0;
         public static double targetPitchRadians = 0;
+    }
+
+    public static final class BackingUpConstants {
+        public static final double targetBackingDisplacement = Units.inchesToMeters(3);
+        public static final double targetVelocity = 1.0;
+
+        public static final double backingkP = targetVelocity/targetBackingDisplacement;
+        public static final double backingkI = 0.0;
+        public static final double backingkD = 0.0;
+
+        // Back up in the negative X direction
+        // Can change to positive X if needed
+        public static final BackingDirection direction = BackingDirection.NEGATIVE_X;
     }
 
 }
