@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -216,12 +217,12 @@ public class Shooter extends SubsystemBase {
     // }
 
     // Shoots 
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(1)){ //shoot
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(18)){ //shoot
       intakePower = 1.0;
     }
 
     // Gets shooter wheels up to speed for speaker (untested)
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){ //prep flywheels for speaker
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(1)){ //prep flywheels for speaker
       upperRPM = 3500;
       lowerRPM = 3500;
     }
@@ -235,39 +236,27 @@ public class Shooter extends SubsystemBase {
 
     // Gets shooter wheels up to speed for amp (tested but could be improved)
     // Works when the robot is aligned right in front of amp
-    // 120 upper and 80 lower
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(4)){ //prep flywheels for shooting into amp
-      upperRPM = 360;
-      lowerRPM = 60;
+     if(RobotContainer.getIntakeJoy().getRawButtonPressed(2)){ //prep flywheels for shooting into amp
+      upperRPM = 120;
+      lowerRPM = 80;
     }
-
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(7)){ //prep flywheels for shooting into amp
-      upperRPM = 80;
-      lowerRPM = 0;
-    }
-    
 
     /*if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){
       intakePower = 1.0;
     }*/
-/**
+
     // Increment intake speed
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(7)){
+     if(RobotContainer.getIntakeJoy().getRawButtonPressed(7)){
       intakePower += 0.1;
-    }
-*/
+    } 
+
     // Decrement intake speed
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(8)){
       intakePower -= 0.1;
     }
 
-    // Incremenet upper shooter RPM
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(9)){
       upperRPM += 100;
-    }
-
-    // Decrement upper shooter RPM
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(10)){
       upperRPM -= 100;
     }
 
@@ -282,14 +271,14 @@ public class Shooter extends SubsystemBase {
     }
     
 
-    /*if(RobotContainer.getIntakeXbox().getRawButtonPressed(XboxController.Button.kA.value)){
+    if(RobotContainer.getIntakeXbox().getRawButtonPressed(XboxController.Button.kA.value)){
       upperRPM = 0;
       lowerRPM = -1000;
     }
     if(RobotContainer.getIntakeXbox().getRawButtonPressed(XboxController.Button.kB.value)){
       upperRPM = 4000;
       lowerRPM = 1000;
-    }*/
+    }
     
     setupperSpeed(upperRPM);
     setlowerSpeed(lowerRPM);
