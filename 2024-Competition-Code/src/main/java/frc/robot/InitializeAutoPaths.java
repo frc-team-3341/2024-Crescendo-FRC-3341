@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.pathplanner.lib.util.PIDConstants;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -43,17 +45,17 @@ public class InitializeAutoPaths {
         this.swerve = swerve;
         this.shooter = shooter;
         B1_StartToAmp = new AutoPath("B1 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(0.71, 6.71), swerve.getRotation()));
         B1_NoteToAmp = new AutoPath("B1 Note to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(2.55, 7.0), swerve.getRotation()));
         B1_NoteToSpeaker = new AutoPath("B1 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(1.9, 7.4), swerve.getRotation()));;
         B1_AmpToNote = new AutoPath("B1 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0)); // Has to be the same name as the path name in the paths folder
+                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(2.55, 7.0), swerve.getRotation()));; // Has to be the same name as the path name in the paths folder
         B1_SpeakerToNote = new AutoPath("B1 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(2.55, 7.0), swerve.getRotation()));;
         B1_StartToSpeaker = new AutoPath("B1 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(2.55, 7.0), swerve.getRotation()));;
 
         B2_AmpToNote = new AutoPath("B2 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0));
@@ -169,6 +171,8 @@ public class InitializeAutoPaths {
 
         autoCommandChooser.addOption("B1_StartAmpNoteSpeaker", B1_StartAmpNoteSpeaker);
         autoCommandChooser.addOption("B1_StartSpeakerNoteSpeaker", B1_StartSpeakerNoteSpeaker);
+
+        autoCommandChooser.setDefaultOption("B1_StartToAmp", B1_StartToAmp);
 
         SmartDashboard.putData(autoCommandChooser);
 

@@ -264,7 +264,9 @@ public class SwerveDrive extends SubsystemBase {
     * Reset pose of robot to pose
     */
    public void resetPose(Pose2d pose) {
-      poseEstimator.resetPosition(getRotation(), modulePositions, pose);
+      SmartDashboard.putNumber("Pose", pose.getX());
+      poseEstimator.resetPosition(pose.getRotation(), modulePositions, pose);
+
    }
 
    /**
