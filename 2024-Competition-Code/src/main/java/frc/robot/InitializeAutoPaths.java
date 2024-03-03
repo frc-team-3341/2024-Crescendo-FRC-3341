@@ -6,8 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.util.PIDConstants;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,8 +17,10 @@ import frc.robot.subsystems.swerve.SwerveDrive;
 
 /** Add your docs here. */
 public class InitializeAutoPaths {
+
     private final SwerveDrive swerve;
     private final Shooter shooter;
+
     private final AutoPath B1_StartToAmp, B1_NoteToSpeaker, B1_SpeakerToNote, B1_NoteToAmp, B1_AmpToNote,
             B1_StartToSpeaker;
     private final AutoPath B2_StartToAmp, B2_NoteToSpeaker, B2_SpeakerToNote, B2_NoteToAmp, B2_AmpToNote,
@@ -45,17 +45,17 @@ public class InitializeAutoPaths {
         this.swerve = swerve;
         this.shooter = shooter;
         B1_StartToAmp = new AutoPath("B1 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(0.71, 6.71), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         B1_NoteToAmp = new AutoPath("B1 Note to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(2.55, 7.0), swerve.getRotation()));
+                new PIDConstants(1.0, 0, 0));
         B1_NoteToSpeaker = new AutoPath("B1 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(1.9, 7.4), swerve.getRotation()));;
+                new PIDConstants(1.0, 0, 0));
         B1_AmpToNote = new AutoPath("B1 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(2.55, 7.0), swerve.getRotation()));; // Has to be the same name as the path name in the paths folder
+                new PIDConstants(1.0, 0, 0)); // Has to be the same name as the path name in the paths folder
         B1_SpeakerToNote = new AutoPath("B1 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(2.55, 7.0), swerve.getRotation()));;
+                new PIDConstants(1.0, 0, 0));
         B1_StartToSpeaker = new AutoPath("B1 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), new Pose2d(new Translation2d(2.55, 7.0), swerve.getRotation()));;
+                new PIDConstants(1.0, 0, 0));
 
         B2_AmpToNote = new AutoPath("B2 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0));

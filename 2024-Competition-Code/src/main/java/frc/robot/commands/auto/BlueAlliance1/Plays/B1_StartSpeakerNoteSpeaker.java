@@ -14,10 +14,6 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.IntakeBeamBreak;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.auto.AutoPath;
-import frc.robot.commands.auto.BlueAlliance1.B1_AmpToNote;
-import frc.robot.commands.auto.BlueAlliance1.B1_NoteToSpeaker;
-import frc.robot.commands.auto.BlueAlliance1.B1_StartToAmp;
-import frc.robot.commands.auto.BlueAlliance1.B1_StartToSpeaker;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
 

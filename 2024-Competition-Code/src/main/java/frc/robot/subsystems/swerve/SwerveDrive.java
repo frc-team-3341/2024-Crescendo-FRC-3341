@@ -9,7 +9,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -264,8 +263,7 @@ public class SwerveDrive extends SubsystemBase {
     * Reset pose of robot to pose
     */
    public void resetPose(Pose2d pose) {
-      SmartDashboard.putNumber("Pose", pose.getX());
-      poseEstimator.resetPosition(pose.getRotation(), modulePositions, pose);
+      poseEstimator.resetPosition(getRotation(), modulePositions, pose);
 
    }
 

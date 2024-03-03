@@ -10,7 +10,6 @@ import frc.robot.commands.IntakeBeamBreak;
 import frc.robot.commands.IntakeManual;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.StopIntake;
-import frc.robot.commands.swerve.SwerveAuto;
 import frc.robot.commands.swerve.SwerveTeleop;
 import frc.robot.commands.swerve.TestFourModules;
 import frc.robot.subsystems.Shooter;
@@ -47,19 +46,11 @@ public class RobotContainer {
 
   // ---------------------- START OF CONFIG SECTION --------------------------
 
-  // WARNING: TRAJECTORY DRIVING NOT TESTED IN REAL LIFE (IRL)
-  // DO NOT USE UNTIL DRIVING IN SAFE SPACE
-  // THIS IS A SECOND WARNING!!! THIS IS VERY DANGEROUS.
-  // To do trajectory driving or not
-  // TREAT THIS LIKE A RED BUTTON
-  private final boolean autoOrNot = true;
-
   // Whether to set alliance for teleop driving or not
   private final boolean setAlliance = true;
   
   // Set to blue alliance
   // Only enabled if the setAlliance boolean is enabled
-  // TODO - Set automatically via game data
   private final boolean blueAllianceOrNot = true;
 
   // Checks if using xBox or keyboard
@@ -74,7 +65,6 @@ public class RobotContainer {
   public final boolean isDataLog = true;
 
   // Defines starting pose of robot
-  // TODO - Please remove this in future if developing for AprilTags
   public final Pose2d startpose = new Pose2d(new Translation2d(0, 0), new Rotation2d());
 
   
