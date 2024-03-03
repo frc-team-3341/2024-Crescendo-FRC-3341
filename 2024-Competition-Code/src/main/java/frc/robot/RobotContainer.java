@@ -82,14 +82,14 @@ public class RobotContainer {
   // Empty Shooter object
   private Shooter shooter;
 
-  // Auto Trajectories
-  private SwerveAuto autoPath;
-
   // Field centric toggle - true for field centric, false for robot centric
   private boolean fieldCentricToggle = true;
 
   // Empty Climber object
   private Climber climber;
+
+  // Empty InitializeAutoPaths object
+  private InitializeAutoPaths autoPaths;
 
   public RobotContainer() {
 
@@ -110,6 +110,8 @@ public class RobotContainer {
     if (Constants.currentRobot.enablePhotonVision) {
       this.configurePhotonVision();
     }
+
+    this.configureAuto();
     
     // Construct all other things
     this.configureBindings();
@@ -147,7 +149,6 @@ public class RobotContainer {
   }
 
   private void createSwerveCommands() {
-    autoPath = new SwerveAuto("B3 Start to Speaker", this.swerve);
 
     if (Constants.currentRobot.xboxEnabled) {
       // Supply teleop command with joystick methods - USES LAMBDAS
@@ -242,12 +243,15 @@ public class RobotContainer {
     alignButton.onTrue(new TargetAprilTag(photonVision, swerve));
   }
 
+  public void configureAuto() {
+    autoPaths = new InitializeAutoPaths(swerve, shooter);
+  }
+
   private void configureBindings() {
   }
 
   public Command getAutonomousCommand() {
-    return autoPath;
-
+    return autoPaths.getAutonomousCommand();
   }
 
   public static Joystick getIntakeJoy() {
