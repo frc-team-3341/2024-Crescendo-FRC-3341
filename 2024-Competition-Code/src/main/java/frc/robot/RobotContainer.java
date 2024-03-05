@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import org.photonvision.PhotonCamera;
 
 import frc.robot.commands.*;
+import frc.robot.commands.climber.BasicClimbTeleop;
 import frc.robot.commands.notemechanism.*;
 import frc.robot.commands.swerve.*;
 import frc.robot.commands.swerve.BackingUpIntoAmp.MoveBackIntoAmp;
@@ -238,7 +239,7 @@ public class RobotContainer {
   public void configureClimber() {
     climber = new Climber(); // Climber CAN ID was inactive, causing a timeout
     JoystickButton climberControl = new JoystickButton(mechanismJoy, mechanismJoy.getYChannel());
-    climberControl.whileTrue(new ClimbTeleop(climber, mechanismJoy));
+    climberControl.whileTrue(new BasicClimbTeleop(climber, mechanismJoy));
     //Throttle switching the power hasn't been updated yet. Should test code before implementing
   }
 
