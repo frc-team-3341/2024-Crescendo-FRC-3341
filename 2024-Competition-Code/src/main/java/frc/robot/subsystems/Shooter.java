@@ -210,12 +210,12 @@ public class Shooter extends SubsystemBase {
     // }
 
     // Shoots 
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(1)){ //shoot
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(18)){ //shoot
       intakePower = 1.0;
     }
 
     // Gets shooter wheels up to speed for speaker (untested)
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){ //prep flywheels for speaker
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(1)){ //prep flywheels for speaker
       upperRPM = 3500;
       lowerRPM = 3500;
     }
@@ -229,9 +229,9 @@ public class Shooter extends SubsystemBase {
 
     // Gets shooter wheels up to speed for amp (tested but could be improved)
     // Works when the robot is aligned right in front of amp
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(4)){ //prep flywheels for shooting into amp
-      upperRPM = 750;
-      lowerRPM = 700;
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(2)){ //prep flywheels for shooting into amp
+      upperRPM = 120;
+      lowerRPM = 80;
     }
     
 

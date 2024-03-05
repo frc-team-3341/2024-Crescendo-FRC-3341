@@ -18,6 +18,14 @@ import edu.wpi.first.math.util.Units;
  * wherever the
  * constants are needed, to reduce verbosity.
  */
+   // Checks if robot is real or not
+   
+
+
+   // MODIFY THIS WHEN SWITCHING BETWEEN CHASSIS
+   // THIS IS THE FIRST THING YOU SHOULD THINK ABOUT/SEE!!!
+   
+
 public final class Constants {
     public static class ShooterConstants {
         public final static int upperShooter = 17;
@@ -69,7 +77,7 @@ public final class Constants {
         // As of 1/13-> LAST TESTING DAY -> Only have correct offset of 1 module
         // WRONG OFFSETS: DO NOT USE [0, 360) degrees to measure swerve offsets
         // ONLY USE [-180, 180)
-         public static final double[] moduleAngleOffsets = {-12.21, -121.29, -133.154, -40.97};
+        public static final double[] moduleAngleOffsets = {-12.21, -121.29, -133.154, -40.97};
         //public static final double[] moduleAngleOffsets = {0, 0, 0, 0};
 
         public static final boolean[] moduleInverts = {false, true, false, true};
