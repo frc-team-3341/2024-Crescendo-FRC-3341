@@ -11,8 +11,6 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -88,14 +86,6 @@ public class Shooter extends SubsystemBase {
     intakeController.setD(0);
     intakeController.setFF(intakeFeedForward);
 
-    Preferences.initDouble("power", upperRPM);
-    Preferences.initDouble("Lower Power", lowerRPM);
-    Preferences.initDouble("intake Power", intakePower);
-
-    Preferences.initDouble("upperPID P", upperP);
-    Preferences.initDouble("upperPID I", upperI);
-    Preferences.initDouble("lowerPID P", lowerP);
-    Preferences.initDouble("lowerPID I", lowerI);
 
     intakeMax.restoreFactoryDefaults();
     //resetIntakeEncoder();
@@ -192,15 +182,6 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
-    //power = Preferences.getDouble("power", power);
-    //lowerPower = Preferences.getDouble("lower power", lowerPower);
-    //intakePower = Preferences.getDouble("Intake Power", intakePower);
-
-    upperP = Preferences.getDouble("upperPID P", upperP);
-    upperI = Preferences.getDouble("upperPID I", upperI);
-    lowerP = Preferences.getDouble("lowerPID P", lowerP);
-    lowerI = Preferences.getDouble("lowerPID I", lowerI);
 
 
     //Controller.setP(upperP);
@@ -268,16 +249,6 @@ public class Shooter extends SubsystemBase {
     // Decrement lower shooter RPM
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(12)){
       lowerRPM -= 100;
-    }
-    
-
-    if(RobotContainer.getIntakeXbox().getRawButtonPressed(XboxController.Button.kA.value)){
-      upperRPM = 0;
-      lowerRPM = -1000;
-    }
-    if(RobotContainer.getIntakeXbox().getRawButtonPressed(XboxController.Button.kB.value)){
-      upperRPM = 4000;
-      lowerRPM = 1000;
     }
     
     setupperSpeed(upperRPM);

@@ -42,10 +42,10 @@ public class Climber extends SubsystemBase {
     encoder.setPositionConversionFactor(Constants.ClimberConstants.climberConversionFactor);
     encoder.setVelocityConversionFactor(Constants.ClimberConstants.velocityConversionFactor);
 
-    pid = climbSparkMax.getPIDController();
+   /*  pid = climbSparkMax.getPIDController();
     pid.setP(Constants.ClimberConstants.climbkP);
     pid.setI(Constants.ClimberConstants.climbkI);
-    pid.setD(Constants.ClimberConstants.climbkD);
+    pid.setD(Constants.ClimberConstants.climbkD);*/
   }
 
   public boolean getOverride() {
@@ -60,9 +60,6 @@ public class Climber extends SubsystemBase {
     climbSparkMax.set(power);
   }
 
-  public void extendArmWithVelocity(double velocity) {
-    pid.setReference(velocity, ControlType.kVelocity);
-  }
   public void resetEncoder(){
     encoder.setPosition(0);
   }
@@ -92,8 +89,6 @@ public class Climber extends SubsystemBase {
     if (reverseLimit.isPressed()) {
       encoder.setPosition(Constants.ClimberConstants.maxExtensionLimit);
     }
-
-    extendArmWithPower(RobotContainer.getIntakeJoy().getY());
 
     forwardLimit.enableLimitSwitch(!override);
     reverseLimit.enableLimitSwitch(!override);

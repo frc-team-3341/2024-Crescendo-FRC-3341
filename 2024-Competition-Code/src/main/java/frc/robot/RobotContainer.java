@@ -56,7 +56,6 @@ public class RobotContainer {
   private final Joystick drivingXbox = new Joystick(0);
   private final Joystick simulationJoy = new Joystick(1);
   private final static Joystick mechanismJoy = new Joystick(2);
-  private final static Joystick intakeXbox = new Joystick(3);
 
   // Chooser for testing teleop commands
   private final SendableChooser<Command> teleopCommandChooser = new SendableChooser<>();
@@ -206,7 +205,8 @@ public class RobotContainer {
 
     moveBackIntoAmp = new MoveBackIntoAmp(swerve);
     JoystickButton moveButton = new JoystickButton(drivingXbox, XboxController.Button.kY.value);
-    moveButton.onTrue(moveBackIntoAmp);
+
+    moveButton.toggleOnTrue(moveBackIntoAmp);
     
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
@@ -264,10 +264,6 @@ public class RobotContainer {
 
   public static Joystick getIntakeJoy() {
     return mechanismJoy;
-  }
-
-  public static Joystick getIntakeXbox(){
-    return intakeXbox;
   }
 
   public void initCommandInTeleop() {

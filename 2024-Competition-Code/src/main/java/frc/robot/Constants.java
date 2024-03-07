@@ -152,7 +152,7 @@ public final class Constants {
 
     public static final class BackingUpConstants {
         public static final double targetBackingDisplacement = Units.inchesToMeters(3);
-        public static final double targetVelocity = 1.0;
+        public static final double targetVelocity = 0.5;
 
         public static final double backingkP = targetVelocity/targetBackingDisplacement;
         public static final double backingkI = 0.0;
