@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.swerve.SwerveDrive;
 
 public class TestFourModules extends Command {
@@ -56,7 +55,7 @@ public class TestFourModules extends Command {
   public void execute() {
     // Voltage mode
     if (pidOrPowerMode.getSelected().equals(modeStrings[0])) {
-      if (RobotContainer.isXbox) {
+      if (Constants.currentRobot.xboxEnabled) {
         driveVoltage = 1.0;
         // Driving to 1.0 - Left bumper (upper)
         if (joy.getRawButton(XboxController.Button.kLeftBumper.value)) {
@@ -104,7 +103,7 @@ public class TestFourModules extends Command {
     // Velocity mode
     } else if (pidOrPowerMode.getSelected().equals(modeStrings[1])) {
 
-      if (RobotContainer.isXbox) {
+      if (Constants.currentRobot.xboxEnabled) {
         // Driving to 1.0 - Left bumper (upper)
         if (joy.getRawButton(XboxController.Button.kLeftBumper.value)) {
           velocity = 1.0;
