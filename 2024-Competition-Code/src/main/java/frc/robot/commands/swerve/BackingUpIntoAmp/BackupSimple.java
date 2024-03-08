@@ -29,7 +29,7 @@ public class BackupSimple extends Command {
         //Runs every 20ms
         //Should be run 50 times until it stops
         //swerveDrive.drive happens in meters/second
-       swerveDrive.drive(new Translation2d(0, -distanceMeters),0 , false, false);
+       swerveDrive.drive(new Translation2d(0, -distanceMeters),0 , false, true);
 
        if (timer >= 1000){backedUp = true;}
     }
