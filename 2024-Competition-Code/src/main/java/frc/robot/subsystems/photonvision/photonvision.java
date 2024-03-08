@@ -18,7 +18,7 @@ public class photonvision extends SubsystemBase {
     public static Transform3d targetPos;
 
     public static PhotonPoseEstimator poseEstimator;
-    public static boolean[] alignData;
+    public static boolean[] alignData = {false, false};
 
     public photonvision(PhotonCamera camera) {
         this.camera = camera;
@@ -33,7 +33,10 @@ public class photonvision extends SubsystemBase {
 
     public Transform3d getTargetData() {
         PhotonPipelineResult result = this.camera.getLatestResult();
-        return result.getBestTarget().getBestCameraToTarget();
+        if (this.targetExists()){
+            return result.getBestTarget().getBestCameraToTarget();
+        }
+        return null;
     }
 
     public double getZAngle(){
