@@ -1,9 +1,7 @@
 package frc.robot.commands.swerve.BackingUpIntoAmp;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.units.Time;
 import edu.wpi.first.units.Units;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.swerve.SwerveDrive;
 
@@ -30,7 +28,9 @@ public class BackupSimple extends Command {
         timer += 20;
         //Runs every 20ms
         //Should be run 50 times until it stops
+        //swerveDrive.drive happens in meters/second
        swerveDrive.drive(new Translation2d(0, -distanceMeters),0 , false, false);
+
        if (timer >= 1000){backedUp = true;}
     }
 
