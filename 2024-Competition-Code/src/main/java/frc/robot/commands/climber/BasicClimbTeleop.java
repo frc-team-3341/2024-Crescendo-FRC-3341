@@ -25,6 +25,7 @@ public class BasicClimbTeleop extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    climber.resetEncoder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,6 +37,15 @@ public class BasicClimbTeleop extends Command {
     double yValue = -joystick.getY();
 
     climber.extendArmWithPower(yValue);
+
+    boolean nearLowerLimit = (1.9 <= climber.getEncoderInches()) || (climber.getEncoderInches() <= 2.1);
+    boolean nearUpperLimit = (24.45 <= climber.getEncoderInches()) || (climber.getEncoderInches() <= 24.65);
+    //Turning encoder ticks into the distance from the top or the bottom limit switch.
+    //Ideal values --> 2 in from the top and bottom limit switches
+
+    if (nearLowerLimit || nearUpperLimit){
+      climber.extendArmWithPower(0);
+    }
 
   }
 
