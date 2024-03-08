@@ -7,12 +7,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+
 import org.photonvision.PhotonCamera;
 
 import frc.robot.commands.*;
@@ -20,6 +20,7 @@ import frc.robot.commands.climber.BasicClimbTeleop;
 import frc.robot.commands.notemechanism.*;
 import frc.robot.commands.swerve.*;
 import frc.robot.commands.swerve.BackingUpIntoAmp.MoveBackIntoAmp;
+import frc.robot.commands.swerve.BackingUpIntoAmp.BackupSimple;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.swerve.*;
 import frc.robot.subsystems.photonvision.*;
@@ -81,6 +82,8 @@ public class RobotContainer {
 
   // Empty AprilTag command object
   private TargetAprilTag targetAprilTag;
+
+  private BackupSimple backupSimple;
 
   // Empty Shooter object
   private Shooter shooter;
@@ -206,6 +209,10 @@ public class RobotContainer {
     moveBackIntoAmp = new MoveBackIntoAmp(swerve);
     JoystickButton moveButton = new JoystickButton(drivingXbox, XboxController.Button.kY.value);
 
+    backupSimple = new BackupSimple(swerve);
+    JoystickButton backupSimpleButton = new JoystickButton(drivingXbox, XboxController.Button.kX.value);
+
+    backupSimpleButton.toggleOnTrue(backupSimple);
     moveButton.toggleOnTrue(moveBackIntoAmp);
     
     teleopCommandChooser.addOption("Regular Teleop", teleop);
@@ -246,9 +253,10 @@ public class RobotContainer {
   public void configurePhotonVision() {
     PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
     photonvision photonVision = new photonvision(camera);
+    targetAprilTag = new TargetAprilTag(photonVision, swerve);
 
     JoystickButton alignButton = new JoystickButton(drivingXbox, XboxController.Button.kLeftBumper.value);
-    alignButton.onTrue(new TargetAprilTag(photonVision, swerve));
+    alignButton.onTrue(targetAprilTag);
   }
 
   public void configureAuto() {
