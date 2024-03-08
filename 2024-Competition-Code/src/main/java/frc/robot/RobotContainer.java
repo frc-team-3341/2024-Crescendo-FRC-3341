@@ -210,7 +210,7 @@ public class RobotContainer {
     JoystickButton moveButton = new JoystickButton(drivingXbox, XboxController.Button.kY.value);
 
     backupSimple = new BackupSimple(swerve);
-    JoystickButton backupSimpleButton = new JoystickButton(drivingXbox, XboxController.Button.kX.value);
+    JoystickButton backupSimpleButton = new JoystickButton(drivingXbox, XboxController.Button.kA.value);
 
     backupSimpleButton.toggleOnTrue(backupSimple);
     moveButton.toggleOnTrue(moveBackIntoAmp);
