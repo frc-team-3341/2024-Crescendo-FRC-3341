@@ -27,21 +27,13 @@ public class IntakeBeamBreak extends Command {
   @Override
   public void execute() {
     //shooter.setintakeSpeed(power);
-<<<<<<<< HEAD:2024-Competition-Code/src/main/java/frc/robot/commands/IntakeBeamBreak.java
-    shooter.setFeedSimple(power);
-========
     shooter.setIntakePower(power);
->>>>>>>> copy.of.competition.code:2024-Competition-Code/src/main/java/frc/robot/commands/notemechanism/IntakeBeamBreak.java
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-<<<<<<<< HEAD:2024-Competition-Code/src/main/java/frc/robot/commands/IntakeBeamBreak.java
-    shooter.setintakeSpeed(0);
-========
     shooter.setIntakePower(0);
->>>>>>>> copy.of.competition.code:2024-Competition-Code/src/main/java/frc/robot/commands/notemechanism/IntakeBeamBreak.java
   }
 
   // Returns true when the command should end.

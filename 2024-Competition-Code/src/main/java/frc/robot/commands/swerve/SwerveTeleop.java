@@ -7,6 +7,8 @@ import frc.robot.Constants;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.util.lib.AsymmetricLimiter;
 import frc.util.lib.ArcadeJoystickUtil;
+import frc.robot.Robot;
+import edu.wpi.first.wpilibj.DriverStation;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -16,6 +18,8 @@ public class SwerveTeleop extends Command {
    private SwerveDrive swerve;
 
    // Create suppliers as object references
+   private DoubleSupplier inputX;
+   private DoubleSupplier inputY;
    private DoubleSupplier x;
    private DoubleSupplier y;
    private DoubleSupplier rotationSup;
@@ -26,6 +30,8 @@ public class SwerveTeleop extends Command {
    private double yMult = 1.0;
 
    private ArcadeJoystickUtil joyUtil;
+
+   public boolean setAlliance;
 
    // Slew rate limit controls
    // Positive limit ensures smooth acceleration (1000 * dt * dControl)
@@ -46,22 +52,10 @@ public class SwerveTeleop extends Command {
          BooleanSupplier robotCentricSup, boolean setAlliance) {
       this.swerve = swerve;
       // If doesn't want to set alliance
-      if (!setAlliance) {
-         this.x = x;
-         this.y = y;
-      } else {
-         // If blue alliance
-         if (blueAllianceOrNot) {
-            this.x = x;
-            this.y = y;
-            xMult = -1.0;
-         // If red alliance
-         } else if (!blueAllianceOrNot) {
-            this.x = y;
-            this.y = x;
-            yMult = -1.0;
-         }
-      }
+
+      this.setAlliance = setAlliance;
+      this.inputX = x;
+      this.inputY = y;
       this.rotationSup = rotationSup;
       this.robotCentricSup = robotCentricSup;
       this.translationRightTrigger = translationRightTrigger;
