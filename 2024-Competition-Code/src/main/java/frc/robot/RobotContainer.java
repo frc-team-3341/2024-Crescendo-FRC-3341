@@ -21,7 +21,7 @@ import frc.robot.commands.notemechanism.*;
 import frc.robot.commands.swerve.*;
 import frc.robot.commands.swerve.BackingUpIntoAmp.MoveBackIntoAmp;
 import frc.robot.commands.swerve.BackingUpIntoAmp.BackupSimple;
-import frc.robot.commands.swerve.NinetyDegreeRotation;
+import frc.robot.commands.swerve.ClosestNinetyDegrees;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.swerve.*;
 import frc.robot.subsystems.photonvision.*;
@@ -87,7 +87,7 @@ public class RobotContainer {
   // Empty BackupSimple command object
   private BackupSimple backupSimple;
 
-  private NinetyDegreeRotation ninetyDegreeRotation;
+  private ClosestNinetyDegrees ninetyDegreeRotation;
 
   // Empty Shooter object
   private Shooter shooter;
@@ -213,14 +213,14 @@ public class RobotContainer {
     moveBackIntoAmp = new MoveBackIntoAmp(swerve);
     JoystickButton moveButton = new JoystickButton(drivingXbox, XboxController.Button.kY.value);
 
-//    backupSimple = new BackupSimple(swerve);
-//    JoystickButton backupSimpleButton = new JoystickButton(drivingXbox, XboxController.Button.kA.value);
+    backupSimple = new BackupSimple(swerve, swerveMods[0]);
+    JoystickButton backupSimpleButton = new JoystickButton(drivingXbox, XboxController.Button.kA.value);
 
-    ninetyDegreeRotation = new NinetyDegreeRotation(swerve);
+    ninetyDegreeRotation = new ClosestNinetyDegrees(swerve);
     JoystickButton ninetyDegreeRotationButton = new JoystickButton(drivingXbox, XboxController.Button.kB.value);
 
     ninetyDegreeRotationButton.onTrue(ninetyDegreeRotation);
-//    backupSimpleButton.toggleOnTrue(backupSimple);
+    backupSimpleButton.toggleOnTrue(backupSimple);
     moveButton.toggleOnTrue(moveBackIntoAmp);
     
     teleopCommandChooser.addOption("Regular Teleop", teleop);

@@ -4,15 +4,19 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.swerve.SwerveDrive;
+import frc.robot.subsystems.swerve.SwerveModuleIO;
 
 
 public class BackupSimple extends Command {
     private final SwerveDrive swerveDrive;
+    SwerveModuleIO module; //Any one works
     boolean backedUp;
-    double timer; //Timer (in ms)
-    double distanceMeters = Units.Meters.convertFrom(  4, Units.Inches);
 
-    public BackupSimple(SwerveDrive swerveDrive) {
+    double targetDisplacement = Units.Meters.convertFrom(  3, Units.Inches);
+    double initialDisplacement;
+    double currentDisplacement;
+
+    public BackupSimple(SwerveDrive swerveDrive, SwerveModuleIO module) {
         this.swerveDrive = swerveDrive;
         addRequirements(this.swerveDrive);
     }
@@ -20,18 +24,18 @@ public class BackupSimple extends Command {
     @Override
     public void initialize() {
       backedUp = false;
-      timer = 0;
+      initialDisplacement = module.getPosition().distanceMeters;
+      //Wheel diameter is 4 inches
+
     }
 
     @Override
     public void execute() {
-        timer += 20;
-        //Runs every 20ms
-        //Should be run 50 times until it stops
-        //swerveDrive.drive happens in meters/second
-       swerveDrive.drive(new Translation2d(-distanceMeters*4, 0),0 , false, true);
-
-       if (timer == 1000){backedUp = true;}
+       currentDisplacement = module.getPosition().distanceMeters;
+       swerveDrive.drive(new Translation2d(-0.3, 0),0 , false, true);
+       if (initialDisplacement-currentDisplacement == targetDisplacement){
+           backedUp = true;
+       }
     }
 
     @Override
