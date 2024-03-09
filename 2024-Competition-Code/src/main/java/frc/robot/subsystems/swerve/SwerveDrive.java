@@ -89,6 +89,10 @@ public class SwerveDrive extends SubsystemBase {
       SmartDashboard.putNumberArray("Actual States", SwerveUtil.getDoubleStates(getActualStates()));
       SmartDashboard.putNumberArray("Setpoint States", SwerveUtil.getDoubleStates(getSetpointStates()));
       SmartDashboard.putNumber("Robot Rotation", getPoseFromEstimator().getRotation().getRadians());
+
+      SmartDashboard.putNumber("Rotation for 90 degree rotation", -this.getRotation().getDegrees());
+      SmartDashboard.putNumber("Remainder", -this.getRotation().getDegrees() % 90);
+      SmartDashboard.putBoolean("Should stop", this.inThreshold(1));
    }
 
    public void simulationPeriodic() {
@@ -272,5 +276,9 @@ public class SwerveDrive extends SubsystemBase {
       return field;
    }
 
+   public boolean inThreshold(int degrees){
+      //Used in NinetyDegreeRotation.java\
+      return (-degrees <= -this.getRotation().getDegrees() % 90) && (-this.getRotation().getDegrees() % 90 <= degrees);
+   }
 
 }

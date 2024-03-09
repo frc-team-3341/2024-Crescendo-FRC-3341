@@ -213,14 +213,14 @@ public class RobotContainer {
     moveBackIntoAmp = new MoveBackIntoAmp(swerve);
     JoystickButton moveButton = new JoystickButton(drivingXbox, XboxController.Button.kY.value);
 
-    backupSimple = new BackupSimple(swerve);
-    JoystickButton backupSimpleButton = new JoystickButton(drivingXbox, XboxController.Button.kA.value);
+//    backupSimple = new BackupSimple(swerve);
+//    JoystickButton backupSimpleButton = new JoystickButton(drivingXbox, XboxController.Button.kA.value);
 
     ninetyDegreeRotation = new NinetyDegreeRotation(swerve);
     JoystickButton ninetyDegreeRotationButton = new JoystickButton(drivingXbox, XboxController.Button.kB.value);
 
     ninetyDegreeRotationButton.onTrue(ninetyDegreeRotation);
-    backupSimpleButton.toggleOnTrue(backupSimple);
+//    backupSimpleButton.toggleOnTrue(backupSimple);
     moveButton.toggleOnTrue(moveBackIntoAmp);
     
     teleopCommandChooser.addOption("Regular Teleop", teleop);
@@ -263,7 +263,7 @@ public class RobotContainer {
     photonvision photonVision = new photonvision(camera);
     targetAprilTag = new TargetAprilTag(photonVision, swerve);
 
-    JoystickButton alignButton = new JoystickButton(drivingXbox, XboxController.Button.kLeftBumper.value);
+    JoystickButton alignButton = new JoystickButton(drivingXbox, XboxController.Button.kA.value);
     alignButton.onTrue(targetAprilTag);
   }
 
