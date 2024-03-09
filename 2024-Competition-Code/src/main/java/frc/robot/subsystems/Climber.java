@@ -25,7 +25,7 @@ public class Climber extends SubsystemBase {
   SparkPIDController pid;
   public RelativeEncoder encoder;
 
-  public boolean override = true;
+  public boolean override = false;
 
   public Climber() {
 
@@ -95,6 +95,7 @@ public class Climber extends SubsystemBase {
 
     SmartDashboard.putBoolean("forward Limit", forwardLimit.isPressed());
     SmartDashboard.putBoolean("reverse Limit", reverseLimit.isPressed());
+    SmartDashboard.putNumber("climber current", (int)(climbSparkMax.getOutputCurrent()));
     SmartDashboard.putNumber("climber position", encoder.getPosition());
   }
 }

@@ -168,6 +168,8 @@ public class RobotContainer {
         // Toggles between field centric (true) and robot centric (false)
         if (this.drivingXbox.getRawButtonPressed(XboxController.Button.kX.value)) {
           fieldCentricToggle = !fieldCentricToggle;
+
+          SmartDashboard.putBoolean("isFieldCentric", fieldCentricToggle);
         }
 
         return fieldCentricToggle;
@@ -238,7 +240,7 @@ public class RobotContainer {
 
   public void configureClimber() {
     climber = new Climber(); // Climber CAN ID was inactive, causing a timeout
-    JoystickButton climberControl = new JoystickButton(mechanismJoy, mechanismJoy.getYChannel());
+    JoystickButton climberControl = new JoystickButton(mechanismJoy, 17);
     climberControl.whileTrue(new BasicClimbTeleop(climber, mechanismJoy));
     //Throttle switching the power hasn't been updated yet. Should test code before implementing
   }

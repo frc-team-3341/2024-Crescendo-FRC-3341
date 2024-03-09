@@ -34,7 +34,7 @@ public class BasicClimbTeleop extends Command {
     // Read y value from joystick's Y axis
     // Negate the value of the flight controller's joystick, as it is configured for flight (a different direction than our intuitive understanding)
     double yValue = -joystick.getY();
-
+    
     climber.extendArmWithPower(yValue);
 
   }
