@@ -35,7 +35,7 @@ public enum RobotType {
                         true, // Enable XBox driving or not
                         true, // Drive according to FMS Alliance
                         true, // Invert speed controls for Right Trigger
-                        false, // Enable climber
+                        true, // Enable climber
                         true, // Enable shooter
                         false, // Enable PhotonVision
                         false, // Disable additional motor telemetry
