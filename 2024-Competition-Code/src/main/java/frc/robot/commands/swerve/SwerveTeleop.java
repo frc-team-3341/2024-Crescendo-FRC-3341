@@ -4,7 +4,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.util.lib.AsymmetricLimiter;
 import frc.util.lib.ArcadeJoystickUtil;
@@ -21,6 +20,7 @@ public class SwerveTeleop extends Command {
    private DoubleSupplier y;
    private DoubleSupplier rotationSup;
    private BooleanSupplier robotCentricSup;
+   private DoubleSupplier translationRightTrigger;
 
    private double xMult = 1.0;
    private double yMult = 1.0;
@@ -42,8 +42,8 @@ public class SwerveTeleop extends Command {
     * @param rotationSup     - the rotational velocity of the chassis
     * @param robotCentricSup - whether to drive as robot centric or not
     */
-   public SwerveTeleop(SwerveDrive swerve, DoubleSupplier x, DoubleSupplier y, DoubleSupplier rotationSup,
-         BooleanSupplier robotCentricSup, boolean setAlliance, boolean blueAllianceOrNot) {
+   public SwerveTeleop(SwerveDrive swerve, DoubleSupplier x, DoubleSupplier y, DoubleSupplier rotationSup, DoubleSupplier translationRightTrigger,
+         BooleanSupplier robotCentricSup, boolean setAlliance) {
       this.swerve = swerve;
       // If doesn't want to set alliance
       if (!setAlliance) {
@@ -64,6 +64,7 @@ public class SwerveTeleop extends Command {
       }
       this.rotationSup = rotationSup;
       this.robotCentricSup = robotCentricSup;
+      this.translationRightTrigger = translationRightTrigger;
       this.joyUtil = new ArcadeJoystickUtil();
       this.addRequirements(swerve);
    }
@@ -71,9 +72,40 @@ public class SwerveTeleop extends Command {
    @Override
    public void execute() {
 
+      if (setAlliance) {
+
+         var alliance = Robot.getAlliance();
+
+         if (alliance.isPresent()) {
+            // If red alliance
+            if (alliance.get() == DriverStation.Alliance.Red) {
+               yMult = -1.0;
+               xMult = -1.0;
+            } else {
+               yMult = 1.0;
+               xMult = 1.0;
+            }
+         }
+
+      }
+
+      this.x = inputX;
+      this.y = inputY;
+
       // Get values of controls and apply deadband
       double xVal = -this.x.getAsDouble(); // Flip for XBox support
       double yVal = this.y.getAsDouble();
+
+      double rightTriggerVal = Math.abs(this.translationRightTrigger.getAsDouble());
+
+      if (rightTriggerVal < 0.1) {
+         rightTriggerVal = 0.1;
+      }
+
+      // Inverts the speed control, so that the user can slow down instead of speeding up
+      if (Constants.currentRobot.invertSpeedControl) {
+         rightTriggerVal = 1.0 - rightTriggerVal;
+      }
 
       xVal = MathUtil.applyDeadband(xVal, Constants.SwerveConstants.deadBand);
       yVal = MathUtil.applyDeadband(yVal, Constants.SwerveConstants.deadBand);
@@ -85,8 +117,8 @@ public class SwerveTeleop extends Command {
       rotationVal = this.rotationLimiter.calculate(rotationVal);
 
       double[] output = new double[2];
-      if (RobotContainer.isXbox) {
-         output = joyUtil.regularGamePadControls(xVal, yVal, 
+      if (Constants.currentRobot.xboxEnabled) {
+         output = joyUtil.regularGamePadControls(-xVal, yVal, 
          Constants.SwerveConstants.maxChassisTranslationalSpeed);
       } else {
          // Function to map joystick output to scaled polar coordinates
@@ -99,8 +131,8 @@ public class SwerveTeleop extends Command {
       // Deadband should be applied after calculation of polar coordinates
       newHypot = MathUtil.applyDeadband(newHypot, Constants.SwerveConstants.deadBand);
 
-      double correctedX = xMult * newHypot * Math.cos(output[1]);
-      double correctedY = yMult * newHypot * Math.sin(output[1]);
+      double correctedX = rightTriggerVal * xMult * newHypot * Math.cos(output[1]);
+      double correctedY =  rightTriggerVal * yMult * newHypot * Math.sin(output[1]);
 
       // Drive swerve with values
       this.swerve.drive(new Translation2d(correctedX, correctedY),

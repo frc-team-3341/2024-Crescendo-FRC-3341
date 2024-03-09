@@ -4,7 +4,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.util.lib.AsymmetricLimiter;
 import frc.util.lib.ArcadeJoystickUtil;
@@ -56,7 +55,7 @@ public class CrabDrive extends Command {
       yVal = MathUtil.applyDeadband(yVal, Constants.SwerveConstants.deadBand);
 
       double[] output = new double[2];
-      if (RobotContainer.isXbox) {
+      if (Constants.currentRobot.xboxEnabled) {
          output = joyUtil.regularGamePadControls(xVal, yVal, 
          Constants.SwerveConstants.maxChassisTranslationalSpeed);
       } else {
