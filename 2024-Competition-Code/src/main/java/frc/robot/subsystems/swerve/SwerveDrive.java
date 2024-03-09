@@ -9,9 +9,11 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.util.lib.SwerveUtil;
@@ -42,6 +44,8 @@ public class SwerveDrive extends SubsystemBase {
 
    // Add field to show robot
    private Field2d field;
+
+   private Rotation2d offsetNavx = new Rotation2d();
 
    /**
     * Creates a new SwerveDrive object. Intended to work both with real modules and
@@ -89,6 +93,8 @@ public class SwerveDrive extends SubsystemBase {
       SmartDashboard.putNumberArray("Actual States", SwerveUtil.getDoubleStates(getActualStates()));
       SmartDashboard.putNumberArray("Setpoint States", SwerveUtil.getDoubleStates(getSetpointStates()));
       SmartDashboard.putNumber("Robot Rotation", getPoseFromEstimator().getRotation().getRadians());
+      SmartDashboard.putNumber("Angle", getHeading()); 
+  
    }
 
    public void simulationPeriodic() {
@@ -129,6 +135,9 @@ public class SwerveDrive extends SubsystemBase {
       for (int i = 0; i < swerveModuleStates.length; i++) {
          this.moduleIO[i].setDesiredState(swerveModuleStates[i]);
       }
+
+      
+      
 
    }
 
@@ -235,7 +244,7 @@ public class SwerveDrive extends SubsystemBase {
     * Get heading of Navx. Negative because Navx is CW positive.
     */
    public double getHeading() {
-      return -navx.getRotation2d().getDegrees();
+      return -navx.getRotation2d().minus(offsetNavx).getDegrees();
    }
 
    /**
@@ -249,7 +258,7 @@ public class SwerveDrive extends SubsystemBase {
     * Get Rotation2d of Navx. Positive value (CCW positive default).
     */
    public Rotation2d getRotation() {
-      return navx.getRotation2d();
+      return navx.getRotation2d().minus(offsetNavx);
    }
 
    /**
@@ -265,6 +274,11 @@ public class SwerveDrive extends SubsystemBase {
    public void resetPose(Pose2d pose) {
       SmartDashboard.putNumber("Pose", pose.getX());
       poseEstimator.resetPosition(pose.getRotation(), modulePositions, pose);
+      offsetNavx = pose.getRotation().minus(navx.getRotation2d());
+
+      SmartDashboard.putNumber("Offset", offsetNavx.getDegrees());
+      SmartDashboard.putNumber("Current of the robot: ", navx.getRotation2d().getDegrees());
+      
 
    }
 
@@ -290,6 +304,15 @@ public class SwerveDrive extends SubsystemBase {
    public void resetToZero(){
       setModulesPositions(0,0); 
       setModuleVoltages(0, 0);
+   }
+
+   public Command resetHeadingCommand() {
+      return runOnce(() -> {
+         navx.reset();
+        // Pose2d p = new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(15)));
+        // offsetNavx = getRotation().minus(p.getRotation()).plus(offsetNavx);
+      
+      });
    }
    
 }

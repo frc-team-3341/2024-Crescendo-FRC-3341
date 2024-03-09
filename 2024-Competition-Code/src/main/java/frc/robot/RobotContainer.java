@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -202,6 +203,8 @@ public class RobotContainer {
     triggerManualIntake.whileTrue(new IntakeManual(1.0, shooter));
     JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 13);
     triggerShooterButton.whileTrue(new Shoot(2500, -2500, shooter));
+    JoystickButton resetNavXButton = new JoystickButton(actualXbox, XboxController.Button.kB.value);
+    resetNavXButton.onTrue(swerve.resetHeadingCommand());
   }
 
   public Command getAutonomousCommand() {

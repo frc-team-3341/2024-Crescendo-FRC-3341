@@ -42,8 +42,8 @@ public class InitializeAutoPaths {
     public InitializeAutoPaths(SwerveDrive swerve, Shooter shooter) {
         this.swerve = swerve;
         this.shooter = shooter;
-        B1_StartToAmp = new AutoPath("B1 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+        B1_StartToAmp = new AutoPath("B1 Start to Amp", this.swerve, new PIDConstants(2.0, 0, 0),
+                new PIDConstants(2.0, 0, 0));
         B1_NoteToAmp = new AutoPath("B1 Note to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0));
         B1_NoteToSpeaker = new AutoPath("B1 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
