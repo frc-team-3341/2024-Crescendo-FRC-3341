@@ -11,7 +11,6 @@ public class BackupSimple extends Command {
     private final SwerveDrive swerveDrive;
     SwerveModuleIO module; //Any one works
     boolean backedUp;
-
     double targetDisplacement = Units.Meters.convertFrom(3, Units.Inches);
     double initialDisplacement;
     double currentDisplacement;
@@ -32,7 +31,7 @@ public class BackupSimple extends Command {
     @Override
     public void execute() {
        currentDisplacement = module.getPosition().distanceMeters;
-       swerveDrive.drive(new Translation2d(-0.3, 0),0 , false, true);
+       swerveDrive.drive(new Translation2d(-0.3, 0),0 , false, true); //TODO: Requires wheel straightening before
        if (Math.abs(initialDisplacement-currentDisplacement) >= targetDisplacement){
            backedUp = true;
        }
