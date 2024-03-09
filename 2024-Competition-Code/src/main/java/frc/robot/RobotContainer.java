@@ -6,12 +6,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.swerve.CrabDrive;
-import frc.robot.commands.IntakeBeamBreak;
-import frc.robot.commands.IntakeManual;
-import frc.robot.commands.Shoot;
-import frc.robot.commands.StopIntake;
-import frc.robot.commands.swerve.SwerveAuto;
 import frc.robot.commands.swerve.SwerveTeleop;
 import frc.robot.commands.swerve.TestFourModules;
 import frc.robot.subsystems.Shooter;
@@ -19,6 +15,9 @@ import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
 import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
+
+import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -98,16 +97,13 @@ public class RobotContainer {
   private Shooter shooter;
 
   // Auto Trajectories
-  private final InitializeAutoPaths autoPaths;
+  private InitializeAutoPaths autoPaths;
 
   // Field centric toggle - true for field centric, false for robot centric
   private boolean fieldCentricToggle = true;
 
   // Empty Climber object
   private Climber climber;
-
-  // Empty InitializeAutoPaths object
-  private InitializeAutoPaths autoPaths;
 
   public RobotContainer() {
 
@@ -289,19 +285,10 @@ public class RobotContainer {
   public void initCommandInTeleop() {
     swerve.setDefaultCommand(teleopCommandChooser.getSelected());
   }
-  public static Joystick getIntakeJoy(){
-    return intakeJoy;
-  }
-  public static Joystick getIntakeXbox(){
-    return intakeXbox;
-  }
 
   /**
    * Gets Robot.isReal() from RobotContainer (slow when calling every loop)
    * 
    * @return If simulated or not
    */
-  public static boolean getSimOrNot() {
-    return isSim;
-  }
 }
