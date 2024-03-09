@@ -276,7 +276,7 @@ public class SwerveDrive extends SubsystemBase {
       return field;
    }
 
-   public boolean inThreshold(int degrees){
+   public boolean inThreshold(double degrees){
       //Used in NinetyDegreeRotation.java\
       return (-degrees <= -this.getRotation().getDegrees() % 90) && (-this.getRotation().getDegrees() % 90 <= degrees);
    }

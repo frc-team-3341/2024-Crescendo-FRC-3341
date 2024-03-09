@@ -263,8 +263,8 @@ public class RobotContainer {
     photonvision photonVision = new photonvision(camera);
     targetAprilTag = new TargetAprilTag(photonVision, swerve);
 
-    JoystickButton alignButton = new JoystickButton(drivingXbox, XboxController.Button.kA.value);
-    alignButton.onTrue(targetAprilTag);
+//    JoystickButton alignButton = new JoystickButton(drivingXbox, XboxController.Button.kA.value);
+//    alignButton.onTrue(targetAprilTag);
   }
 
   public void configureAuto() {

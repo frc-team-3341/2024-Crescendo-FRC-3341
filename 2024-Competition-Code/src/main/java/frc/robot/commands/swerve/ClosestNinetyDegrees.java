@@ -13,8 +13,6 @@ public class ClosestNinetyDegrees extends Command {
     public Rotation2d currentRotation; //Used in degrees for now
     public double remainder;
 
-    //Test PID
-    public PIDController pid = new PIDController(0.1,0,0);
     public ClosestNinetyDegrees(SwerveDrive swerve) {
         this.swerve = swerve;
         // each subsystem used by the command must be passed into the
@@ -39,10 +37,10 @@ public class ClosestNinetyDegrees extends Command {
 
         if (remainder <= 45 && remainder > 0){
             //Positive is ccw
-            swerve.drive(new Translation2d(0,0), pid.calculate(remainder), false, true);
+            swerve.drive(new Translation2d(0,0), 1, false, true);
         }else{
             //Negative is cw
-            swerve.drive(new Translation2d(0,0), -pid.calculate(remainder), false, true);
+            swerve.drive(new Translation2d(0,0), -1, false, true);
         }
     }
 

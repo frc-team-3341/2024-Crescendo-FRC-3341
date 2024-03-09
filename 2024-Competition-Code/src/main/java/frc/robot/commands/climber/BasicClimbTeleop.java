@@ -38,14 +38,14 @@ public class BasicClimbTeleop extends Command {
 
     climber.extendArmWithPower(yValue);
 
-    boolean nearLowerLimit = (1.9 <= climber.getEncoderInches()) || (climber.getEncoderInches() <= 2.1);
-    boolean nearUpperLimit = (24.45 <= climber.getEncoderInches()) || (climber.getEncoderInches() <= 24.65);
+//    boolean nearLowerLimit = (1.9 <= climber.getEncoderInches()) || (climber.getEncoderInches() <= 2.1);
+//    boolean nearUpperLimit = (24.45 <= climber.getEncoderInches()) || (climber.getEncoderInches() <= 24.65);
     //Turning encoder ticks into the distance from the top or the bottom limit switch.
     //Ideal values --> 2 in from the top and bottom limit switches
 
-    if (nearLowerLimit || nearUpperLimit){
-      climber.extendArmWithPower(0);
-    }
+//    if (nearLowerLimit || nearUpperLimit){
+//      climber.extendArmWithPower(0);
+//    }
 
   }
 

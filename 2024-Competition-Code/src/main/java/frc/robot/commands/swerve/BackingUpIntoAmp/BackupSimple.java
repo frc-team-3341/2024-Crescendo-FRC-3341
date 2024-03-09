@@ -12,12 +12,13 @@ public class BackupSimple extends Command {
     SwerveModuleIO module; //Any one works
     boolean backedUp;
 
-    double targetDisplacement = Units.Meters.convertFrom(  3, Units.Inches);
+    double targetDisplacement = Units.Meters.convertFrom(3, Units.Inches);
     double initialDisplacement;
     double currentDisplacement;
 
     public BackupSimple(SwerveDrive swerveDrive, SwerveModuleIO module) {
         this.swerveDrive = swerveDrive;
+        this.module = module;
         addRequirements(this.swerveDrive);
     }
 
@@ -26,14 +27,13 @@ public class BackupSimple extends Command {
       backedUp = false;
       initialDisplacement = module.getPosition().distanceMeters;
       //Wheel diameter is 4 inches
-
     }
 
     @Override
     public void execute() {
        currentDisplacement = module.getPosition().distanceMeters;
        swerveDrive.drive(new Translation2d(-0.3, 0),0 , false, true);
-       if (initialDisplacement-currentDisplacement == targetDisplacement){
+       if (Math.abs(initialDisplacement-currentDisplacement) >= targetDisplacement){
            backedUp = true;
        }
     }
