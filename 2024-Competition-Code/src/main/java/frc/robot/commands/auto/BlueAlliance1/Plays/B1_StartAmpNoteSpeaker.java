@@ -32,11 +32,11 @@ public class B1_StartAmpNoteSpeaker extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new AutoPath("B1 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0)),
-     // new Shoot(120, 80, this.shooter).withTimeout(3.0),
+      new Shoot(300,700, this.shooter),
       new AutoPath("B1 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0)),
-     // new IntakeBeamBreak(1.0, this.shooter).withTimeout(3.0), //Automatically stops
-      new AutoPath("B1 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0))
-      //new Shoot(3500, 3500, this.shooter).withTimeout(3.0));
+      new IntakeBeamBreak(-0.6, this.shooter), //Automatically stops
+      new AutoPath("B1 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0)),
+      new Shoot(3500, 3500, this.shooter)
     );
   }
 }
