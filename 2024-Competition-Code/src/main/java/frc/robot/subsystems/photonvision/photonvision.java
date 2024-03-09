@@ -76,8 +76,8 @@ public class photonvision extends SubsystemBase {
         SmartDashboard.putNumber("z-angle", this.getZAngle());
         SmartDashboard.putNumber("x-val", this.getXOffset());
         // v could be implemented in swerve subsystem
-        SmartDashboard.putBoolean("RobotAligning", alignData[0]);
-        SmartDashboard.putBoolean("Aligned", alignData[1]);
+        // SmartDashboard.putBoolean("RobotAligning", alignData[0]);
+        // SmartDashboard.putBoolean("Aligned", alignData[1]);
         SmartDashboard.putBoolean("TargetExists", this.targetExists());
     }
 }

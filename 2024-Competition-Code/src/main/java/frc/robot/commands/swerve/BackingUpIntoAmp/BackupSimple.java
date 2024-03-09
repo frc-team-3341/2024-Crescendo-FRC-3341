@@ -10,7 +10,7 @@ public class BackupSimple extends Command {
     private final SwerveDrive swerveDrive;
     boolean backedUp;
     double timer; //Timer (in ms)
-    double distanceMeters = Units.Meters.convertFrom(3, Units.Inches);
+    double distanceMeters = Units.Meters.convertFrom(  4, Units.Inches);
 
     public BackupSimple(SwerveDrive swerveDrive) {
         this.swerveDrive = swerveDrive;
@@ -29,9 +29,9 @@ public class BackupSimple extends Command {
         //Runs every 20ms
         //Should be run 50 times until it stops
         //swerveDrive.drive happens in meters/second
-       swerveDrive.drive(new Translation2d(-distanceMeters, 0),0 , false, true);
+       swerveDrive.drive(new Translation2d(-distanceMeters*4, 0),0 , false, true);
 
-       if (timer >= 1000){backedUp = true;}
+       if (timer == 1000){backedUp = true;}
     }
 
     @Override
