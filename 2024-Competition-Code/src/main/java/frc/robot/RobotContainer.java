@@ -21,6 +21,7 @@ import frc.robot.commands.notemechanism.*;
 import frc.robot.commands.swerve.*;
 import frc.robot.commands.swerve.BackingUpIntoAmp.MoveBackIntoAmp;
 import frc.robot.commands.swerve.BackingUpIntoAmp.BackupSimple;
+import frc.robot.commands.swerve.NinetyDegreeRotation;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.swerve.*;
 import frc.robot.subsystems.photonvision.*;
@@ -83,7 +84,10 @@ public class RobotContainer {
   // Empty AprilTag command object
   private TargetAprilTag targetAprilTag;
 
+  // Empty BackupSimple command object
   private BackupSimple backupSimple;
+
+  private NinetyDegreeRotation ninetyDegreeRotation;
 
   // Empty Shooter object
   private Shooter shooter;
@@ -212,6 +216,10 @@ public class RobotContainer {
     backupSimple = new BackupSimple(swerve);
     JoystickButton backupSimpleButton = new JoystickButton(drivingXbox, XboxController.Button.kA.value);
 
+    ninetyDegreeRotation = new NinetyDegreeRotation(swerve);
+    JoystickButton ninetyDegreeRotationButton = new JoystickButton(drivingXbox, XboxController.Button.kB.value);
+
+    ninetyDegreeRotationButton.onTrue(ninetyDegreeRotation);
     backupSimpleButton.toggleOnTrue(backupSimple);
     moveButton.toggleOnTrue(moveBackIntoAmp);
     
