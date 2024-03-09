@@ -87,7 +87,10 @@ public class AutoPath extends SequentialCommandGroup {
     // Setting voltage to 0 is necessary in order to stop robot
     addCommands(swerveAuto.beforeStarting(() -> {
       //Need to initialize the starting pose in here
-      swerve.resetPose(path.getPreviewStartingHolonomicPose());
+      // Possible ways to get the start pose of the path
+      // path.getPreviewStartingHolonomicPose()
+      // path.getStartingDifferentialPose()
+      swerve.resetPose(path.getStartingDifferentialPose());
     }).finallyDo(() -> {
       swerve.setModulesPositions(0, 0);
       swerve.setModuleVoltages(0, 0);

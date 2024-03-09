@@ -11,6 +11,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -276,8 +278,11 @@ public class SwerveDrive extends SubsystemBase {
       poseEstimator.resetPosition(pose.getRotation(), modulePositions, pose);
       offsetNavx = pose.getRotation().minus(navx.getRotation2d());
 
-      SmartDashboard.putNumber("Offset", offsetNavx.getDegrees());
-      SmartDashboard.putNumber("Current of the robot: ", navx.getRotation2d().getDegrees());
+      ShuffleboardTab tab = Shuffleboard.getTab("Heading Testing");
+      Shuffleboard.selectTab("Heading Testing");
+      SmartDashboard.putNumber("offsetNavx", offsetNavx.getDegrees());
+      SmartDashboard.putNumber("pose.getRotation()", pose.getRotation().getDegrees());
+      SmartDashboard.putNumber("navx.getRotation2d", navx.getRotation2d().getDegrees());
       
 
    }
