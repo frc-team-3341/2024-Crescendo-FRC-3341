@@ -10,7 +10,7 @@ import org.opencv.core.Mat;
 
 public class ClosestNinetyDegrees extends Command {
     private final SwerveDrive swerve;
-    public Rotation2d currentRotation; //Used in degrees for now
+    public Rotation2d currentRotation; //Used in degrees
     public double remainder;
 
     public ClosestNinetyDegrees(SwerveDrive swerve) {
@@ -47,7 +47,7 @@ public class ClosestNinetyDegrees extends Command {
     @Override
     public boolean isFinished() {
         return swerve.inThreshold(1);
-    }
+    }//If changed make sure to change the smartDashboard output in SwerveDrive.java
 
     @Override
     public void end(boolean interrupted) {

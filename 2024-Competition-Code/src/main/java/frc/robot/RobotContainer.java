@@ -210,18 +210,18 @@ public class RobotContainer {
 
     allFour = new TestFourModules(swerve, drivingXbox);
 
-    moveBackIntoAmp = new MoveBackIntoAmp(swerve);
-    JoystickButton moveButton = new JoystickButton(drivingXbox, XboxController.Button.kY.value);
+//    moveBackIntoAmp = new MoveBackIntoAmp(swerve);
+//    JoystickButton moveButton = new JoystickButton(drivingXbox, XboxController.Button.kY.value);
 
     backupSimple = new BackupSimple(swerve, swerveMods[0]);
-    JoystickButton backupSimpleButton = new JoystickButton(drivingXbox, XboxController.Button.kA.value);
+    JoystickButton backupSimpleButton = new JoystickButton(drivingXbox, XboxController.Button.kY.value);
 
     ninetyDegreeRotation = new ClosestNinetyDegrees(swerve);
     JoystickButton ninetyDegreeRotationButton = new JoystickButton(drivingXbox, XboxController.Button.kB.value);
 
     ninetyDegreeRotationButton.onTrue(ninetyDegreeRotation);
     backupSimpleButton.toggleOnTrue(backupSimple);
-    moveButton.toggleOnTrue(moveBackIntoAmp);
+//    moveButton.toggleOnTrue(moveBackIntoAmp);
     
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
