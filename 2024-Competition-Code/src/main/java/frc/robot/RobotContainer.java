@@ -207,7 +207,10 @@ public class RobotContainer {
     JoystickButton moveButton = new JoystickButton(drivingXbox, XboxController.Button.kY.value);
 
     moveButton.toggleOnTrue(moveBackIntoAmp);
-    
+  
+    JoystickButton resetSwerveHeading = new JoystickButton(drivingXbox, XboxController.Button.kX.value);
+    resetSwerveHeading.onTrue(swerve.resetHeadingCommand());
+
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);

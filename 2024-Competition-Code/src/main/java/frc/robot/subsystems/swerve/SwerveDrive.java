@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.util.lib.SwerveUtil;
@@ -258,6 +259,16 @@ public class SwerveDrive extends SubsystemBase {
     */
    public void resetPose(Pose2d pose) {
       poseEstimator.resetPosition(getRotation(), modulePositions, pose);
+   }
+
+   /**
+    * Reset heading of the robot
+    * @return - A command that runs once
+    */
+   public Command resetHeadingCommand() {
+      return runOnce(() -> {
+         navx.reset();
+      });
    }
 
    /**

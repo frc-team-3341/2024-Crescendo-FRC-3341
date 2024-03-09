@@ -25,7 +25,7 @@ public class Climber extends SubsystemBase {
   SparkPIDController pid;
   public RelativeEncoder encoder;
 
-  public boolean override = true;
+  public boolean override = false;
 
   public Climber() {
 
