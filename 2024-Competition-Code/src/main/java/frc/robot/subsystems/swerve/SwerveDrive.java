@@ -25,7 +25,7 @@ import frc.util.lib.SwerveUtil;
  */
 public class SwerveDrive extends SubsystemBase {
    // Create Navx
-   private static AHRS navx = new AHRS(Port.kMXP);
+   public AHRS navx = new AHRS(Port.kMXP);
 
    // Create object representing swerve modules
    private SwerveModuleIO[] moduleIO;
