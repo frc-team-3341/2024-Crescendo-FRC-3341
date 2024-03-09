@@ -90,7 +90,7 @@ public class AutoPath extends SequentialCommandGroup {
       // Possible ways to get the start pose of the path
       // path.getPreviewStartingHolonomicPose()
       // path.getStartingDifferentialPose()
-      swerve.resetPose(path.getStartingDifferentialPose());
+      swerve.resetPose(path.getPreviewStartingHolonomicPose());
     }).finallyDo(() -> {
       swerve.setModulesPositions(0, 0);
       swerve.setModuleVoltages(0, 0);
