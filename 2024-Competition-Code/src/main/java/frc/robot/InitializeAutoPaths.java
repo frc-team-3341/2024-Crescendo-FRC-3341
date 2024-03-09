@@ -52,8 +52,8 @@ public class InitializeAutoPaths {
                 new PIDConstants(1.0, 0, 0));; // Has to be the same name as the path name in the paths folder
         B1_SpeakerToNote = new AutoPath("B1 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0));;
-        B1_StartToSpeaker = new AutoPath("B1 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));;
+        B1_StartToSpeaker = new AutoPath("B1 Start to Speaker", this.swerve, new PIDConstants(2.0, 0, 0),
+                new PIDConstants(2.0, 0, 0));;
 
         B2_AmpToNote = new AutoPath("B2 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0));
