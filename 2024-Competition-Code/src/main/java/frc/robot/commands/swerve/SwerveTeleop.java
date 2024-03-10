@@ -2,13 +2,13 @@ package frc.robot.commands.swerve;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.util.lib.AsymmetricLimiter;
 import frc.util.lib.ArcadeJoystickUtil;
+import frc.robot.Robot;
+import edu.wpi.first.wpilibj.DriverStation;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -26,12 +26,12 @@ public class SwerveTeleop extends Command {
    private BooleanSupplier robotCentricSup;
    private DoubleSupplier translationRightTrigger;
 
-   public boolean setAlliance;
-
    private double xMult = 1.0;
    private double yMult = 1.0;
 
    private ArcadeJoystickUtil joyUtil;
+
+   public boolean setAlliance;
 
    // Slew rate limit controls
    // Positive limit ensures smooth acceleration (1000 * dt * dControl)

@@ -11,7 +11,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
+import frc.robot.commands.notemechanism.IntakeBeamBreak;
+import frc.robot.commands.notemechanism.Shoot;
 import frc.robot.commands.auto.AutoPath;
+import frc.robot.commands.auto.BlueAlliance1.B1_AmpToNote;
+import frc.robot.commands.auto.BlueAlliance1.B1_NoteToSpeaker;
+import frc.robot.commands.auto.BlueAlliance1.B1_StartToAmp;
+import frc.robot.commands.auto.BlueAlliance1.B1_StartToSpeaker;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
 

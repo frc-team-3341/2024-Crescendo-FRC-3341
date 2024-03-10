@@ -7,13 +7,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+
+import frc.robot.commands.swerve.CrabDrive;
+import frc.robot.commands.swerve.SwerveTeleop;
+import frc.robot.commands.swerve.TestFourModules;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.swerve.SwerveDrive;
+import frc.robot.subsystems.swerve.SwerveModuleIO;
+import frc.robot.subsystems.swerve.SwerveModuleIOSim;
+import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
+
+import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
-
-import org.photonvision.PhotonCamera;
 
 import frc.robot.commands.*;
 import frc.robot.commands.climber.BasicClimbTeleop;
@@ -61,6 +71,7 @@ public class RobotContainer {
 
   // Chooser for testing teleop commands
   private final SendableChooser<Command> teleopCommandChooser = new SendableChooser<>();
+  
 
   // Define axises for using joystick
   private final int translationAxis = XboxController.Axis.kLeftY.value; // Axis ID: 1
@@ -74,6 +85,7 @@ public class RobotContainer {
   private SwerveDrive swerve;
   // Empty testing commands (not used if not needed)
   private TestFourModules allFour;
+  // Empty Auto object
   // Empty SwerveTeleop object
   private SwerveTeleop teleop;
   // Empty CrabDrive object
@@ -94,14 +106,14 @@ public class RobotContainer {
   // Empty Shooter object
   private Shooter shooter;
 
+  // Auto Trajectories
+  private InitializeAutoPaths autoPaths;
+
   // Field centric toggle - true for field centric, false for robot centric
   private boolean fieldCentricToggle = true;
 
   // Empty Climber object
   private Climber climber;
-
-  // Empty InitializeAutoPaths object
-  private InitializeAutoPaths autoPaths;
 
   public RobotContainer() {
 
@@ -177,6 +189,8 @@ public class RobotContainer {
         // Toggles between field centric (true) and robot centric (false)
         if (this.drivingXbox.getRawButtonPressed(XboxController.Button.kX.value)) {
           fieldCentricToggle = !fieldCentricToggle;
+
+          SmartDashboard.putBoolean("isFieldCentric", fieldCentricToggle);
         }
 
         return fieldCentricToggle;
@@ -235,7 +249,9 @@ public class RobotContainer {
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
     teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
-
+   
+    autoPaths = new InitializeAutoPaths(swerve, shooter);
+  
     SmartDashboard.putData(teleopCommandChooser);
   }
 
@@ -261,7 +277,7 @@ public class RobotContainer {
 
   public void configureClimber() {
     climber = new Climber(); // Climber CAN ID was inactive, causing a timeout
-    JoystickButton climberControl = new JoystickButton(mechanismJoy, mechanismJoy.getYChannel());
+    JoystickButton climberControl = new JoystickButton(mechanismJoy, 17);
     climberControl.whileTrue(new BasicClimbTeleop(climber, mechanismJoy));
     //Throttle switching the power hasn't been updated yet. Should test code before implementing
   }
@@ -284,6 +300,7 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return autoPaths.getAutonomousCommand();
+    
   }
 
   public static Joystick getIntakeJoy() {
@@ -294,4 +311,9 @@ public class RobotContainer {
     swerve.setDefaultCommand(teleopCommandChooser.getSelected());
   }
 
+  /**
+   * Gets Robot.isReal() from RobotContainer (slow when calling every loop)
+   * 
+   * @return If simulated or not
+   */
 }
