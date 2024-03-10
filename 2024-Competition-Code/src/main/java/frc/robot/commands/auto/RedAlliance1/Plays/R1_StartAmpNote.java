@@ -31,9 +31,9 @@ public class R1_StartAmpNote extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new AutoPath("R1 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0)),
+      new AutoPath("R1 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), true),
       new Shoot(300,700, this.shooter),
-      new AutoPath("R1 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0)),
+      new AutoPath("R1 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), false),
       new IntakeBeamBreak(-0.6, this.shooter) //Automatically stops
     );
   }

@@ -31,9 +31,9 @@ public class R1_StartSpeakerNote extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new AutoPath("R1 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0)),
+      new AutoPath("R1 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), true),
       new Shoot(3500, 3500, this.shooter),
-      new AutoPath("R1 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0)),
+      new AutoPath("R1 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), true),
       new IntakeBeamBreak(-0.6, this.shooter) //Automatically stops
     );
   }
