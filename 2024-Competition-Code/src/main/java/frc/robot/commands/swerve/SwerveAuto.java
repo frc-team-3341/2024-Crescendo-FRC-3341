@@ -74,9 +74,6 @@ public class SwerveAuto extends SequentialCommandGroup {
         this.swerve // Reference to this subsystem to set requirements
     );
 
-    // Set at initial pose of auto
-    swerve.resetPose(path.getStartingDifferentialPose());
-
     var swerveAuto = AutoBuilder.followPath(path);
 
     // Setting voltage to 0 is necessary in order to stop robot
