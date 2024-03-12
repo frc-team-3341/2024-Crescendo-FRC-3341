@@ -9,7 +9,10 @@
       "prevControl": null,
       "nextControl": {
         "x": 1.9,
+<<<<<<< HEAD
+=======
         "y": 7.166536646399193
+>>>>>>> a041392356907d261c71f53c2628eb3970f84ec8
       },
       "isLocked": false,
       "linkedName": null
