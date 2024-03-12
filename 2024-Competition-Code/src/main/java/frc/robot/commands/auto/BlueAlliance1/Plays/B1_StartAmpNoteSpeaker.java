@@ -9,9 +9,11 @@ import com.pathplanner.lib.util.PIDConstants;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.commands.IntakeBeamBreak;
+import frc.robot.commands.IntakeManual;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.auto.AutoPath;
 import frc.robot.subsystems.Shooter;
@@ -31,10 +33,11 @@ public class B1_StartAmpNoteSpeaker extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new AutoPath("B1 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), true),
-      //new Shoot(300,700, this.shooter),
-      new AutoPath("B1 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), false)
-      //new IntakeBeamBreak(-0.6, this.shooter), //Automatically stops
+      new AutoPath("B1 Start to Amp", this.swerve, new PIDConstants(2.0, 0, 0), new PIDConstants(5.0, 0, 0), true),
+      new Shoot(240,160, this.shooter).withTimeout(3),
+      new ParallelCommandGroup(new AutoPath("B1 Amp to Note", this.swerve, new PIDConstants(2.0, 0, 0), new PIDConstants(5.0, 0, 0), false),
+      new IntakeBeamBreak(0.6, this.shooter)) //Automatically stops)
+      
       //new AutoPath("B1 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), false)
       //new Shoot(3500, 3500, this.shooter)
     );
