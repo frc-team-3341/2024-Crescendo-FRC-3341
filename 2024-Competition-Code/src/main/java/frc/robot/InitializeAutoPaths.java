@@ -42,83 +42,83 @@ public class InitializeAutoPaths {
     public InitializeAutoPaths(SwerveDrive swerve, Shooter shooter) {
         this.swerve = swerve;
         this.shooter = shooter;
-        B1_StartToAmp = new AutoPath("B1 Start to Amp", this.swerve, new PIDConstants(2.0, 0, 0),
-                new PIDConstants(2.0, 0, 0));
+        B1_StartToAmp = new AutoPath("B1 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
+                new PIDConstants(1.0, 0, 0), true);
         B1_NoteToAmp = new AutoPath("B1 Note to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         B1_NoteToSpeaker = new AutoPath("B1 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));;
+                new PIDConstants(1.0, 0, 0), false);
         B1_AmpToNote = new AutoPath("B1 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));; // Has to be the same name as the path name in the paths folder
+                new PIDConstants(1.0, 0, 0), false); // Has to be the same name as the path name in the paths folder
         B1_SpeakerToNote = new AutoPath("B1 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));;
-        B1_StartToSpeaker = new AutoPath("B1 Start to Speaker", this.swerve, new PIDConstants(2.0, 0, 0),
-                new PIDConstants(2.0, 0, 0));;
+                new PIDConstants(1.0, 0, 0), false);
+        B1_StartToSpeaker = new AutoPath("B1 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
+                new PIDConstants(1.0, 0, 0), true);
 
         B2_AmpToNote = new AutoPath("B2 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         B2_NoteToAmp = new AutoPath("B2 Note to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         B2_StartToAmp = new AutoPath("B2 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), true);
         B2_NoteToSpeaker = new AutoPath("B2 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         B2_SpeakerToNote = new AutoPath("B2 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         B2_StartToSpeaker = new AutoPath("B2 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), true);
 
         B3_AmpToNote = new AutoPath("B3 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         B3_NoteToAmp = new AutoPath("B3 Note to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         B3_StartToAmp = new AutoPath("B3 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), true);
         B3_NoteToSpeaker = new AutoPath("B3 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         B3_SpeakerToNote = new AutoPath("B3 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         B3_StartToSpeaker = new AutoPath("B3 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), true);
 //manually add in the initial pose for the paths down from here:
         R1_AmpToNote = new AutoPath("R1 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         R1_NoteToAmp = new AutoPath("R1 Note to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         R1_StartToAmp = new AutoPath("R1 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), true);
         R1_NoteToSpeaker = new AutoPath("R1 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         R1_SpeakerToNote = new AutoPath("R1 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         R1_StartToSpeaker = new AutoPath("R1 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), true);
 
         R2_AmpToNote = new AutoPath("R2 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         R2_NoteToAmp = new AutoPath("R2 Note to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         R2_StartToAmp = new AutoPath("R2 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), true);
         R2_NoteToSpeaker = new AutoPath("R2 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         R2_SpeakerToNote = new AutoPath("R2 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         R2_StartToSpeaker = new AutoPath("R2 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), true);
 
         R3_AmpToNote = new AutoPath("R3 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         R3_NoteToAmp = new AutoPath("R3 Note to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         R3_StartToAmp = new AutoPath("R3 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), true);
         R3_NoteToSpeaker = new AutoPath("R3 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         R3_SpeakerToNote = new AutoPath("R3 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), false);
         R3_StartToSpeaker = new AutoPath("R3 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0));
+                new PIDConstants(1.0, 0, 0), true);
 
         // PLAYS:
         B1_StartAmpNoteSpeaker = new B1_StartAmpNoteSpeaker(this.swerve, this.shooter);
