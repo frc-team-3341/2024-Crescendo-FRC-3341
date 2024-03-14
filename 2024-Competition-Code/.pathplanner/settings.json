@@ -1,6 +1,6 @@
 {
-  "robotWidth": 0.69,
-  "robotLength": 0.69,
+  "robotWidth": 0.96,
+  "robotLength": 0.96,
   "holonomicMode": true,
   "pathFolders": [
     "BlueAlliance",

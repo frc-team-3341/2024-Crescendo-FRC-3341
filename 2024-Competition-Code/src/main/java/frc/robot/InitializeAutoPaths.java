@@ -19,8 +19,7 @@ import frc.robot.subsystems.swerve.SwerveDrive;
 public class InitializeAutoPaths {
     private final SwerveDrive swerve;
     private final Shooter shooter;
-    private final AutoPath B1_StartToAmp, B1_NoteToSpeaker, B1_SpeakerToNote, B1_NoteToAmp, B1_AmpToNote,
-            B1_StartToSpeaker;
+    private final AutoPath B1_StartToAmp, B1_NoteToSpeaker, B1_SpeakerToNote, B1_StartToSpeaker, B1_LeftSpeakerToNote;
     private final AutoPath B2_StartToAmp, B2_NoteToSpeaker, B2_SpeakerToNote, B2_NoteToAmp, B2_AmpToNote,
             B2_StartToSpeaker;
     private final AutoPath B3_StartToAmp, B3_NoteToAmp, B3_NoteToSpeaker, B3_SpeakerToNote, B3_AmpToNote,
@@ -123,7 +122,7 @@ public class InitializeAutoPaths {
         // PLAYS:
         B1_StartAmpNoteSpeaker = new B1_StartAmpNoteSpeaker(this.swerve, this.shooter);
         B1_StartSpeakerNoteSpeaker = new B1_StartSpeakerNoteSpeaker(this.swerve, this.shooter);
-
+        
         // Autonomous command selector
         autoCommandChooser.addOption("B1_StartToAmp", B1_StartToAmp);
         autoCommandChooser.addOption("B1_NoteToAmp", B1_NoteToAmp);

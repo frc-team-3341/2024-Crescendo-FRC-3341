@@ -34,7 +34,7 @@ public class B1_StartAmpNoteSpeaker extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new AutoPath("B1 Start to Amp", this.swerve, new PIDConstants(2.0, 0, 0), new PIDConstants(5.0, 0, 0), true),
-      new Shoot(240,160, this.shooter).withTimeout(3),
+      //new Shoot(240,160, this.shooter).withTimeout(3),
       new ParallelCommandGroup(new AutoPath("B1 Amp to Note", this.swerve, new PIDConstants(2.0, 0, 0), new PIDConstants(5.0, 0, 0), false),
       new IntakeBeamBreak(0.6, this.shooter)) //Automatically stops)
       
