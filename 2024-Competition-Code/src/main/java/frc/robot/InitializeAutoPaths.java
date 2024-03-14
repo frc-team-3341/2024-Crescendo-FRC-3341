@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.auto.AutoPath;
+import frc.robot.commands.auto.BlueAlliance1.Plays.B1_LeftSpeakerToNoteSpeaker;
 import frc.robot.commands.auto.BlueAlliance1.Plays.B1_StartAmpNoteSpeaker;
 import frc.robot.commands.auto.BlueAlliance1.Plays.B1_StartSpeakerNoteSpeaker;
 import frc.robot.subsystems.Shooter;
@@ -35,20 +36,19 @@ public class InitializeAutoPaths {
     // Plays:
     private final B1_StartAmpNoteSpeaker B1_StartAmpNoteSpeaker;
     private final B1_StartSpeakerNoteSpeaker B1_StartSpeakerNoteSpeaker;
+    private final B1_LeftSpeakerToNoteSpeaker B1_LeftSpeakerToNoteSpeaker;
 
     private final SendableChooser<Command> autoCommandChooser = new SendableChooser<>();
 
     public InitializeAutoPaths(SwerveDrive swerve, Shooter shooter) {
         this.swerve = swerve;
         this.shooter = shooter;
+        B1_LeftSpeakerToNote = new AutoPath("B1 Left Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
+                new PIDConstants(1.0, 0, 0), true);
         B1_StartToAmp = new AutoPath("B1 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0), true);
-        B1_NoteToAmp = new AutoPath("B1 Note to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), false);
         B1_NoteToSpeaker = new AutoPath("B1 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0), false);
-        B1_AmpToNote = new AutoPath("B1 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), false); // Has to be the same name as the path name in the paths folder
         B1_SpeakerToNote = new AutoPath("B1 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0), false);
         B1_StartToSpeaker = new AutoPath("B1 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
@@ -122,12 +122,12 @@ public class InitializeAutoPaths {
         // PLAYS:
         B1_StartAmpNoteSpeaker = new B1_StartAmpNoteSpeaker(this.swerve, this.shooter);
         B1_StartSpeakerNoteSpeaker = new B1_StartSpeakerNoteSpeaker(this.swerve, this.shooter);
-        
+        B1_LeftSpeakerToNoteSpeaker = new B1_LeftSpeakerToNoteSpeaker(this.swerve, this.shooter);
         // Autonomous command selector
+        autoCommandChooser.addOption("B1_LeftSpeakerToNote", B1_LeftSpeakerToNote);
+        autoCommandChooser.addOption("B1_LeftSpeakerToNoteSpeaker", B1_LeftSpeakerToNoteSpeaker);
         autoCommandChooser.addOption("B1_StartToAmp", B1_StartToAmp);
-        autoCommandChooser.addOption("B1_NoteToAmp", B1_NoteToAmp);
         autoCommandChooser.addOption("B1_NoteToSpeaker", B1_NoteToSpeaker);
-        autoCommandChooser.addOption("B1_AmpToNote", B1_AmpToNote);
         autoCommandChooser.addOption("B1_SpeakerToNote", B1_SpeakerToNote);
         autoCommandChooser.addOption("B1_StartToSpeaker", B1_StartToSpeaker);
 

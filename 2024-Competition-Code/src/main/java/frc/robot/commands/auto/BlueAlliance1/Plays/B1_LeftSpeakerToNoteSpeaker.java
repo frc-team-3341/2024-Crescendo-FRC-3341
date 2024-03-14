@@ -6,6 +6,7 @@ package frc.robot.commands.auto.BlueAlliance1.Plays;
 
 import com.pathplanner.lib.util.PIDConstants;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.IntakeBeamBreak;
 import frc.robot.commands.Shoot;
@@ -16,20 +17,20 @@ import frc.robot.subsystems.swerve.SwerveDrive;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class B1_StartAmp extends SequentialCommandGroup {
+public class B1_LeftSpeakerToNoteSpeaker extends SequentialCommandGroup {
   SwerveDrive swerve;
   Shooter shooter;
   AutoPath autoPath;
   /** Creates a new B1_StartAmpNoteSpeaker. */
-  public B1_StartAmp(SwerveDrive swerve, Shooter shooter) {
+  public B1_LeftSpeakerToNoteSpeaker(SwerveDrive swerve, Shooter shooter) {
     this.swerve = swerve;
     this.shooter = shooter;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new AutoPath("B1 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), true),
-      //Add photonvision apriltag aligning code here
-      new Shoot(300,700, this.shooter)
+      //new Shoot(0,0, this.shooter)
+      new ParallelCommandGroup(new AutoPath("B1 Left Speaker to Note", this.swerve, new PIDConstants(2.0, 0, 0), new PIDConstants(5.0, 0, 0), true),
+      new IntakeBeamBreak(0.6, this.shooter)) //Automatically stops)
     );
   }
 }
