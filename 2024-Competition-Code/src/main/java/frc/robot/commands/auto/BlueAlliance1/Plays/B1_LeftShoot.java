@@ -14,32 +14,25 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.IntakeBeamBreak;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.auto.AutoPath;
-import frc.robot.commands.auto.BlueAlliance1.B1_AmpToNote;
-import frc.robot.commands.auto.BlueAlliance1.B1_NoteToSpeaker;
-import frc.robot.commands.auto.BlueAlliance1.B1_StartToAmp;
-import frc.robot.commands.auto.BlueAlliance1.B1_StartToSpeaker;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class B1_StartSpeakerNoteSpeaker extends SequentialCommandGroup {
+public class B1_LeftShoot extends SequentialCommandGroup {
   SwerveDrive swerve;
   Shooter shooter;
+  AutoPath autoPath;
   /** Creates a new B1_StartAmpNoteSpeaker. */
-  public B1_StartSpeakerNoteSpeaker(SwerveDrive swerve, Shooter shooter) {
+  public B1_LeftShoot(SwerveDrive swerve, Shooter shooter) {
     this.swerve = swerve;
     this.shooter = shooter;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new AutoPath("B1 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), true),
-      // new Shoot(2500, 2500, this.shooter),
-      new AutoPath("B1 Amp to Note", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), false),
-      // new IntakeBeamBreak(1.0, this.shooter),
-      new AutoPath("B1 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), false)
-      // new Shoot(2500, 2500, this.shooter),
+      // *TODO: tune the constants for shooting into the speaker from the left
+      new Shoot(3500, 3500, this.shooter)
     );
   }
 }
