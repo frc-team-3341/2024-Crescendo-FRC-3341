@@ -199,7 +199,7 @@ public class RobotContainer {
     JoystickButton stopIntake = new JoystickButton(intakeJoy, 2);
     stopIntake.onTrue(new StopIntake(shooter));
 
-    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 13);
+    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 16);
     triggerManualIntake.whileTrue(new IntakeManual(1.0, shooter));
     JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 13);
     triggerShooterButton.whileTrue(new Shoot(2500, -2500, shooter));
