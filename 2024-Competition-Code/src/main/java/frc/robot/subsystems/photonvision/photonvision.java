@@ -11,6 +11,7 @@ import frc.robot.Constants;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 
 public class photonvision extends SubsystemBase {
@@ -34,7 +35,11 @@ public class photonvision extends SubsystemBase {
     public Transform3d getTargetData() {
         PhotonPipelineResult result = this.camera.getLatestResult();
         if (this.targetExists()){
-            return result.getBestTarget().getBestCameraToTarget();
+            PhotonTrackedTarget target = result.getBestTarget();
+            if (target != null){
+                return target.getBestCameraToTarget();
+
+            }                    
         }
         return null;
     }
