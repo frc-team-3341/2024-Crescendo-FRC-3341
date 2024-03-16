@@ -1,76 +1,69 @@
-// package frc.robot.commands;
+package frc.robot.commands;
 
-// import edu.wpi.first.math.geometry.Translation2d;
-// import edu.wpi.first.wpilibj.XboxController;
-// import edu.wpi.first.wpilibj2.command.Command;
-// import frc.robot.subsystems.PhotonVision.*;
-// import frc.robot.subsystems.swerve.SwerveDrive;
-
-
-// public class TargetAprilTag extends Command {
-//     private PhotonVision photonVision;
-//     private SwerveDrive swerveDrive;
-//     public XboxController controller;
-
-//     public double[] threshold = {0.1,0.1};
-//     // {rotation threshold (Degrees), centering threshold (meters)}
-//     public double ZAngle;
-//     public double XVal;
-//     public boolean rotationAligned = false;
-//     public boolean centered = false;
-
-//     public TargetAprilTag(PhotonVision photonVision, SwerveDrive swerveDrive) {
-//         this.photonVision = photonVision;
-//         this.swerveDrive = swerveDrive;
-
-//         // each subsystem used by the command must be passed into the
-//         // addRequirements() method (which takes a vararg of Subsystem)
-//         addRequirements(this.photonVision);
-//     }
-
-//     @Override
-//     public void initialize() {
-
-//     }
-
-//     @Override
-//     public void execute() {
-//         //TESTING Procedure #1 Test to see if this code works and infinitely moves the robot to the left
-//         //TESTING Procedure: Test the centering and rotation independently, then test them together, then add swerve manual control
-//         if (photonVision.targetExists() && controller.getLeftBumperPressed()){
-//             while (!centered){
-//                 XVal = photonVision.getXOffset();
-//                 swerveDrive.drive(new Translation2d(-1, 0), 0, false, false);
-//                 //Move toward center (left or right)
-//                 if ( (-threshold[1] + XVal) <= 0 && 0 <= (threshold[1] + XVal) ){
-//                     centered = true;
-//                     swerveDrive.drive(new Translation2d(0, 0), 0, false, false);
-//                     break;
-//                 }
-//             }
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.photonvision.*;
+import frc.robot.subsystems.swerve.SwerveDrive;
 
 
-// //            while (!rotationAligned){
-// //                ZAngle = Math.abs(photonVision.getZAngle());
-// //                //Swerve turn (move right if val is > 180 and to the left if val is < 180)
-// //
-// //                if ( (-threshold[0] + ZAngle) <= 180 && 180 <= (threshold[0] + ZAngle) ){
-// //                    rotationAligned = true;
-// //                    break;
-// //                }
-// //            }
-//             //Using swerve autonomous functions we can move toward the center of the April Tag
-//         }
-//     }
+public class TargetAprilTag extends Command {
+    private photonvision photonVision;
+    private SwerveDrive swerveDrive;
 
-//     @Override
-//     public boolean isFinished() {
-//         // TODO: Make this return true when this Command no longer needs to run execute()
-//         return false;
-//     }
+    public double threshold = 0.05;
+    // centering threshold (meters)
+    public static double XVal;
+    public static int moveDirection = 1;
+    //Positive means move left, negative means move right
+    public static boolean aligned;
+    public static boolean robotAligning;
 
-//     @Override
-//     public void end(boolean interrupted) {
 
-//     }
-// }
+    public TargetAprilTag(photonvision photonVision, SwerveDrive swerveDrive) {
+        this.photonVision = photonVision;
+        this.swerveDrive = swerveDrive;
+        addRequirements(this.photonVision, this.swerveDrive);
+    }
+
+    @Override
+    public void initialize() {
+        aligned = false;
+        robotAligning = false;
+    }
+
+    @Override
+    public void execute() {
+
+        if (photonVision.targetExists()) {
+            photonVision.setAlignData(robotAligning, aligned);
+
+            XVal = photonVision.getXOffset();
+            if (XVal > 0) {
+                moveDirection = 1;
+            } else {
+                moveDirection = -1;
+            }
+            //positive y is ___, negative y is ___
+            swerveDrive.drive(new Translation2d(0, 0.3 * moveDirection), 0, false, false);
+            robotAligning = true;
+            aligned = false;
+            if ((-threshold <= XVal) && (XVal <= threshold)) {
+                robotAligning = false;
+                aligned = true;
+                swerveDrive.drive(new Translation2d(0, 0), 0, false, false);
+            }
+        }
+
+    }
+
+    @Override
+    public boolean isFinished() {
+        return (aligned || !photonVision.targetExists());
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        //swerveDrive.drive(new Translation2d(0,0), 0, false, false);
+        //Don't stop because if you press the button mid-movement, the robot's velocity will freeze to a halt
+    }
+}
