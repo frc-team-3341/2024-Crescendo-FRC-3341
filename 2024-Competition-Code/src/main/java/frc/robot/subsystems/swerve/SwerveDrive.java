@@ -30,7 +30,7 @@ import frc.util.lib.SwerveUtil;
  */
 public class SwerveDrive extends SubsystemBase {
    // Create Navx
-   public AHRS navx = new AHRS(Port.kMXP);
+   private AHRS navx = new AHRS(Port.kMXP);
 
    //Creates pdh
    public PowerDistribution pdh = new PowerDistribution(1, PowerDistribution.ModuleType.kRev);

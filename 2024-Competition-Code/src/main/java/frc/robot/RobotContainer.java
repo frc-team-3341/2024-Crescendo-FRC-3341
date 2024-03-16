@@ -90,8 +90,6 @@ public class RobotContainer {
   // Empty MoveBackIntoAmp object
   private MoveBackIntoAmp moveBackIntoAmp;
 
-  private ResetNavX resetNavX;
-
   // Empty AprilTag command object
   private TargetAprilTag targetAprilTag;
 
@@ -233,12 +231,11 @@ public class RobotContainer {
     ninetyDegreeRotation = new ClosestNinetyDegrees(swerve);
     JoystickButton ninetyDegreeRotationButton = new JoystickButton(drivingXbox, XboxController.Button.kB.value);
 
-    resetNavX = new ResetNavX(swerve.navx);
     JoystickButton resetNavXButton = new JoystickButton(drivingXbox, XboxController.Button.kLeftBumper.value);
 
 //    JoystickButton clearStickyFaults = new JoystickButton(mechanismJoy, 17);
 
-    resetNavXButton.onTrue(resetNavX);
+    resetNavXButton.onTrue(swerve.resetHeadingCommand());
     ninetyDegreeRotationButton.onTrue(ninetyDegreeRotation);
     backupSimpleButton.toggleOnTrue(backupSimple);
 //    clearStickyFaults.onTrue(swerve.resetStickyFaultsCommand());
