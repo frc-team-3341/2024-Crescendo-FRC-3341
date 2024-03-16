@@ -6,12 +6,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.swerve.CrabDrive;
-import frc.robot.commands.IntakeBeamBreak;
-import frc.robot.commands.IntakeManual;
-import frc.robot.commands.Shoot;
-import frc.robot.commands.StopIntake;
-import frc.robot.commands.swerve.SwerveAuto;
 import frc.robot.commands.swerve.SwerveTeleop;
 import frc.robot.commands.swerve.TestFourModules;
 import frc.robot.subsystems.Shooter;
@@ -19,12 +15,23 @@ import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.SwerveModuleIO;
 import frc.robot.subsystems.swerve.SwerveModuleIOSim;
 import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
+
+import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 
+import frc.robot.commands.*;
+import frc.robot.commands.climber.BasicClimbTeleop;
+import frc.robot.commands.notemechanism.*;
+import frc.robot.commands.swerve.*;
+import frc.robot.commands.swerve.BackingUpIntoAmp.MoveBackIntoAmp;
+import frc.robot.subsystems.*;
+import frc.robot.subsystems.swerve.*;
+import frc.robot.subsystems.photonvision.*;
 
 public class RobotContainer {
 
@@ -48,55 +55,25 @@ public class RobotContainer {
 
   // ---------------------- START OF CONFIG SECTION --------------------------
 
-  // WARNING: TRAJECTORY DRIVING NOT TESTED IN REAL LIFE (IRL)
-  // DO NOT USE UNTIL DRIVING IN SAFE SPACE
-  // THIS IS A SECOND WARNING!!! THIS IS VERY DANGEROUS.
-  // To do trajectory driving or not
-  // TREAT THIS LIKE A RED BUTTON
-  private final boolean autoOrNot = true;
-
-  // Whether to set alliance for teleop driving or not
-  private final boolean setAlliance = true;
-  
-  // Set to blue alliance
-  // Only enabled if the setAlliance boolean is enabled
-  // TODO - Set automatically via game data
-  private final boolean blueAllianceOrNot = true;
-
-  // Checks if using xBox or keyboard
-  // False : keyboard
-  // True : Xbox
-  public static final boolean isXbox = true;
-
-  // If we need to data log or not
-  // Works in simulation
-  // False : not data log
-  // True : will data log
-  public final boolean isDataLog = true;
-
   // Defines starting pose of robot
   // TODO - Please remove this in future if developing for AprilTags
   public final Pose2d startpose = new Pose2d(new Translation2d(0, 0), new Rotation2d());
 
-  
   // ---------------------- END OF CONFIG SECTION --------------------------
 
-  // Checks if robot is real or not
-  private static boolean isSim = Robot.isSimulation();
-
   // Xbox + an additional one for PC use
-  private final Joystick actualXbox = new Joystick(0);
-  private final Joystick additionalJoy = new Joystick(1);
-  private final static Joystick intakeJoy = new Joystick(2);
-  private final static Joystick intakeXbox = new Joystick(3);
+  private final Joystick drivingXbox = new Joystick(0);
+  private final Joystick simulationJoy = new Joystick(1);
+  private final static Joystick mechanismJoy = new Joystick(2);
+
   // Chooser for testing teleop commands
   private final SendableChooser<Command> teleopCommandChooser = new SendableChooser<>();
   
 
   // Define axises for using joystick
-  private final int translationAxis = 1;
-  private final int strafeAxis = 0;
-  private final int rotationAxis = 4; // For xBox
+  private final int translationAxis = XboxController.Axis.kLeftY.value; // Axis ID: 1
+  private final int strafeAxis = XboxController.Axis.kLeftX.value; // Axis ID: 0
+  private final int rotationAxis = XboxController.Axis.kRightX.value; // Axis ID: 4
 
   // Creates array of swerve modules for use in SwerveDrive object - null in
   // context of code
@@ -110,15 +87,52 @@ public class RobotContainer {
   private SwerveTeleop teleop;
   // Empty CrabDrive object
   private CrabDrive crabDrive;
+  // Empty MoveBackIntoAmp object
+  private MoveBackIntoAmp moveBackIntoAmp;
 
+  // Empty AprilTag command object
+  private TargetAprilTag targetAprilTag;
+
+  // Empty Shooter object
   private Shooter shooter;
 
   // Auto Trajectories
-  private final InitializeAutoPaths autoPaths;
+  private InitializeAutoPaths autoPaths;
+
+  // Field centric toggle - true for field centric, false for robot centric
+  private boolean fieldCentricToggle = true;
+
+  // Empty Climber object
+  private Climber climber;
 
   public RobotContainer() {
 
-    if (isDataLog) {
+    // Construct swerve subsystem with appropriate modules - DO NOT REMOVE THIS
+    this.constructSwerve();
+
+    // Create swerve commands - DO NOT REMOVE THIS
+    this.createSwerveCommands();
+
+    if (Constants.currentRobot.enableClimber) {
+      this.configureClimber();
+    }
+
+    if (Constants.currentRobot.enableShooter) {
+      this.configureShooter();
+    }
+
+    if (Constants.currentRobot.enablePhotonVision) {
+      this.configurePhotonVision();
+    }
+
+    this.configureAuto();
+    
+    // Construct all other things
+    this.configureBindings();
+  }
+
+  private void constructSwerve() {
+    if (Constants.currentRobot.dataLogEnabled) {
       // Data logging works on both real + simulated robot with all DriverStation
       // outputs!
       DataLogManager.start();
@@ -127,7 +141,7 @@ public class RobotContainer {
     }
 
     // Initialize SwerveDrive object with modules
-    if (isSim) {
+    if (Constants.isSim) {
       // Construct swerve modules with simulated motors
       for (int i = 0; i < swerveMods.length; i++) {
         swerveMods[i] = new SwerveModuleIOSim(i);
@@ -136,52 +150,77 @@ public class RobotContainer {
     } else {
       // Construct swerve modules with real motors
       for (int i = 0; i < swerveMods.length; i++) {
-        swerveMods[i] = new SwerveModuleIOSparkMax(i, Constants.SwerveConstants.moduleCANIDs[i][0],
-            Constants.SwerveConstants.moduleCANIDs[i][1], Constants.SwerveConstants.moduleCANIDs[i][2],
-            Constants.SwerveConstants.moduleAngleOffsets[i], Constants.SwerveConstants.moduleInverts[i]);
+        swerveMods[i] = new SwerveModuleIOSparkMax(i, Constants.currentRobot.moduleCANIDs[i][0],
+            Constants.currentRobot.moduleCANIDs[i][1], Constants.currentRobot.moduleCANIDs[i][2],
+            Constants.currentRobot.moduleAngleOffsets[i], Constants.SwerveConstants.moduleInverts[i]);
       }
 
     }
 
-    this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
+    this.swerve = new SwerveDrive(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2],
+        this.swerveMods[3]);
 
-    if (isXbox) {
+  }
+
+  private void createSwerveCommands() {
+
+    if (Constants.currentRobot.xboxEnabled) {
       // Supply teleop command with joystick methods - USES LAMBDAS
       teleop = new SwerveTeleop(this.swerve, () -> {
-        return -this.actualXbox.getRawAxis(translationAxis);
+        return -this.drivingXbox.getRawAxis(translationAxis);
       }, () -> {
-        return -this.actualXbox.getRawAxis(strafeAxis);
+        return -this.drivingXbox.getRawAxis(strafeAxis);
       }, () -> {
-        return -this.actualXbox.getRawAxis(rotationAxis);
+        return -this.drivingXbox.getRawAxis(rotationAxis);
       }, () -> {
-        //chaging the variable below:
-        // true = field centric
-        // false = robot centric
-        return true;
-      }, setAlliance, blueAllianceOrNot);
+        return this.drivingXbox.getRawAxis(XboxController.Axis.kRightTrigger.value);
+      }, () -> {
 
-    } else if (!isXbox) {
+        // Toggles between field centric (true) and robot centric (false)
+        if (this.drivingXbox.getRawButtonPressed(XboxController.Button.kX.value)) {
+          fieldCentricToggle = !fieldCentricToggle;
+
+          SmartDashboard.putBoolean("isFieldCentric", fieldCentricToggle);
+        }
+
+        return fieldCentricToggle;
+      }, Constants.currentRobot.allianceEnabled);
+
+    } else if (!Constants.currentRobot.xboxEnabled) {
       // Supply teleop command with joystick methods - USES LAMBDAS
       teleop = new SwerveTeleop(this.swerve, () -> {
-        return -this.actualXbox.getX();
+        return -this.drivingXbox.getX();
       }, () -> {
-        return -this.actualXbox.getY();
+        return -this.drivingXbox.getY();
       }, () -> {
-        return -this.additionalJoy.getRawAxis(0);
+        return -this.simulationJoy.getRawAxis(0);
       }, () -> {
-        return true;
-      }, setAlliance, blueAllianceOrNot);
+        return 0.0;
+      }, () -> {
+
+        // Toggles between field centric (true) and robot centric (false)
+        if (this.drivingXbox.getRawButtonPressed(1)) {
+          fieldCentricToggle = !fieldCentricToggle;
+        }
+
+        return fieldCentricToggle;
+      }, Constants.currentRobot.allianceEnabled);
 
     }
 
     crabDrive = new CrabDrive(this.swerve, () -> {
-      return -this.actualXbox.getX();
+      return -this.drivingXbox.getX();
     }, () -> {
-      return -this.actualXbox.getY();
+      return -this.drivingXbox.getY();
     });
 
-    allFour = new TestFourModules(swerve, actualXbox);
-    shooter = new Shooter();
+    allFour = new TestFourModules(swerve, drivingXbox);
+
+    moveBackIntoAmp = new MoveBackIntoAmp(swerve);
+    JoystickButton moveButton = new JoystickButton(drivingXbox, XboxController.Button.kY.value);
+
+    moveButton.toggleOnTrue(moveBackIntoAmp);
+    
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
@@ -190,21 +229,48 @@ public class RobotContainer {
     autoPaths = new InitializeAutoPaths(swerve, shooter);
   
     SmartDashboard.putData(teleopCommandChooser);
-    this.configureBindings();
+  }
+
+  private void configureShooter() {
+    shooter = new Shooter();
+    // Triggers intake rollers and stops at beambreaks at the middle of the note mechanism
+    JoystickButton triggerIntake = new JoystickButton(mechanismJoy, 16); 
+    triggerIntake.onTrue(new IntakeBeamBreak(0.6, shooter));
+    JoystickButton triggerIntakeSource = new JoystickButton(mechanismJoy, 3); 
+    triggerIntakeSource.onTrue(new IntakeSource(-1500, -1500,  0.8, shooter));
+    // Stops rollers
+    JoystickButton stopIntake = new JoystickButton(mechanismJoy, 4);
+    stopIntake.onTrue(new StopIntake(shooter));
+
+    /*JoystickButton manualIntake = new JoystickButton(mechanismJoy, 16);
+    manualIntake.whileTrue(new IntakeManual(0.6, shooter));
+    /* */
+    // Manually activates intake rollers when you go up on the POV 
+    POVButton triggerIntakeManual = new POVButton(mechanismJoy, 0); 
+    triggerIntakeManual.whileTrue(new IntakeManual(0.8, shooter));
+
+  }
+
+  public void configureClimber() {
+    climber = new Climber(); // Climber CAN ID was inactive, causing a timeout
+    JoystickButton climberControl = new JoystickButton(mechanismJoy, 17);
+    climberControl.whileTrue(new BasicClimbTeleop(climber, mechanismJoy));
+    //Throttle switching the power hasn't been updated yet. Should test code before implementing
+  }
+
+  public void configurePhotonVision() {
+    PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+    photonvision photonVision = new photonvision(camera);
+
+    JoystickButton alignButton = new JoystickButton(drivingXbox, XboxController.Button.kLeftBumper.value);
+    alignButton.onTrue(new TargetAprilTag(photonVision, swerve));
+  }
+
+  public void configureAuto() {
+    autoPaths = new InitializeAutoPaths(swerve, shooter);
   }
 
   private void configureBindings() {
-    JoystickButton triggerIntake = new JoystickButton(intakeJoy, 1);
-    triggerIntake.onTrue(new IntakeBeamBreak(0.8, shooter));
-    JoystickButton stopIntake = new JoystickButton(intakeJoy, 2);
-    stopIntake.onTrue(new StopIntake(shooter));
-
-    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 13);
-    triggerManualIntake.whileTrue(new IntakeManual(1.0, shooter));
-    JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 13);
-    triggerShooterButton.whileTrue(new Shoot(2500, -2500, shooter));
-    JoystickButton resetNavXButton = new JoystickButton(actualXbox, XboxController.Button.kB.value);
-    resetNavXButton.onTrue(swerve.resetHeadingCommand());
   }
 
   public Command getAutonomousCommand() {
@@ -212,14 +278,12 @@ public class RobotContainer {
     
   }
 
+  public static Joystick getIntakeJoy() {
+    return mechanismJoy;
+  }
+
   public void initCommandInTeleop() {
     swerve.setDefaultCommand(teleopCommandChooser.getSelected());
-  }
-  public static Joystick getIntakeJoy(){
-    return intakeJoy;
-  }
-  public static Joystick getIntakeXbox(){
-    return intakeXbox;
   }
 
   /**
@@ -227,7 +291,4 @@ public class RobotContainer {
    * 
    * @return If simulated or not
    */
-  public static boolean getSimOrNot() {
-    return isSim;
-  }
 }
