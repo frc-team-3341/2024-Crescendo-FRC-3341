@@ -8,8 +8,8 @@ import com.pathplanner.lib.util.PIDConstants;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.IntakeBeamBreak;
-import frc.robot.commands.Shoot;
+import frc.robot.commands.notemechanism.IntakeBeamBreak;
+import frc.robot.commands.notemechanism.Shoot;
 import frc.robot.commands.auto.AutoPath;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
