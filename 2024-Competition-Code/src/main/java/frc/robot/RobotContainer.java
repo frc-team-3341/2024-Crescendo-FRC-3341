@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.swerve.CrabDrive;
 import frc.robot.commands.IntakeBeamBreak;
 import frc.robot.commands.IntakeManual;
@@ -194,13 +195,22 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    JoystickButton triggerIntake = new JoystickButton(intakeJoy, 1);
-    triggerIntake.onTrue(new IntakeBeamBreak(0.8, shooter));
-    JoystickButton stopIntake = new JoystickButton(intakeJoy, 2);
+
+
+    JoystickButton triggerIntake = new JoystickButton(intakeJoy, 16);
+    triggerIntake.onTrue(new IntakeBeamBreak(0.6, shooter));
+
+    // Stops rollers
+    JoystickButton stopIntake = new JoystickButton(intakeJoy, 4);
     stopIntake.onTrue(new StopIntake(shooter));
 
-    JoystickButton triggerManualIntake = new JoystickButton(intakeJoy, 16);
-    triggerManualIntake.whileTrue(new IntakeManual(1.0, shooter));
+    /*JoystickButton manualIntake = new JoystickButton(mechanismJoy, 16);
+    manualIntake.whileTrue(new IntakeManual(0.6, shooter));
+    /* */
+    // Manually activates intake rollers when you go up on the POV 
+    POVButton triggerIntakeManual = new POVButton(intakeJoy, 0); 
+    triggerIntakeManual.whileTrue(new IntakeManual(0.8, shooter));
+
     JoystickButton triggerShooterButton = new JoystickButton(intakeJoy, 13);
     triggerShooterButton.whileTrue(new Shoot(2500, -2500, shooter));
     JoystickButton resetNavXButton = new JoystickButton(actualXbox, XboxController.Button.kB.value);
