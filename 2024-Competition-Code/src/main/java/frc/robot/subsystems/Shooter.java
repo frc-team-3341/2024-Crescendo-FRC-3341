@@ -208,6 +208,12 @@ public class Shooter extends SubsystemBase {
       lowerRPM = 3500;
     }
 
+    // Shoot from the left side of the speaker
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(5)){
+      upperRPM = 3500;
+      lowerRPM = 3500;
+    }
+
     // Intakes note from source (untested)
     /*if(RobotContainer.getIntakeJoy().getRawButtonPressed(6)){ //intake from source
       upperRPM = -1500;
