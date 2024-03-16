@@ -1,7 +1,6 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,19 +21,17 @@ import org.photonvision.PhotonCamera;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.DriverStation;
 
 import frc.robot.commands.*;
 import frc.robot.commands.climber.BasicClimbTeleop;
 import frc.robot.commands.notemechanism.*;
-import frc.robot.commands.swerve.*;
 import frc.robot.commands.swerve.BackingUpIntoAmp.MoveBackIntoAmp;
 import frc.robot.commands.swerve.BackingUpIntoAmp.BackupSimple;
 import frc.robot.commands.swerve.ClosestNinetyDegrees;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.swerve.*;
 import frc.robot.subsystems.photonvision.*;
+
+import edu.wpi.first.wpilibj.PowerDistribution.*;
 
 public class RobotContainer {
 
@@ -106,14 +103,15 @@ public class RobotContainer {
   // Empty Shooter object
   private Shooter shooter;
 
+  // Empty Climber object
+  private Climber climber;
+
   // Auto Trajectories
   private InitializeAutoPaths autoPaths;
 
   // Field centric toggle - true for field centric, false for robot centric
   private boolean fieldCentricToggle = true;
 
-  // Empty Climber object
-  private Climber climber;
 
   public RobotContainer() {
 
@@ -238,9 +236,12 @@ public class RobotContainer {
     resetNavX = new ResetNavX(swerve.navx);
     JoystickButton resetNavXButton = new JoystickButton(drivingXbox, XboxController.Button.kLeftBumper.value);
 
+//    JoystickButton clearStickyFaults = new JoystickButton(mechanismJoy, 17);
+
     resetNavXButton.onTrue(resetNavX);
     ninetyDegreeRotationButton.onTrue(ninetyDegreeRotation);
     backupSimpleButton.toggleOnTrue(backupSimple);
+//    clearStickyFaults.onTrue(swerve.resetStickyFaultsCommand());
 
 
 //    moveButton.toggleOnTrue(moveBackIntoAmp);
@@ -272,7 +273,6 @@ public class RobotContainer {
     // Manually activates intake rollers when you go up on the POV 
     POVButton triggerIntakeManual = new POVButton(mechanismJoy, 0); 
     triggerIntakeManual.whileTrue(new IntakeManual(0.8, shooter));
-
   }
 
   public void configureClimber() {

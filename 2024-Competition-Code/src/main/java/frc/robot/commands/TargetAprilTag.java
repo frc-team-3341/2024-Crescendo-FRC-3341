@@ -10,8 +10,8 @@ public class TargetAprilTag extends Command {
     private photonvision photonVision;
     private SwerveDrive swerveDrive;
 
-    public double[] threshold = {176.0,0.05};
-    // {rotation threshold (Degrees), centering threshold (meters)}
+    public double threshold = 0.05;
+    // centering threshold (meters)
     public static double XVal;
     public static int moveDirection = 1;
     //Positive means move left, negative means move right
@@ -47,7 +47,7 @@ public class TargetAprilTag extends Command {
             swerveDrive.drive(new Translation2d(0, 0.3 * moveDirection), 0, false, false);
             robotAligning = true;
             aligned = false;
-            if ((-threshold[1] <= XVal) && (XVal <= threshold[1])) {
+            if ((-threshold <= XVal) && (XVal <= threshold)) {
                 robotAligning = false;
                 aligned = true;
                 swerveDrive.drive(new Translation2d(0, 0), 0, false, false);

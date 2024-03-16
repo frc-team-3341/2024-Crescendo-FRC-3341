@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -31,6 +32,9 @@ public class SwerveDrive extends SubsystemBase {
    // Create Navx
    public AHRS navx = new AHRS(Port.kMXP);
 
+   //Creates pdh
+   public PowerDistribution pdh = new PowerDistribution(1, PowerDistribution.ModuleType.kRev);
+
    // Create object representing swerve modules
    private SwerveModuleIO[] moduleIO;
 
@@ -48,6 +52,7 @@ public class SwerveDrive extends SubsystemBase {
    private Field2d field;
 
    private Rotation2d offsetNavx = new Rotation2d();
+
 
    /**
     * Creates a new SwerveDrive object. Intended to work both with real modules and
@@ -96,11 +101,14 @@ public class SwerveDrive extends SubsystemBase {
       SmartDashboard.putNumberArray("Setpoint States", SwerveUtil.getDoubleStates(getSetpointStates()));
       SmartDashboard.putNumber("Robot Rotation", getPoseFromEstimator().getRotation().getRadians());
 
+      //For 90˚ rotation
       SmartDashboard.putNumber("Rotation for 90 degree rotation", -this.getRotation().getDegrees());
       SmartDashboard.putNumber("Remainder", -this.getRotation().getDegrees() % 90);
       SmartDashboard.putBoolean("Should stop", this.inThreshold(1));
 
-      SmartDashboard.putNumber("Angle", getHeading()); 
+      SmartDashboard.putNumber("Angle", getHeading());
+
+//      SmartDashboard.putBoolean("Sticky Fault Exists", this.checkForFaults());
 
    }
 
@@ -322,5 +330,20 @@ public class SwerveDrive extends SubsystemBase {
       
       });
    }
+
+   public Command resetStickyFaultsCommand(){
+      return runOnce(this.pdh::clearStickyFaults);
+   }
+
+   public boolean checkForFaults(){
+      for (int i = 1; i <= 23; i++){
+         if (this.pdh.getStickyFaults().getBreakerFault(i)){
+            return true;
+         }
+      }
+      return false;
+   }
+
+
 
 }
