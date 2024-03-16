@@ -8,11 +8,11 @@ import com.pathplanner.lib.util.PIDConstants;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.IntakeBeamBreak;
-import frc.robot.commands.Shoot;
 import frc.robot.commands.auto.AutoPath;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
+import frc.robot.commands.notemechanism.IntakeBeamBreak;
+import frc.robot.commands.notemechanism.Shoot;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -29,9 +29,9 @@ public class B1_LeftSpeakerNote extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       // Tune these high and low rpm
-      new Shoot(0,0, this.shooter),
+      new Shoot(3600, 3600, this.shooter),
       new ParallelCommandGroup(new AutoPath("B1 Left Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), true),
-      new IntakeBeamBreak(0.6, this.shooter)) //Automatically stops)
+      new IntakeBeamBreak(0.6, this.shooter))
     );
   }
 }
