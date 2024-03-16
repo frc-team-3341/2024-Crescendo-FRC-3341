@@ -19,12 +19,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
 
 public class AutoPath extends SequentialCommandGroup {
 
   SwerveDrive swerve;
-
+  boolean firstPath;
   Pose2d initialPose;
 
   /**
@@ -33,7 +34,7 @@ public class AutoPath extends SequentialCommandGroup {
    * @param pathName Name of path in RIO's data folder
    * @param swerve   SwerveDrive subsystem
    */
-  public AutoPath(String pathName, SwerveDrive swerve, PIDConstants translational, PIDConstants rotational) {
+  public AutoPath(String pathName, SwerveDrive swerve, PIDConstants translational, PIDConstants rotational, boolean firstPath) {
     this.swerve = swerve;
     
     // Load path from 2024 PathPlannerLib
@@ -90,10 +91,16 @@ public class AutoPath extends SequentialCommandGroup {
       // Possible ways to get the start pose of the path
       // path.getPreviewStartingHolonomicPose()
       // path.getStartingDifferentialPose()
-      swerve.resetPose(path.getPreviewStartingHolonomicPose());
+      if(firstPath == true){
+        swerve.resetPose(path.getPreviewStartingHolonomicPose());
+      }
+      else {
+        //we want to do nothing if it's not the first path that's being used
+      }
     }).finallyDo(() -> {
       swerve.setModulesPositions(0, 0);
       swerve.setModuleVoltages(0, 0);
     }));
   }
+  
 }
