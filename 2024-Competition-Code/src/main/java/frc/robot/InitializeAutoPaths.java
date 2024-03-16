@@ -19,6 +19,24 @@ import frc.robot.commands.auto.BlueAlliance1.Plays.B1_MiddleSpeakerNoteSpeaker;
 import frc.robot.commands.auto.BlueAlliance1.Plays.B1_RightShoot;
 import frc.robot.commands.auto.BlueAlliance1.Plays.B1_RightSpeakerNote;
 import frc.robot.commands.auto.BlueAlliance1.Plays.B1_RightSpeakerNoteSpeaker;
+import frc.robot.commands.auto.BlueAlliance2.Plays.B2_LeftShoot;
+import frc.robot.commands.auto.BlueAlliance2.Plays.B2_LeftSpeakerNote;
+import frc.robot.commands.auto.BlueAlliance2.Plays.B2_LeftSpeakerNoteSpeaker;
+import frc.robot.commands.auto.BlueAlliance2.Plays.B2_MiddleShoot;
+import frc.robot.commands.auto.BlueAlliance2.Plays.B2_MiddleSpeakerNote;
+import frc.robot.commands.auto.BlueAlliance2.Plays.B2_MiddleSpeakerNoteSpeaker;
+import frc.robot.commands.auto.BlueAlliance2.Plays.B2_RightShoot;
+import frc.robot.commands.auto.BlueAlliance2.Plays.B2_RightSpeakerNote;
+import frc.robot.commands.auto.BlueAlliance2.Plays.B2_RightSpeakerNoteSpeaker;
+import frc.robot.commands.auto.BlueAlliance3.Plays.B3_LeftShoot;
+import frc.robot.commands.auto.BlueAlliance3.Plays.B3_LeftSpeakerNote;
+import frc.robot.commands.auto.BlueAlliance3.Plays.B3_LeftSpeakerNoteSpeaker;
+import frc.robot.commands.auto.BlueAlliance3.Plays.B3_MiddleShoot;
+import frc.robot.commands.auto.BlueAlliance3.Plays.B3_MiddleSpeakerNote;
+import frc.robot.commands.auto.BlueAlliance3.Plays.B3_MiddleSpeakerNoteSpeaker;
+import frc.robot.commands.auto.BlueAlliance3.Plays.B3_RightShoot;
+import frc.robot.commands.auto.BlueAlliance3.Plays.B3_RightSpeakerNote;
+import frc.robot.commands.auto.BlueAlliance3.Plays.B3_RightSpeakerNoteSpeaker;
 
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
@@ -27,18 +45,10 @@ import frc.robot.subsystems.swerve.SwerveDrive;
 public class InitializeAutoPaths {
     private final SwerveDrive swerve;
     private final Shooter shooter;
-    private final AutoPath B1_StartToAmp, B1_NoteToSpeaker, B1_SpeakerToNote, B1_StartToSpeaker, B1_LeftSpeakerToNote;
-    private final AutoPath B2_StartToAmp, B2_NoteToSpeaker, B2_SpeakerToNote,
-            B2_StartToSpeaker;
-    private final AutoPath B3_StartToAmp, B3_NoteToSpeaker, B3_SpeakerToNote,
-            B3_StartToSpeaker;
+    private final AutoPath B1_LeftSpeakerToNote, B1_MiddleSpeakerToNote, B1_NoteToSpeaker, B1_RightSpeakerToNote;
+    private final AutoPath B2_LeftSpeakerToNote, B2_MiddleSpeakerToNote, B2_NoteToSpeaker, B2_RightSpeakerToNote;
+    private final AutoPath B3_LeftSpeakerToNote, B3_MiddleSpeakerToNote, B3_NoteToSpeaker, B3_RightSpeakerToNote;
 
-    private final AutoPath R1_StartToAmp, R1_NoteToSpeaker, R1_SpeakerToNote,
-            R1_StartToSpeaker;
-    private final AutoPath R2_StartToAmp, R2_NoteToSpeaker, R2_SpeakerToNote,
-            R2_StartToSpeaker;
-    private final AutoPath R3_StartToAmp, R3_NoteToSpeaker, R3_SpeakerToNote,
-            R3_StartToSpeaker;
 
     // Plays:
     private final B1_LeftShoot B1_LeftShoot;
@@ -51,66 +61,57 @@ public class InitializeAutoPaths {
     private final B1_RightSpeakerNote B1_RightSpeakerNote;
     private final B1_RightSpeakerNoteSpeaker B1_RightSpeakerNoteSpeaker;
 
+    private final B2_LeftShoot B2_LeftShoot;
+    private final B2_LeftSpeakerNote B2_LeftSpeakerNote;
+    private final B2_LeftSpeakerNoteSpeaker B2_LeftSpeakerNoteSpeaker;
+    private final B2_MiddleShoot B2_MiddleShoot;
+    private final B2_MiddleSpeakerNote B2_MiddleSpeakerNote;
+    private final B2_MiddleSpeakerNoteSpeaker B2_MiddleSpeakerNoteSpeaker;
+    private final B2_RightShoot B2_RightShoot;
+    private final B2_RightSpeakerNote B2_RightSpeakerNote;
+    private final B2_RightSpeakerNoteSpeaker B2_RightSpeakerNoteSpeaker;
+
+    private final B3_LeftShoot B3_LeftShoot;
+    private final B3_LeftSpeakerNote B3_LeftSpeakerNote;
+    private final B3_LeftSpeakerNoteSpeaker B3_LeftSpeakerNoteSpeaker;
+    private final B3_MiddleShoot B3_MiddleShoot;
+    private final B3_MiddleSpeakerNote B3_MiddleSpeakerNote;
+    private final B3_MiddleSpeakerNoteSpeaker B3_MiddleSpeakerNoteSpeaker;
+    private final B3_RightShoot B3_RightShoot;
+    private final B3_RightSpeakerNote B3_RightSpeakerNote;
+    private final B3_RightSpeakerNoteSpeaker B3_RightSpeakerNoteSpeaker;
+
     private final SendableChooser<Command> autoCommandChooser = new SendableChooser<>();
 
     public InitializeAutoPaths(SwerveDrive swerve, Shooter shooter) {
         this.swerve = swerve;
         this.shooter = shooter;
-        B1_StartToAmp = new AutoPath("B1 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
+        
+        B1_LeftSpeakerToNote = new AutoPath("B1 Left Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
+                new PIDConstants(1.0, 0, 0), true);
+        B1_MiddleSpeakerToNote = new AutoPath("B1 Middle Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0), true);
         B1_NoteToSpeaker = new AutoPath("B1 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0), false);
-        B1_SpeakerToNote = new AutoPath("B1 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), false);
-        B1_StartToSpeaker = new AutoPath("B1 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
+        B1_RightSpeakerToNote = new AutoPath("B1 Right Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0), true);
-        B1_LeftSpeakerToNote = new AutoPath("B1 Left Speaker to Note", this.swerve, new PIDConstants(1, 0, 0),
-                new PIDConstants(1,0,0), false);
 
-        B2_StartToAmp = new AutoPath("B2 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
+        B2_LeftSpeakerToNote = new AutoPath("B2 Left Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
+                new PIDConstants(1.0, 0, 0), true);
+        B2_MiddleSpeakerToNote = new AutoPath("B2 Middle Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0), true);
         B2_NoteToSpeaker = new AutoPath("B2 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0), false);
-        B2_SpeakerToNote = new AutoPath("B2 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), false);
-        B2_StartToSpeaker = new AutoPath("B2 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
+        B2_RightSpeakerToNote = new AutoPath("B2 Right Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0), true);
 
-        B3_StartToAmp = new AutoPath("B3 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
+        B3_LeftSpeakerToNote = new AutoPath("B3 Left Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
+                new PIDConstants(1.0, 0, 0), true);
+        B3_MiddleSpeakerToNote = new AutoPath("B3 Middle Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0), true);
         B3_NoteToSpeaker = new AutoPath("B3 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0), false);
-        B3_SpeakerToNote = new AutoPath("B3 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), false);
-        B3_StartToSpeaker = new AutoPath("B3 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), true);
-//manually add in the initial pose for the paths down from here:
-
-        R1_StartToAmp = new AutoPath("R1 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), true);
-        R1_NoteToSpeaker = new AutoPath("R1 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), false);
-        R1_SpeakerToNote = new AutoPath("R1 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), false);
-        R1_StartToSpeaker = new AutoPath("R1 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), true);
-
-        R2_StartToAmp = new AutoPath("R2 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), true);
-        R2_NoteToSpeaker = new AutoPath("R2 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), false);
-        R2_SpeakerToNote = new AutoPath("R2 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), false);
-        R2_StartToSpeaker = new AutoPath("R2 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), true);
-
-        R3_StartToAmp = new AutoPath("R3 Start to Amp", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), true);
-        R3_NoteToSpeaker = new AutoPath("R3 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), false);
-        R3_SpeakerToNote = new AutoPath("R3 Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
-                new PIDConstants(1.0, 0, 0), false);
-        R3_StartToSpeaker = new AutoPath("R3 Start to Speaker", this.swerve, new PIDConstants(1.0, 0, 0),
+        B3_RightSpeakerToNote = new AutoPath("B3 Right Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0),
                 new PIDConstants(1.0, 0, 0), true);
 
         // PLAYS:
@@ -123,6 +124,24 @@ public class InitializeAutoPaths {
         B1_RightShoot = new B1_RightShoot(this.swerve, this.shooter);
         B1_RightSpeakerNote = new B1_RightSpeakerNote(this.swerve, this.shooter);
         B1_RightSpeakerNoteSpeaker = new B1_RightSpeakerNoteSpeaker(this.swerve, this.shooter);
+        B2_LeftShoot = new B2_LeftShoot(this.swerve, this.shooter);
+        B2_LeftSpeakerNote = new B2_LeftSpeakerNote(this.swerve, this.shooter);
+        B2_LeftSpeakerNoteSpeaker = new B2_LeftSpeakerNoteSpeaker(this.swerve, this.shooter);
+        B2_MiddleShoot = new B2_MiddleShoot(this.swerve, this.shooter);
+        B2_MiddleSpeakerNote = new B2_MiddleSpeakerNote(this.swerve, this.shooter);
+        B2_MiddleSpeakerNoteSpeaker = new B2_MiddleSpeakerNoteSpeaker(this.swerve, this.shooter);
+        B2_RightShoot = new B2_RightShoot(this.swerve, this.shooter);
+        B2_RightSpeakerNote = new B2_RightSpeakerNote(this.swerve, this.shooter);
+        B2_RightSpeakerNoteSpeaker = new B2_RightSpeakerNoteSpeaker(this.swerve, this.shooter);
+        B3_LeftShoot = new B3_LeftShoot(this.swerve, this.shooter);
+        B3_LeftSpeakerNote = new B3_LeftSpeakerNote(this.swerve, this.shooter);
+        B3_LeftSpeakerNoteSpeaker = new B3_LeftSpeakerNoteSpeaker(this.swerve, this.shooter);
+        B3_MiddleShoot = new B3_MiddleShoot(this.swerve, this.shooter);
+        B3_MiddleSpeakerNote = new B3_MiddleSpeakerNote(this.swerve, this.shooter);
+        B3_MiddleSpeakerNoteSpeaker = new B3_MiddleSpeakerNoteSpeaker(this.swerve, this.shooter);
+        B3_RightShoot = new B3_RightShoot(this.swerve, this.shooter);
+        B3_RightSpeakerNote = new B3_RightSpeakerNote(this.swerve, this.shooter);
+        B3_RightSpeakerNoteSpeaker = new B3_RightSpeakerNoteSpeaker(this.swerve, this.shooter);
         
         // Autonomous command selector
         autoCommandChooser.addOption("B1_LeftShoot", B1_LeftShoot);
@@ -134,43 +153,29 @@ public class InitializeAutoPaths {
         autoCommandChooser.addOption("B1_RightShoot", B1_RightShoot);
         autoCommandChooser.addOption("B1_RightSpeakerNote", B1_RightSpeakerNote);
         autoCommandChooser.addOption("B1_RightSpeakerNoteSpeaker", B1_RightSpeakerNoteSpeaker);
+        
+        autoCommandChooser.addOption("B2_LeftShoot", B2_LeftShoot);
+        autoCommandChooser.addOption("B2_LeftSpeakerNote", B2_LeftSpeakerNote);
+        autoCommandChooser.addOption("B2_LeftSpeakerNoteSpeaker", B2_LeftSpeakerNoteSpeaker);
+        autoCommandChooser.addOption("B2_MiddleShoot", B2_MiddleShoot);
+        autoCommandChooser.addOption("B2_MiddleSpeakerNote", B2_MiddleSpeakerNote);
+        autoCommandChooser.addOption("B2_MiddleSpeakerNoteSpeaker", B2_MiddleSpeakerNoteSpeaker);
+        autoCommandChooser.addOption("B2_RightShoot", B2_RightShoot);
+        autoCommandChooser.addOption("B2_RightSpeakerNote", B2_RightSpeakerNote);
+        autoCommandChooser.addOption("B2_RightSpeakerNoteSpeaker", B2_RightSpeakerNoteSpeaker);
 
-
-
-        autoCommandChooser.addOption("B1_StartToAmp", B1_StartToAmp);
-        autoCommandChooser.addOption("B1_NoteToSpeaker", B1_NoteToSpeaker);
-        autoCommandChooser.addOption("B1_SpeakerToNote", B1_SpeakerToNote);
-        autoCommandChooser.addOption("B1_StartToSpeaker", B1_StartToSpeaker);
-        autoCommandChooser.addOption("B1_LeftSpeakerToNote", B1_LeftSpeakerToNote);     
-
-        autoCommandChooser.addOption("B2_StartToAmp", B2_StartToAmp);
-        autoCommandChooser.addOption("B2_NoteToSpeaker", B2_NoteToSpeaker);
-        autoCommandChooser.addOption("B2_SpeakerToNote", B2_SpeakerToNote);
-        autoCommandChooser.addOption("B2_StartToSpeaker", B2_StartToSpeaker);
-
-        autoCommandChooser.addOption("B3_StartToAmp", B3_StartToAmp);
-        autoCommandChooser.addOption("B3_NoteToSpeaker", B3_NoteToSpeaker);
-        autoCommandChooser.addOption("B3_SpeakerToNote", B3_SpeakerToNote);
-        autoCommandChooser.addOption("B3_StartToSpeaker", B3_StartToSpeaker);
-
-        autoCommandChooser.addOption("R1_StartToAmp", R1_StartToAmp);
-        autoCommandChooser.addOption("R1_NoteToSpeaker", R1_NoteToSpeaker);
-        autoCommandChooser.addOption("R1_SpeakerToNote", R1_SpeakerToNote);
-        autoCommandChooser.addOption("R1_StartToSpeaker", R1_StartToSpeaker);
-
-        autoCommandChooser.addOption("R2_StartToAmp", R2_StartToAmp);
-        autoCommandChooser.addOption("R2_NoteToSpeaker", R2_NoteToSpeaker);
-        autoCommandChooser.addOption("R2_SpeakerToNote", R2_SpeakerToNote);
-        autoCommandChooser.addOption("R2_StartToSpeaker", R2_StartToSpeaker);
-
-        autoCommandChooser.addOption("R3_StartToAmp", R3_StartToAmp);
-        autoCommandChooser.addOption("R3_NoteToSpeaker", R3_NoteToSpeaker);
-        autoCommandChooser.addOption("R3_SpeakerToNote", R3_SpeakerToNote);
-        autoCommandChooser.addOption("R3_StartToSpeaker", R3_StartToSpeaker);
+        autoCommandChooser.addOption("B3_LeftShoot", B3_LeftShoot);
+        autoCommandChooser.addOption("B3_LeftSpeakerNote", B3_LeftSpeakerNote);
+        autoCommandChooser.addOption("B3_LeftSpeakerNoteSpeaker", B3_LeftSpeakerNoteSpeaker);
+        autoCommandChooser.addOption("B3_MiddleShoot", B3_MiddleShoot);
+        autoCommandChooser.addOption("B3_MiddleSpeakerNote", B3_MiddleSpeakerNote);
+        autoCommandChooser.addOption("B3_MiddleSpeakerNoteSpeaker", B3_MiddleSpeakerNoteSpeaker);
+        autoCommandChooser.addOption("B3_RightShoot", B3_RightShoot);
+        autoCommandChooser.addOption("B3_RightSpeakerNote", B3_RightSpeakerNote);
+        autoCommandChooser.addOption("B3_RightSpeakerNoteSpeaker", B3_RightSpeakerNoteSpeaker);
 
         
 
-        autoCommandChooser.setDefaultOption("B1_StartToAmp", B1_StartToAmp);
 
         SmartDashboard.putData(autoCommandChooser);
 

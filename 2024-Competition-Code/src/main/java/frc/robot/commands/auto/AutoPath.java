@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
 
 public class AutoPath extends SequentialCommandGroup {
@@ -101,4 +102,5 @@ public class AutoPath extends SequentialCommandGroup {
       swerve.setModuleVoltages(0, 0);
     }));
   }
+  
 }
