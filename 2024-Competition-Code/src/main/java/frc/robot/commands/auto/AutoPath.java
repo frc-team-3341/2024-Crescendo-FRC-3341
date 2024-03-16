@@ -19,12 +19,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
 
 public class AutoPath extends SequentialCommandGroup {
 
   SwerveDrive swerve;
-
+  boolean firstPath;
   Pose2d initialPose;
 
   /**
@@ -33,7 +34,7 @@ public class AutoPath extends SequentialCommandGroup {
    * @param pathName Name of path in RIO's data folder
    * @param swerve   SwerveDrive subsystem
    */
-  public AutoPath(String pathName, SwerveDrive swerve, PIDConstants translational, PIDConstants rotational) {
+  public AutoPath(String pathName, SwerveDrive swerve, PIDConstants translational, PIDConstants rotational, boolean firstPath) {
     this.swerve = swerve;
     
     // Load path from 2024 PathPlannerLib
@@ -45,43 +46,6 @@ public class AutoPath extends SequentialCommandGroup {
       this.swerve.getField().getObject("traj").setPoses(poses);
     });
 
-    // Uses the AutoBuilder to build an auto
-    // TODO: NEED TO TUNE
-
-    // Credit for comments: PathPlannerLib wiki!
-
-    AutoBuilder.configureHolonomic(
-        this.swerve::getPoseFromEstimator, // Robot pose supplier
-        this.swerve::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-        this.swerve::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        this.swerve::driveRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-        new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            translational, // Translation PID constants -> path independent
-            rotational, // Rotation PID constants -> more or less path dependent
-            Constants.SwerveConstants.maxChassisTranslationalSpeed, // Max module speed, in m/s
-            Constants.SwerveConstants.trackWidthHypotenuse, // Drive base radius in meters. Distance from robot center
-                                                            // to furthest module.
-            new ReplanningConfig() // Default path replanning config. See the API for the options here
-        ),
-        () -> {
-          // Boolean supplier that controls when the path will be mirrored for the red
-          // alliance
-          // This will flip the path being followed to the red side of the field.
-          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-          var alliance = DriverStation.getAlliance();
-          if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Red;
-          }
-          return false;
-        },
-        this.swerve // Reference to this subsystem to set requirements
-    );
-
-    // swerve.resetPose(new Pose2d(new Translation2d(0.71, 6.71),
-    // swerve.getRotation()));
-    // path.getPreviewStartingHolonomicPose();
-
     var swerveAuto = AutoBuilder.followPath(path);
 
     // Setting voltage to 0 is necessary in order to stop robot
@@ -90,10 +54,16 @@ public class AutoPath extends SequentialCommandGroup {
       // Possible ways to get the start pose of the path
       // path.getPreviewStartingHolonomicPose()
       // path.getStartingDifferentialPose()
-      swerve.resetPose(path.getPreviewStartingHolonomicPose());
+      if(firstPath == true){
+        swerve.resetPose(path.getPreviewStartingHolonomicPose());
+      }
+      else {
+        //we want to do nothing if it's not the first path that's being used
+      }
     }).finallyDo(() -> {
       swerve.setModulesPositions(0, 0);
       swerve.setModuleVoltages(0, 0);
     }));
   }
+  
 }
