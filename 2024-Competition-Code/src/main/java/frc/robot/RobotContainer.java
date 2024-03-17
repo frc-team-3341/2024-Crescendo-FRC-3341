@@ -124,11 +124,13 @@ public class RobotContainer {
     if (Constants.currentRobot.enablePhotonVision) {
       this.configurePhotonVision();
     }
-
-    this.configureAuto();
+    
     
     // Construct all other things
     this.configureBindings();
+
+    this.configureAuto();
+
   }
 
   private void constructSwerve() {
@@ -226,7 +228,7 @@ public class RobotContainer {
     teleopCommandChooser.addOption("Module Test Command", allFour);
     teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
    
-    autoPaths = new InitializeAutoPaths(swerve, shooter);
+    // autoPaths = new InitializeAutoPaths(swerve, shooter);
   
     SmartDashboard.putData(teleopCommandChooser);
   }

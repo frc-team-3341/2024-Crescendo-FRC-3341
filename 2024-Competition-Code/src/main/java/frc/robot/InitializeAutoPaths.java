@@ -84,6 +84,7 @@ public class InitializeAutoPaths {
     private final SendableChooser<Command> autoCommandChooser = new SendableChooser<>();
 
     public InitializeAutoPaths(SwerveDrive swerve, Shooter shooter) {
+
         this.swerve = swerve;
         this.shooter = shooter;
 
