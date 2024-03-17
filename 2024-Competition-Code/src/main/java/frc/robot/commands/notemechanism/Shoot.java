@@ -39,6 +39,8 @@ public class Shoot extends Command {
   @Override
   public void end(boolean interrupted) {
     shooter.setupperSpeed(0);
+    shooter.setlowerSpeed(0);
+
   }
 
   // Returns true when the command should end.

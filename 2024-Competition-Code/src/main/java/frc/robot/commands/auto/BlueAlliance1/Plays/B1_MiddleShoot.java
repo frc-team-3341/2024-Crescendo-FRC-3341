@@ -9,8 +9,10 @@ import com.pathplanner.lib.util.PIDConstants;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
+import frc.robot.commands.notemechanism.AutoShoot;
 import frc.robot.commands.notemechanism.IntakeBeamBreak;
 import frc.robot.commands.notemechanism.Shoot;
 import frc.robot.commands.auto.AutoPath;
@@ -32,7 +34,7 @@ public class B1_MiddleShoot extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       // *TODO: tune the constants for shooting into the speaker from the middle
-      new Shoot(3500, 3500, this.shooter)
+      new ParallelCommandGroup(new Shoot(3500, 3500, this.shooter), new AutoShoot(shooter))
     );
   }
 }
