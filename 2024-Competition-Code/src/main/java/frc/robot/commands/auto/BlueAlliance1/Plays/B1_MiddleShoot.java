@@ -34,7 +34,8 @@ public class B1_MiddleShoot extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       // *TODO: tune the constants for shooting into the speaker from the middle
-      new Shoot(3500, 3500, this.shooter)
+      // new AutoShoot(this.shooter).withTimeout(1),
+      new Shoot(3500, 3500, this.shooter).withTimeout(3)
     );
   }
 }

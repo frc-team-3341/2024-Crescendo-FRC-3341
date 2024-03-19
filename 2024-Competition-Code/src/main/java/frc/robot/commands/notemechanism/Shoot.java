@@ -9,11 +9,11 @@ import frc.robot.subsystems.Shooter;
 
 
 public class Shoot extends Command {
-  private double power;
-  private double lowerRPM;
+  private int power;
+  private int lowerRPM;
   private Shooter shooter;
   /** Creates a new Shoot. */
-  public Shoot(double power, double lowerRPM, Shooter shooter) {
+  public Shoot(int power, int lowerRPM, Shooter shooter) {
     this.power = power;
     this.shooter = shooter;
     this.lowerRPM = lowerRPM;
@@ -28,8 +28,8 @@ public class Shoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setupperSpeed(power);
-    shooter.setlowerSpeed(lowerRPM);
+    //shooter.shootSpeaker(power);
+    shooter.shootBoth(power, lowerRPM);
     // if (shooter.setpointReached(shooter.getUpperRPM(), shooter.upperRPM) && (shooter.setpointReached(shooter.getLowerRPM(), shooter.lowerRPM))){
     //   shooter.setintakeSpeed(3000);
     // }
@@ -40,7 +40,7 @@ public class Shoot extends Command {
   public void end(boolean interrupted) {
     shooter.setupperSpeed(0);
     shooter.setlowerSpeed(0);
-
+    shooter.setFeedSimple(0);
   }
 
   // Returns true when the command should end.
