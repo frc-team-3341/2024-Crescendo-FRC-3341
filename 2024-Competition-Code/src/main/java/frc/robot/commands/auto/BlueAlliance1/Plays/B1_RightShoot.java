@@ -34,7 +34,7 @@ public class B1_RightShoot extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       // *TODO: tune the constants for shooting into the speaker from the right
-      new ParallelCommandGroup(new Shoot(3500, 3500, this.shooter), new AutoShoot(shooter))
+      
     );
   }
 }
