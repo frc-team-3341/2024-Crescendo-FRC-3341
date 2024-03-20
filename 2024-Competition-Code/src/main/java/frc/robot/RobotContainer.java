@@ -291,6 +291,11 @@ public class RobotContainer {
   }
 
   public void configureAuto() {
+    //B1 paths to use:
+    //B1 middle shoot
+    //B1 left speaker note speaker
+    //B1 middle speaker note speaker
+    //B1 right speaker note speaker
     autoPaths = new InitializeAutoPaths(swerve, shooter);
   }
 
