@@ -28,11 +28,12 @@ public class B1_LeftSpeakerNoteSpeaker extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new Shoot(3500,3500, this.shooter).withTimeout(3),
+      //use these timings - they work perfectly 
+      new Shoot(3500,3500, this.shooter).withTimeout(2),
       new ParallelCommandGroup(new AutoPath("B1 Left Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), true), 
-      new IntakeBeamBreak(0.6, shooter)),
+      new IntakeBeamBreak(0.6, shooter).withTimeout(4)),
       new AutoPath("B1 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), false),
-      new Shoot(3500,3500, this.shooter).withTimeout(2)
+      new Shoot(3500,3500, this.shooter).withTimeout(5)
     );
   }
 }
