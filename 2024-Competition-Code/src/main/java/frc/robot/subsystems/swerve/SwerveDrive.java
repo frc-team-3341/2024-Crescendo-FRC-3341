@@ -104,7 +104,7 @@ public class SwerveDrive extends SubsystemBase {
       //For 90˚ rotation
       SmartDashboard.putNumber("Rotation for 90 degree rotation", -this.getRotation().getDegrees());
       SmartDashboard.putNumber("Remainder", -this.getRotation().getDegrees() % 90);
-      SmartDashboard.putBoolean("Should stop", this.inThreshold(1));
+      SmartDashboard.putBoolean("Should stop", this.inThreshold(2));
 
       SmartDashboard.putNumber("Angle", getHeading());
 

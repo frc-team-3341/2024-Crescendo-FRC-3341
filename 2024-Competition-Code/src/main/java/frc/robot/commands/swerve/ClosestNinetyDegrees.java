@@ -46,7 +46,7 @@ public class ClosestNinetyDegrees extends Command {
 
     @Override
     public boolean isFinished() {
-        return swerve.inThreshold(1);
+        return swerve.inThreshold(2);
     }//If changed make sure to change the smartDashboard output in SwerveDrive.java
 
     @Override
