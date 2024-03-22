@@ -29,7 +29,7 @@ public class B2_RightSpeakerNote extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       // Tune these high and low rpm
-      new Shoot(0,0, this.shooter),
+      new Shoot(0,0, this.shooter).withTimeout(3),
       new ParallelCommandGroup(new AutoPath("B2 Right Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), true),
       new IntakeBeamBreak(0.6, this.shooter)) //Automatically stops)
     );
