@@ -109,6 +109,7 @@ public class InitializeAutoPaths {
 
           var alliance = DriverStation.getAlliance();
           if (alliance.isPresent()) {
+            //SmartDashboard.putBoolean("Red Alliance?:", alliance.get() == DriverStation.Alliance.Red);
             return alliance.get() == DriverStation.Alliance.Red;
           }
           return false;
@@ -175,8 +176,6 @@ public class InitializeAutoPaths {
         autoCommandChooser.addOption("B3_RightShoot", B3_RightShoot);
         autoCommandChooser.addOption("B3_RightSpeakerNote", B3_RightSpeakerNote);
         autoCommandChooser.addOption("B3_RightSpeakerNoteSpeaker", B3_RightSpeakerNoteSpeaker);
-
-        
 
 
         SmartDashboard.putData(autoCommandChooser);
