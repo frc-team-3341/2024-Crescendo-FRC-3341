@@ -1,12 +1,12 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+
 import frc.robot.commands.swerve.CrabDrive;
 import frc.robot.commands.swerve.SwerveTeleop;
 import frc.robot.commands.swerve.TestFourModules;
@@ -21,17 +21,17 @@ import org.photonvision.PhotonCamera;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.DriverStation;
 
 import frc.robot.commands.*;
 import frc.robot.commands.climber.BasicClimbTeleop;
 import frc.robot.commands.notemechanism.*;
-import frc.robot.commands.swerve.*;
 import frc.robot.commands.swerve.BackingUpIntoAmp.MoveBackIntoAmp;
+import frc.robot.commands.swerve.BackingUpIntoAmp.BackupSimple;
+import frc.robot.commands.swerve.ClosestNinetyDegrees;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.swerve.*;
 import frc.robot.subsystems.photonvision.*;
+
+import edu.wpi.first.wpilibj.PowerDistribution.*;
 
 public class RobotContainer {
 
@@ -93,8 +93,16 @@ public class RobotContainer {
   // Empty AprilTag command object
   private TargetAprilTag targetAprilTag;
 
+  // Empty BackupSimple command object
+  private BackupSimple backupSimple;
+
+  private ClosestNinetyDegrees ninetyDegreeRotation;
+
   // Empty Shooter object
   private Shooter shooter;
+
+  // Empty Climber object
+  private Climber climber;
 
   // Auto Trajectories
   private InitializeAutoPaths autoPaths;
@@ -102,8 +110,6 @@ public class RobotContainer {
   // Field centric toggle - true for field centric, false for robot centric
   private boolean fieldCentricToggle = true;
 
-  // Empty Climber object
-  private Climber climber;
 
   public RobotContainer() {
 
@@ -124,11 +130,13 @@ public class RobotContainer {
     if (Constants.currentRobot.enablePhotonVision) {
       this.configurePhotonVision();
     }
-
-    this.configureAuto();
+    
     
     // Construct all other things
     this.configureBindings();
+
+    this.configureAuto();
+
   }
 
   private void constructSwerve() {
@@ -216,17 +224,33 @@ public class RobotContainer {
 
     allFour = new TestFourModules(swerve, drivingXbox);
 
-    moveBackIntoAmp = new MoveBackIntoAmp(swerve);
-    JoystickButton moveButton = new JoystickButton(drivingXbox, XboxController.Button.kY.value);
+//    moveBackIntoAmp = new MoveBackIntoAmp(swerve);
+//    JoystickButton moveButton = new JoystickButton(drivingXbox, XboxController.Button.kY.value);
 
-    moveButton.toggleOnTrue(moveBackIntoAmp);
+    backupSimple = new BackupSimple(swerve, swerveMods[0]);
+    JoystickButton backupSimpleButton = new JoystickButton(drivingXbox, XboxController.Button.kY.value);
+
+    ninetyDegreeRotation = new ClosestNinetyDegrees(swerve);
+    JoystickButton ninetyDegreeRotationButton = new JoystickButton(drivingXbox, XboxController.Button.kB.value);
+
+    JoystickButton resetNavXButton = new JoystickButton(drivingXbox, XboxController.Button.kLeftBumper.value);
+
+//    JoystickButton clearStickyFaults = new JoystickButton(mechanismJoy, 17);
+
+    resetNavXButton.onTrue(swerve.resetHeadingCommand());
+    ninetyDegreeRotationButton.onTrue(ninetyDegreeRotation);
+    backupSimpleButton.toggleOnTrue(backupSimple);
+//    clearStickyFaults.onTrue(swerve.resetStickyFaultsCommand());
+
+
+//    moveButton.toggleOnTrue(moveBackIntoAmp);
     
     teleopCommandChooser.addOption("Regular Teleop", teleop);
     teleopCommandChooser.addOption("Crab Teleop", crabDrive);
     teleopCommandChooser.addOption("Module Test Command", allFour);
     teleopCommandChooser.setDefaultOption("Regular Teleop", teleop);
    
-    autoPaths = new InitializeAutoPaths(swerve, shooter);
+    // autoPaths = new InitializeAutoPaths(swerve, shooter);
   
     SmartDashboard.putData(teleopCommandChooser);
   }
@@ -248,7 +272,6 @@ public class RobotContainer {
     // Manually activates intake rollers when you go up on the POV 
     POVButton triggerIntakeManual = new POVButton(mechanismJoy, 0); 
     triggerIntakeManual.whileTrue(new IntakeManual(0.8, shooter));
-
   }
 
   public void configureClimber() {
@@ -261,12 +284,18 @@ public class RobotContainer {
   public void configurePhotonVision() {
     PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
     photonvision photonVision = new photonvision(camera);
+    targetAprilTag = new TargetAprilTag(photonVision, swerve);
 
-    JoystickButton alignButton = new JoystickButton(drivingXbox, XboxController.Button.kLeftBumper.value);
-    alignButton.onTrue(new TargetAprilTag(photonVision, swerve));
+    JoystickButton alignButton = new JoystickButton(drivingXbox, XboxController.Button.kA.value);
+    alignButton.onTrue(targetAprilTag);
   }
 
   public void configureAuto() {
+    //B1 paths to use:
+    //B1 middle shoot
+    //B1 left speaker note speaker
+    //B1 middle speaker note speaker
+    //B1 right speaker note speaker
     autoPaths = new InitializeAutoPaths(swerve, shooter);
   }
 

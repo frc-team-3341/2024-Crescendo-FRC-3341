@@ -50,6 +50,6 @@ public class HomeClimber extends Command {
   public boolean isFinished() {
     // If timer is greater than a certain time, then the command will stop for safety reasons
     // I.e. what if the limit switch breaks?
-    return climber.reverseLimit.isPressed() | timer.get() > climberTimeout;
+    return climber.reverseLimit.isPressed() || (timer.get() > climberTimeout);
   }
 }

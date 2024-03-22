@@ -5,20 +5,18 @@
 package frc.robot.commands.notemechanism;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import frc.robot.subsystems.Shooter;
 
-
-public class Shoot extends Command {
-  private int power;
-  private int lowerRPM;
+public class AutoShoot extends Command {
   private Shooter shooter;
-  /** Creates a new Shoot. */
-  public Shoot(int power, int lowerRPM, Shooter shooter) {
-    this.power = power;
+  //private double power;
+  /** Creates a new AutoShoot. */
+  public AutoShoot(Shooter shooter) {
     this.shooter = shooter;
-    this.lowerRPM = lowerRPM;
+   // this.power = power;
+    //this.lowerRPM = lowerRPM;
     addRequirements(shooter);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -28,18 +26,12 @@ public class Shoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //shooter.shootSpeaker(power);
-    shooter.shootBoth(power, lowerRPM);
-    // if (shooter.setpointReached(shooter.getUpperRPM(), shooter.upperRPM) && (shooter.setpointReached(shooter.getLowerRPM(), shooter.lowerRPM))){
-    //   shooter.setintakeSpeed(3000);
-    // }
+    shooter.setFeedSimple(0.5);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.setupperSpeed(0);
-    shooter.setlowerSpeed(0);
     shooter.setFeedSimple(0);
   }
 
