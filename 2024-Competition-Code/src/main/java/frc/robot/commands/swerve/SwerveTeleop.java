@@ -26,6 +26,8 @@ public class SwerveTeleop extends Command {
    private BooleanSupplier robotCentricSup;
    private DoubleSupplier translationRightTrigger;
 
+   private double robotSpeed = 2;
+
    private double xMult = 1.0;
    private double yMult = 1.0;
 
@@ -36,7 +38,12 @@ public class SwerveTeleop extends Command {
    // Slew rate limit controls
    // Positive limit ensures smooth acceleration (1000 * dt * dControl)
    // Negative limit ensures an ability to stop (0 * dt * dControl)
-   private AsymmetricLimiter translationLimiter = new AsymmetricLimiter(5.0D, 1000.0D);
+   private AsymmetricLimiter 
+   
+   
+   
+   
+   translationLimiter = new AsymmetricLimiter(5.0D, 1000.0D);
    private AsymmetricLimiter rotationLimiter = new AsymmetricLimiter(10.0D, 10.0D);
 
    /**
@@ -120,7 +127,7 @@ public class SwerveTeleop extends Command {
          Constants.SwerveConstants.maxChassisTranslationalSpeed);
       }
 
-      double newHypot = translationLimiter.calculate(output[0]);
+      double newHypot = robotSpeed*translationLimiter.calculate(output[0]);
 
       // Deadband should be applied after calculation of polar coordinates
       newHypot = MathUtil.applyDeadband(newHypot, Constants.SwerveConstants.deadBand);

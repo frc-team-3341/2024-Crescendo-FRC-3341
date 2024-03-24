@@ -29,9 +29,10 @@ public class R2_MiddleSpeakerNote extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       // Tune these high and low rpm
-      new Shoot(0,0, this.shooter).withTimeout(3),
+      new Shoot(3500,3500, this.shooter).withTimeout(3),
       new ParallelCommandGroup(new AutoPath("R2 Middle Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), true),
-      new IntakeBeamBreak(0.6, this.shooter)) //Automatically stops)
+      new IntakeBeamBreak(0.6, this.shooter).withTimeout(4)),
+      new Shoot(3500, 3500, this.shooter).withTimeout(5)
     );
   }
 }

@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import javax.swing.plaf.basic.BasicComboBoxUI.FocusHandler;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -23,6 +25,7 @@ import frc.robot.commands.auto.BlueAlliance1.Plays.B1_MiddleSpeakerNoteSpeaker;
 import frc.robot.commands.auto.BlueAlliance1.Plays.B1_RightShoot;
 import frc.robot.commands.auto.BlueAlliance1.Plays.B1_RightSpeakerNote;
 import frc.robot.commands.auto.BlueAlliance1.Plays.B1_RightSpeakerNoteSpeaker;
+import frc.robot.commands.auto.BlueAlliance1.Plays.B1_ShootAndLeave;
 import frc.robot.commands.auto.BlueAlliance2.Plays.B2_LeftShoot;
 import frc.robot.commands.auto.BlueAlliance2.Plays.B2_LeftSpeakerNote;
 import frc.robot.commands.auto.BlueAlliance2.Plays.B2_LeftSpeakerNoteSpeaker;
@@ -41,6 +44,13 @@ import frc.robot.commands.auto.BlueAlliance3.Plays.B3_MiddleSpeakerNoteSpeaker;
 import frc.robot.commands.auto.BlueAlliance3.Plays.B3_RightShoot;
 import frc.robot.commands.auto.BlueAlliance3.Plays.B3_RightSpeakerNote;
 import frc.robot.commands.auto.BlueAlliance3.Plays.B3_RightSpeakerNoteSpeaker;
+import frc.robot.commands.auto.BlueAlliance2.Plays.B2_B1_MiddleSpeakerNoteSpeaker;
+
+import frc.robot.commands.auto.RedAlliance.Plays.R1_LeftSpeakerNoteSpeaker;
+import frc.robot.commands.auto.RedAlliance.Plays.R2_MiddleSpeakerNoteSpeaker;
+import frc.robot.commands.auto.RedAlliance.Plays.R3_RightSpeakerNoteSpeaker;
+import frc.robot.commands.auto.RedAlliance.Plays.R2_R3_MiddleSpeakerNoteSpeaker;
+import frc.robot.commands.auto.*;
 
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveDrive;
@@ -81,6 +91,14 @@ public class InitializeAutoPaths {
     private final B3_RightSpeakerNote B3_RightSpeakerNote;
     private final B3_RightSpeakerNoteSpeaker B3_RightSpeakerNoteSpeaker;
 
+    private final R1_LeftSpeakerNoteSpeaker R1_LeftSpeakerNoteSpeaker;
+    private final R2_MiddleSpeakerNoteSpeaker R2_MiddleSpeakerNoteSpeaker;
+    private final R3_RightSpeakerNoteSpeaker R3_RightSpeakerNoteSpeaker;
+
+    private final R2_R3_MiddleSpeakerNoteSpeaker R2_R3_MiddleSpeakerNoteSpeaker;
+    private final B1_ShootAndLeave B1_ShootAndLeave;
+    private final B2_B1_MiddleSpeakerNoteSpeaker B2_B1_MiddleSpeakerNoteSpeaker;
+
     private final SendableChooser<Command> autoCommandChooser = new SendableChooser<>();
 
     public InitializeAutoPaths(SwerveDrive swerve, Shooter shooter) {
@@ -108,10 +126,10 @@ public class InitializeAutoPaths {
           // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
           var alliance = DriverStation.getAlliance();
-          if (alliance.isPresent()) {
-            //SmartDashboard.putBoolean("Red Alliance?:", alliance.get() == DriverStation.Alliance.Red);
-            return alliance.get() == DriverStation.Alliance.Red;
-          }
+          // if (alliance.isPresent()) {
+          //   //SmartDashboard.putBoolean("Red Alliance?:", alliance.get() == DriverStation.Alliance.Red);
+          //   return alliance.get() == DriverStation.Alliance.Red;
+          // }
           return false;
         },
         this.swerve // Reference to this subsystem to set requirements
@@ -145,7 +163,14 @@ public class InitializeAutoPaths {
         B3_RightShoot = new B3_RightShoot(this.swerve, this.shooter);
         B3_RightSpeakerNote = new B3_RightSpeakerNote(this.swerve, this.shooter);
         B3_RightSpeakerNoteSpeaker = new B3_RightSpeakerNoteSpeaker(this.swerve, this.shooter);
-        
+        B1_ShootAndLeave = new B1_ShootAndLeave(this.swerve, this.shooter);
+        B2_B1_MiddleSpeakerNoteSpeaker = new B2_B1_MiddleSpeakerNoteSpeaker(this.swerve, this.shooter);
+        //Red Plays
+        R1_LeftSpeakerNoteSpeaker = new R1_LeftSpeakerNoteSpeaker(this.swerve, this.shooter);
+        R2_MiddleSpeakerNoteSpeaker = new R2_MiddleSpeakerNoteSpeaker(this.swerve, this.shooter);
+        R3_RightSpeakerNoteSpeaker = new R3_RightSpeakerNoteSpeaker(this.swerve, this.shooter);
+        R2_R3_MiddleSpeakerNoteSpeaker = new R2_R3_MiddleSpeakerNoteSpeaker(this.swerve, this.shooter);
+
         // Autonomous command selector
         autoCommandChooser.addOption("B1_LeftShoot", B1_LeftShoot);
         autoCommandChooser.addOption("B1_LeftSpeakerNote", B1_LeftSpeakerNote);
@@ -156,6 +181,7 @@ public class InitializeAutoPaths {
         autoCommandChooser.addOption("B1_RightShoot", B1_RightShoot);
         autoCommandChooser.addOption("B1_RightSpeakerNote", B1_RightSpeakerNote);
         autoCommandChooser.addOption("B1_RightSpeakerNoteSpeaker", B1_RightSpeakerNoteSpeaker);
+        autoCommandChooser.addOption("B1_ShootAndLeave", B1_ShootAndLeave);
         
         autoCommandChooser.addOption("B2_LeftShoot", B2_LeftShoot);
         autoCommandChooser.addOption("B2_LeftSpeakerNote", B2_LeftSpeakerNote);
@@ -176,7 +202,12 @@ public class InitializeAutoPaths {
         autoCommandChooser.addOption("B3_RightShoot", B3_RightShoot);
         autoCommandChooser.addOption("B3_RightSpeakerNote", B3_RightSpeakerNote);
         autoCommandChooser.addOption("B3_RightSpeakerNoteSpeaker", B3_RightSpeakerNoteSpeaker);
+        autoCommandChooser.addOption("B2_B1_MiddleSpeakerNoteSpeaker", B2_B1_MiddleSpeakerNoteSpeaker);
 
+        autoCommandChooser.addOption("R1_LeftSpeakerNoteSpeaker", R1_LeftSpeakerNoteSpeaker);
+        autoCommandChooser.addOption("R2_MiddleSpeakerNoteSpeaker", R2_MiddleSpeakerNoteSpeaker);
+        autoCommandChooser.addOption("R3_RightSpeakerNoteSpeaker", R3_RightSpeakerNoteSpeaker);
+        autoCommandChooser.addOption("R2_R3_middleSpeakerNoteSpeaker", R2_R3_MiddleSpeakerNoteSpeaker);
 
         SmartDashboard.putData(autoCommandChooser);
 

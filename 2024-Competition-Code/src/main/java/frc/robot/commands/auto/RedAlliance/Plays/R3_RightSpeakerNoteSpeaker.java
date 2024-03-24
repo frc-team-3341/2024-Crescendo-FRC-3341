@@ -31,7 +31,7 @@ public class R3_RightSpeakerNoteSpeaker extends SequentialCommandGroup {
       new Shoot(3500,3500, this.shooter).withTimeout(2),
       new ParallelCommandGroup(new AutoPath("R3 Right Speaker to Note", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), true),
       new IntakeBeamBreak(0.6, this.shooter).withTimeout(4)),
-      new AutoPath("R3 Note to Speaker", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), false),
+      new AutoPath("R3 Note to Speaker Parallel", this.swerve, new PIDConstants(1.0, 0, 0), new PIDConstants(1.0, 0, 0), false),
       new Shoot(3500,3500, this.shooter).withTimeout(5)
     );
   }
