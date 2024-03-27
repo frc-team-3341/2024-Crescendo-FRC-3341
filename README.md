@@ -1,9 +1,9 @@
 # Team 3341's Working Competition Code:
 The code currently contains the newest versions of the:
 - Tele-op Swerve Code
-- ~Auto Swerve Code~ (Still needs to be debugged in swerve.zak.morgan.shawn.zhu)
+- ~Auto Swerve Code~ (Still needs to be debugged in `swerve.zak.morgan.shawn.zhu`)
 - Intake and Shooter Code
-- ~Climber Code~ (Not sure about which version)
+- ~Climber Code~ (the most updated code is in `climber`)
 - PhotonVision Code
 
 ---

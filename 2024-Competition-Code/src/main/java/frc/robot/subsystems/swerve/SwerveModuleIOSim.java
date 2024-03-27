@@ -144,14 +144,6 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
    }
 
    public void updateTelemetry() {
-      SmartDashboard.putNumber("Max Free Speed", ModuleConstants.maxFreeWheelSpeedMeters);
-      SmartDashboard.putNumber("Wheel Displacement #" + this.num, getPosition().distanceMeters);
-
-      // Show turning position and setpoints
-      SmartDashboard.putNumber("Turn Pos Degrees #" + this.num,
-            Units.radiansToDegrees(getTurnPositionInRad()));
-      SmartDashboard.putNumber("Raw Turn Pos #" + num, getTurnPositionInRad());
-      SmartDashboard.putNumber("Setpoint Turn Pos #" + this.num, state.angle.getRadians());
 
       // Find measurement in m/s and calculate PID action
       double velocity = this.driveSim.getAngularVelocityRadPerSec() * Math.PI
@@ -159,15 +151,34 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
 
       // Show driving velocity and setpoints
       SmartDashboard.putNumber("Drive Vel #" + this.num, velocity);
-      SmartDashboard.putNumber("Setpoint Drive Vel #" + this.num, state.speedMetersPerSecond);
 
-      // Output of driving
-      SmartDashboard.putNumber("Turn Volts #" + this.num, this.turnVolts);
-      SmartDashboard.putNumber("Drive Volts #" + this.num, this.driveVolts);
+      // Show turning position and setpoints
+      SmartDashboard.putNumber("Turn Pos Degrees #" + this.num,
+            Units.radiansToDegrees(getTurnPositionInRad()));
 
-      // Get RPMs
-      SmartDashboard.putNumber("Drive RPM #" + this.num, driveSim.getAngularVelocityRPM());
-      SmartDashboard.putNumber("Turn RPM #" + this.num, turnSim.getAngularVelocityRPM());
+      
+      // NON-ESSENTIAL TELEMETRY
+      if (Constants.currentRobot.enableSwerveMotorTelemetry) {
+
+         SmartDashboard.putNumber("Wheel Displacement #" + this.num, getPosition().distanceMeters);
+
+         // Show turning position and setpoints
+         SmartDashboard.putNumber("Raw Turn Pos #" + num, getTurnPositionInRad());
+         SmartDashboard.putNumber("Setpoint Turn Pos #" + this.num, state.angle.getRadians());
+
+
+         // Show driving velocity setpoints
+         SmartDashboard.putNumber("Setpoint Drive Vel #" + this.num, state.speedMetersPerSecond);
+
+         // Output of driving
+         SmartDashboard.putNumber("Turn Volts #" + this.num, this.turnVolts);
+         SmartDashboard.putNumber("Drive Volts #" + this.num, this.driveVolts);
+
+         // Get RPMs
+         SmartDashboard.putNumber("Drive RPM #" + this.num, driveSim.getAngularVelocityRPM());
+         SmartDashboard.putNumber("Turn RPM #" + this.num, turnSim.getAngularVelocityRPM());
+
+      }
    }
 
    public int getNum() {

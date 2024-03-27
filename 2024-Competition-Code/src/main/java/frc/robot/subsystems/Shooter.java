@@ -11,8 +11,6 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -22,9 +20,8 @@ import frc.robot.RobotContainer;
 public class Shooter extends SubsystemBase {
   private RelativeEncoder relativeEncoder;
   private RelativeEncoder relativeEncoder2;
-  public final CANSparkMax upperShooter = new CANSparkMax(Constants.ShooterConstants.upperShooter, MotorType.kBrushless);
-  public final CANSparkMax lowerShooter = new CANSparkMax(Constants.ShooterConstants.lowerShooter, MotorType.kBrushless);
-
+  public final CANSparkMax upperShooter;
+  public final CANSparkMax lowerShooter;
   public double setPoint;
   public double upperRPM = 0;
   public double lowerRPM = 0;
@@ -46,12 +43,20 @@ public class Shooter extends SubsystemBase {
   public SparkPIDController intakeController;
   
   private RelativeEncoder intakeEncoder;
-  public final CANSparkMax intakeMax = new CANSparkMax(Constants.IntakeConstants.feederMax, MotorType.kBrushless);
+  public final CANSparkMax intakeMax;
   //private double power = 0;
-  DigitalInput shooterBeamBreak = new DigitalInput(Constants.IntakeConstants.shooterBeamBreak);
-  DigitalInput intakeBeamBreak = new DigitalInput(Constants.IntakeConstants.intakeBeamBreak);  
+  DigitalInput shooterBeamBreak;
+  DigitalInput intakeBeamBreak;
+  
   // Creates a new Shooter.
-  public Shooter() {  
+  public Shooter() {
+    shooterBeamBreak = new DigitalInput(Constants.IntakeConstants.shooterBeamBreak);
+    intakeBeamBreak = new DigitalInput(Constants.IntakeConstants.intakeBeamBreak);  
+
+    upperShooter = new CANSparkMax(Constants.ShooterConstants.upperShooter, MotorType.kBrushless);
+    lowerShooter = new CANSparkMax(Constants.ShooterConstants.lowerShooter, MotorType.kBrushless);
+    intakeMax = new CANSparkMax(Constants.IntakeConstants.feederMax, MotorType.kBrushless);
+
     upperShooter.restoreFactoryDefaults();
     lowerShooter.restoreFactoryDefaults();
     intakeMax.restoreFactoryDefaults();
@@ -81,14 +86,6 @@ public class Shooter extends SubsystemBase {
     intakeController.setD(0);
     intakeController.setFF(intakeFeedForward);
 
-    Preferences.initDouble("power", upperRPM);
-    Preferences.initDouble("Lower Power", lowerRPM);
-    Preferences.initDouble("intake Power", intakePower);
-
-    Preferences.initDouble("upperPID P", upperP);
-    Preferences.initDouble("upperPID I", upperI);
-    Preferences.initDouble("lowerPID P", lowerP);
-    Preferences.initDouble("lowerPID I", lowerI);
 
     intakeMax.restoreFactoryDefaults();
     //resetIntakeEncoder();
@@ -182,20 +179,18 @@ public class Shooter extends SubsystemBase {
     this.intakePower = val;
   }
 
+  public void shootBoth(int upperRPM, int lowerRPM){
+    setupperSpeed(upperRPM);
+    setlowerSpeed(lowerRPM);
+    setFeedSimple(1.0);
+  }
+  // public void shootSpeaker(double rpm){
+  // setupperSpeed(rpm);
+  // setlowerSpeed(rpm);
+  // }
 
   @Override
   public void periodic() {
-    
-    //power = Preferences.getDouble("power", power);
-    //lowerPower = Preferences.getDouble("lower power", lowerPower);
-    //intakePower = Preferences.getDouble("Intake Power", intakePower);
-
-    upperP = Preferences.getDouble("upperPID P", upperP);
-    upperI = Preferences.getDouble("upperPID I", upperI);
-    lowerP = Preferences.getDouble("lowerPID P", lowerP);
-    lowerI = Preferences.getDouble("lowerPID I", lowerI);
-
-
     //Controller.setP(upperP);
     //Controller.setI(upperI);
     //lowerController.setP(lowerP);
@@ -210,14 +205,14 @@ public class Shooter extends SubsystemBase {
     // }
 
     // Shoots 
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(1)){ //shoot
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(18)){ //shoot
       intakePower = 1.0;
     }
 
     // Gets shooter wheels up to speed for speaker (untested)
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){ //prep flywheels for speaker
-      upperRPM = 3500;
-      lowerRPM = 3500;
+    if(RobotContainer.getIntakeJoy().getRawButtonPressed(1)){ //prep flywheels for speaker
+      upperRPM = 4000;
+      lowerRPM = 4000;
     }
 
     // Intakes note from source (untested)
@@ -229,33 +224,27 @@ public class Shooter extends SubsystemBase {
 
     // Gets shooter wheels up to speed for amp (tested but could be improved)
     // Works when the robot is aligned right in front of amp
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(4)){ //prep flywheels for shooting into amp
+     if(RobotContainer.getIntakeJoy().getRawButtonPressed(2)){ //prep flywheels for shooting into amp
       upperRPM = 120;
       lowerRPM = 80;
     }
-    
 
     /*if(RobotContainer.getIntakeJoy().getRawButtonPressed(3)){
       intakePower = 1.0;
     }*/
 
     // Increment intake speed
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(7)){
+     if(RobotContainer.getIntakeJoy().getRawButtonPressed(7)){
       intakePower += 0.1;
-    }
+    } 
 
     // Decrement intake speed
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(8)){
       intakePower -= 0.1;
     }
 
-    // Incremenet upper shooter RPM
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(9)){
       upperRPM += 100;
-    }
-
-    // Decrement upper shooter RPM
-    if(RobotContainer.getIntakeJoy().getRawButtonPressed(10)){
       upperRPM -= 100;
     }
 
@@ -268,16 +257,6 @@ public class Shooter extends SubsystemBase {
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(12)){
       lowerRPM -= 100;
     }
-    
-
-    /*if(RobotContainer.getIntakeXbox().getRawButtonPressed(XboxController.Button.kA.value)){
-      upperRPM = 0;
-      lowerRPM = -1000;
-    }
-    if(RobotContainer.getIntakeXbox().getRawButtonPressed(XboxController.Button.kB.value)){
-      upperRPM = 4000;
-      lowerRPM = 1000;
-    }*/
     
     setupperSpeed(upperRPM);
     setlowerSpeed(lowerRPM);
