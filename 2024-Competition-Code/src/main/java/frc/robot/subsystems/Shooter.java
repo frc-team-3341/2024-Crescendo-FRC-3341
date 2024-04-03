@@ -179,11 +179,18 @@ public class Shooter extends SubsystemBase {
     this.intakePower = val;
   }
 
+  public void shootBoth(int upperRPM, int lowerRPM){
+    setupperSpeed(upperRPM);
+    setlowerSpeed(lowerRPM);
+    setFeedSimple(1.0);
+  }
+  // public void shootSpeaker(double rpm){
+  // setupperSpeed(rpm);
+  // setlowerSpeed(rpm);
+  // }
 
   @Override
   public void periodic() {
-
-
     //Controller.setP(upperP);
     //Controller.setI(upperI);
     //lowerController.setP(lowerP);
