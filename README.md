@@ -42,5 +42,5 @@ Now, run these commands (ensure you are not connected to the robot):
 4. If there is an error saying the branch doesn't exist, run `git fetch` to fetch the new changes that made the branch
 5. Then, once you are in the WORKING COMPETITION CODE branch, run `git fetch` and `git pull` again to ensure the branch is up to date, and run `git status` to check that you are on the right branch.
 6. Running `git merge [YOUR PERSONAL BRANCH NAME]` will merge your PERSONAL branch into the WORKING COMPETITION CODE branch.
-7. If any merge conflicts occur, open a file editor and look through the files with the conflicts to chose which version of code is correct. You will see HEAD which has the chnages from the competition code branch beneath it and the name of your personal branch with your changes beneath it. All of these are sepparated by =====, >>>>>, and <<<<< symbols. You should delete the changes you don't want and keep the ones you do.
-8. Once that is complete, you should commit your changes and push them using the last two commands from step 1.
+
+I am making a small change
