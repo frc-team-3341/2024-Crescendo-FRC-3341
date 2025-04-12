@@ -10,6 +10,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -53,6 +55,9 @@ public class SwerveDrive extends SubsystemBase {
 
    private Rotation2d offsetNavx = new Rotation2d();
 
+   private final StructArrayPublisher<SwerveModuleState> statePublisher;
+   private final StructArrayPublisher<SwerveModuleState> targetStatePublisher;
+
 
    /**
     * Creates a new SwerveDrive object. Intended to work both with real modules and
@@ -79,6 +84,9 @@ public class SwerveDrive extends SubsystemBase {
       this.poseEstimator = new SwerveDrivePoseEstimator(this.kinematics, new Rotation2d(), this.modulePositions,
            startingPoint);
       this.field = new Field2d();
+
+      statePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("/SwerveStates", SwerveModuleState.struct).publish();
+      targetStatePublisher = NetworkTableInstance.getDefault().getStructArrayTopic("/SwerveStates_target", SwerveModuleState.struct).publish();
    }
 
    public void periodic() {
@@ -107,6 +115,9 @@ public class SwerveDrive extends SubsystemBase {
       SmartDashboard.putBoolean("Should stop", this.inThreshold(2));
 
       SmartDashboard.putNumber("Angle", getHeading());
+
+      targetStatePublisher.set(getSetpointStates());
+      statePublisher.set(getActualStates());
 
 //      SmartDashboard.putBoolean("Sticky Fault Exists", this.checkForFaults());
 

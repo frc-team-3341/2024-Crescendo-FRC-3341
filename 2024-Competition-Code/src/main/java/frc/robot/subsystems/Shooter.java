@@ -211,8 +211,8 @@ public class Shooter extends SubsystemBase {
 
     // Gets shooter wheels up to speed for speaker (untested)
     if(RobotContainer.getIntakeJoy().getRawButtonPressed(1)){ //prep flywheels for speaker
-      upperRPM = 4000;
-      lowerRPM = 4000;
+      upperRPM = 2000;
+      lowerRPM = 2000;
     }
 
     // Intakes note from source (untested)

@@ -135,9 +135,11 @@ public class SwerveTeleop extends Command {
       double correctedX = rightTriggerVal * xMult * newHypot * Math.cos(output[1]);
       double correctedY =  rightTriggerVal * yMult * newHypot * Math.sin(output[1]);
 
+      double speedLimit = .1;
+
       // Drive swerve with values
-      this.swerve.drive(new Translation2d(correctedX, correctedY),
-            rotationVal * Constants.SwerveConstants.maxChassisAngularVelocity,
+      this.swerve.drive(new Translation2d(correctedX * speedLimit, correctedY * speedLimit),
+            rotationVal * Constants.SwerveConstants.maxChassisAngularVelocity * .3,
             this.robotCentricSup.getAsBoolean(), false);
    }
 
